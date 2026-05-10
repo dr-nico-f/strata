@@ -35,6 +35,7 @@ function forceFullReload(): Plugin {
 }
 
 export default defineConfig({
+  base: process.env.GITHUB_ACTIONS ? "/strata/" : "/",
   plugins: [react(), forceFullReload()],
   server: {
     port: 5173,

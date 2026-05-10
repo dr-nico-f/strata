@@ -1,6 +1,6 @@
 # Strata 🌍
 
-**Interactive Historical World Map**
+**Interactive Historical World Map** &nbsp; | &nbsp; [**Live Demo**](https://dr-nico-f.github.io/strata/)
 
 Strata lets you explore ~12,000 years of human history on an interactive world map. Scrub a time slider from **10,000 BCE to 2025 CE** and watch thirteen data layers reveal the shifting state of the world — political boundaries, peoples, trade routes, cities, battles, religions, languages, migrations, climate, and more.
 
@@ -207,6 +207,53 @@ scripts/
   build-disasters.mjs                # USGS + Wikidata → generated disasters
   build-population.mjs               # OWID + restcountries → generated population
 ```
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart TB
+    subgraph buildPipeline ["Build-Time Data Pipeline"]
+        direction LR
+        GeoNames["GeoNames"] --> scripts["Node.js Scripts\n(4 × .mjs)"]
+        WikidataSPARQL["Wikidata SPARQL"] --> scripts
+        USGSCatalog["USGS Catalog"] --> scripts
+        OWIDData["Our World in Data"] --> scripts
+        scripts --> generated[".generated.ts files"]
+    end
+
+    subgraph dataModules ["Data Layer"]
+        direction LR
+        generated --> merged["Merged TS Modules"]
+        curated["Hand-Curated TS\n(peoples, religions, events,\nstories, migrations, ...)"] --> merged
+    end
+
+    merged --> store
+
+    subgraph runtime ["Runtime"]
+        store["Zustand Store\n(year, layers, theme, projection,\nhover, locked, tour, focus)"]
+        store --> layerHooks["14 Layer Hooks\n(useBoundariesLayer, useCitiesLayer,\nuseBattlesLayer, usePopulationLayer, ...)"]
+        store --> uiComponents["React Components\n(TimeSlider, Tooltip, SearchBar,\nStoryPlayer, LayerToggles, ...)"]
+        layerHooks --> maplibre["MapLibre GL JS"]
+        boundaryGeoJSON["52 Boundary GeoJSON\nSnapshots (public/data/)"] -->|"fetch on demand"| layerHooks
+    end
+
+    subgraph externalRuntime ["External Services"]
+        direction LR
+        cartoTiles["CARTO Basemap Tiles"] --> maplibre
+        protoGlyphs["Protomaps Glyphs"] --> maplibre
+        wikiAPI["Wikipedia REST API"] -->|"pinned tooltips"| uiComponents
+    end
+
+    store <-->|"replaceState / popstate"| urlSync["URL State\n(?y=1492&l=bpcex&p=globe&tour=silk-road:2)"]
+    store <--> localStorage["localStorage\n(fallback persistence)"]
+
+    maplibre --> canvas["Interactive Map"]
+    uiComponents --> canvas
+```
+
+**Data flows in two phases.** At build time, Node scripts pull from external APIs (GeoNames, Wikidata, USGS, OWID) and write `.generated.ts` files that are committed to the repo. At runtime, the Zustand store drives 14 independent layer hooks — each subscribing to `year` and `layers` state, projecting its dataset into GeoJSON sources on the MapLibre map. Boundary snapshots are the only data fetched at runtime (on demand from `public/data/`). The store also syncs bidirectionally with the URL for shareable deep links and with `localStorage` for session persistence.
 
 ---
 
