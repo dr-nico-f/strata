@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { CITIES, cityPopulationAt, type City } from "../data/cities";
 import {
@@ -222,9 +218,7 @@ function buildFeatures(year: number): GeoJSON.FeatureCollection {
         const r = Math.sqrt(rand()) * jitter;
         const theta = rand() * 2 * Math.PI;
         const dLat = r * Math.sin(theta);
-        const dLng =
-          (r * Math.cos(theta)) /
-          Math.max(0.2, Math.cos((city.lat * Math.PI) / 180));
+        const dLng = (r * Math.cos(theta)) / Math.max(0.2, Math.cos((city.lat * Math.PI) / 180));
         lng = city.lng + dLng;
         lat = city.lat + dLat;
       } else {
@@ -237,9 +231,7 @@ function buildFeatures(year: number): GeoJSON.FeatureCollection {
         const r = Math.sqrt(rand()) * fallbackRadius;
         const theta = rand() * 2 * Math.PI;
         const dLat = r * Math.sin(theta);
-        const dLng =
-          (r * Math.cos(theta)) /
-          Math.max(0.2, Math.cos((region.lat * Math.PI) / 180));
+        const dLng = (r * Math.cos(theta)) / Math.max(0.2, Math.cos((region.lat * Math.PI) / 180));
         lng = region.lng + dLng;
         lat = region.lat + dLat;
       }
@@ -295,17 +287,7 @@ export function usePopulationLayer(map: MaplibreMap | null) {
       type: "circle",
       source: SOURCE_ID,
       paint: {
-        "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          1,
-          1.4,
-          4,
-          2.4,
-          7,
-          3.6,
-        ],
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.4, 4, 2.4, 7, 3.6],
         // Color by continent. Each region gets a distinguishable warm/cool
         // hue so neighboring countries are visually separable at a glance.
         // (Default falls through to amber for any future "Other" rows.)
@@ -374,11 +356,7 @@ export function usePopulationLayer(map: MaplibreMap | null) {
 
   useEffect(() => {
     if (!map || setupForMap.current !== map) return;
-    map.setLayoutProperty(
-      DOT_LAYER_ID,
-      "visibility",
-      visible ? "visible" : "none",
-    );
+    map.setLayoutProperty(DOT_LAYER_ID, "visibility", visible ? "visible" : "none");
   }, [map, visible]);
 
   useEffect(() => {

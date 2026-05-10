@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { EVENTS } from "../data/events";
 import { useStore } from "../store";
@@ -60,25 +56,9 @@ export function useEventsLayer(map: MaplibreMap | null) {
       type: "circle",
       source: SOURCE_ID,
       paint: {
-        "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["get", "proximity"],
-          0,
-          8,
-          1,
-          18,
-        ],
+        "circle-radius": ["interpolate", ["linear"], ["get", "proximity"], 0, 8, 1, 18],
         "circle-color": "#ff7a90",
-        "circle-opacity": [
-          "interpolate",
-          ["linear"],
-          ["get", "proximity"],
-          0,
-          0.05,
-          1,
-          0.35,
-        ],
+        "circle-opacity": ["interpolate", ["linear"], ["get", "proximity"], 0, 0.05, 1, 0.35],
         "circle-blur": 0.6,
       },
     });

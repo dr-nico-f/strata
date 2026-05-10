@@ -23,9 +23,7 @@ describe("formatYear", () => {
 
 describe("wikipediaUrl", () => {
   it("builds a URL from a plain slug", () => {
-    expect(wikipediaUrl("Roman Empire")).toBe(
-      "https://en.wikipedia.org/wiki/Roman_Empire",
-    );
+    expect(wikipediaUrl("Roman Empire")).toBe("https://en.wikipedia.org/wiki/Roman_Empire");
   });
 
   it("returns full URLs unchanged", () => {

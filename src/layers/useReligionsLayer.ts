@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { RELIGIONS, activeReligionStage } from "../data/religions";
 import {
@@ -46,20 +42,17 @@ function bboxAreaFromGeometry(geom: GeoJSON.Geometry): number {
 }
 
 const close = (poly: Array<[number, number]>): Array<[number, number]> =>
-  poly.length && (poly[0][0] !== poly[poly.length - 1][0] ||
-    poly[0][1] !== poly[poly.length - 1][1])
+  poly.length &&
+  (poly[0][0] !== poly[poly.length - 1][0] || poly[0][1] !== poly[poly.length - 1][1])
     ? [...poly, poly[0]]
     : poly;
 
-const COUNTRY_RELIGION_LOOKUP = new Map(
-  MODERN_RELIGION_BY_COUNTRY.map((e) => [e.name, e]),
-);
+const COUNTRY_RELIGION_LOOKUP = new Map(MODERN_RELIGION_BY_COUNTRY.map((e) => [e.name, e]));
 
 let modernBoundariesPromise: Promise<GeoJSON.FeatureCollection> | null = null;
 function loadModernBoundaries(): Promise<GeoJSON.FeatureCollection> {
   if (!modernBoundariesPromise) {
-    const base =
-      (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? "/";
+    const base = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? "/";
     modernBoundariesPromise = fetch(`${base}data/boundaries/world_2000.geojson`)
       .then((r) => r.json() as Promise<GeoJSON.FeatureCollection>)
       .catch((err) => {
@@ -103,19 +96,14 @@ function buildHistoricalFeatures(year: number): GeoJSON.FeatureCollection {
 }
 
 /** >=1945: country-fill keyed by Pew Research majority religion per country. */
-async function buildModernFeatures(
-  year: number,
-): Promise<GeoJSON.FeatureCollection> {
+async function buildModernFeatures(year: number): Promise<GeoJSON.FeatureCollection> {
   const boundaries = await loadModernBoundaries();
   // Per-country features.
   const features: GeoJSON.Feature[] = [];
   // Bucket by religion so we can later label only the single largest
   // country in each bucket (one "Christianity" / "Islam" / etc. label
   // covering the cluster, instead of one per country).
-  const largestByReligion = new Map<
-    string,
-    { area: number; idx: number }
-  >();
+  const largestByReligion = new Map<string, { area: number; idx: number }>();
   for (const f of boundaries.features) {
     const name = (f.properties as { NAME?: string } | null)?.NAME;
     if (!name) continue;
@@ -151,9 +139,7 @@ async function buildModernFeatures(
   for (const [religion, { idx }] of largestByReligion) {
     const f = features[idx];
     if (!f.properties) continue;
-    f.properties._label = MODERN_RELIGION_LABEL[
-      religion as keyof typeof MODERN_RELIGION_LABEL
-    ];
+    f.properties._label = MODERN_RELIGION_LABEL[religion as keyof typeof MODERN_RELIGION_LABEL];
   }
   return { type: "FeatureCollection", features };
 }
@@ -216,22 +202,32 @@ export function useReligionsLayer(map: MaplibreMap | null) {
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 0,
-            10, 11,
-            100, 13,
-            1000, 16,
-            5000, 19,
+            0,
+            0,
+            10,
+            11,
+            100,
+            13,
+            1000,
+            16,
+            5000,
+            19,
           ],
           4,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 12,
-            10, 14,
-            100, 17,
-            1000, 22,
-            5000, 26,
+            0,
+            12,
+            10,
+            14,
+            100,
+            17,
+            1000,
+            22,
+            5000,
+            26,
           ],
         ],
         "text-letter-spacing": 0.2,
@@ -327,29 +323,17 @@ export function useReligionsLayer(map: MaplibreMap | null) {
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "light") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(60, 35, 20, 0.85)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(252, 250, 240, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(252, 250, 240, 0.92)");
     } else if (theme === "sepia") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(70, 30, 12, 0.85)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", [
         "coalesce",
         ["get", "_color"],
         "rgba(245, 220, 180, 0.9)",
       ]);
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(15, 12, 8, 0.8)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(15, 12, 8, 0.8)");
     }
   }, [map, theme]);
 

@@ -234,8 +234,7 @@ export const useStore = create<AppState>((set, get) => ({
     people: true,
     migrations: false,
   },
-  toggleLayer: (id) =>
-    set((s) => ({ layers: { ...s.layers, [id]: !s.layers[id] } })),
+  toggleLayer: (id) => set((s) => ({ layers: { ...s.layers, [id]: !s.layers[id] } })),
   setLayers: (layers) => set({ layers }),
 
   playing: false,

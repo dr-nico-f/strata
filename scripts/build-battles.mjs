@@ -35,15 +35,9 @@ const END_YEAR = 2025;
 const REQUEST_DELAY_MS = 500;
 
 const SPARQL_URL = "https://query.wikidata.org/sparql";
-const USER_AGENT =
-  "Strata/1.0 (https://github.com/dr-nico-f/strata) build-battles.mjs";
+const USER_AGENT = "Strata/1.0 (https://github.com/dr-nico-f/strata) build-battles.mjs";
 
-const OUTPUT_PATH = path.join(
-  ROOT,
-  "src",
-  "data",
-  "battles.wikidata.generated.ts",
-);
+const OUTPUT_PATH = path.join(ROOT, "src", "data", "battles.wikidata.generated.ts");
 
 function slugify(s) {
   return s
@@ -125,9 +119,7 @@ async function fetchChunk(startYear, endYear, attempt = 0) {
   } catch (err) {
     if (attempt >= 3) throw err;
     const wait = 2000 * (attempt + 1);
-    console.warn(
-      `  retrying ${startYear}..${endYear} after ${wait}ms (${err.message})`,
-    );
+    console.warn(`  retrying ${startYear}..${endYear} after ${wait}ms (${err.message})`);
     await new Promise((r) => setTimeout(r, wait));
     return fetchChunk(startYear, endYear, attempt + 1);
   }
@@ -140,9 +132,7 @@ function escapeStringLiteral(s) {
 async function build() {
   console.log("[battles] downloading from Wikidata SPARQL...");
   const { ids: curatedIds, names: curatedNames } = readCuratedKeys();
-  console.log(
-    `[battles] curated set: ${curatedIds.size} ids / ${curatedNames.size} names`,
-  );
+  console.log(`[battles] curated set: ${curatedIds.size} ids / ${curatedNames.size} names`);
 
   const seenQids = new Set();
   const battles = [];
@@ -205,9 +195,7 @@ export const WIKIDATA_BATTLES: readonly Battle[] = [
 `;
   const body = battles
     .map((b) => {
-      const wp = `https://en.wikipedia.org/wiki/${encodeURIComponent(
-        b.name.replace(/ /g, "_"),
-      )}`;
+      const wp = `https://en.wikipedia.org/wiki/${encodeURIComponent(b.name.replace(/ /g, "_"))}`;
       return `  {
     id: "${escapeStringLiteral(b.id)}",
     name: "${escapeStringLiteral(b.name)}",
@@ -230,9 +218,7 @@ void _wikipediaUrl;
   // Drop the noisy "_wikipediaUrl" footer; it was an experiment.
   const out = header + body + "\n];\n";
   fs.writeFileSync(OUTPUT_PATH, out, "utf8");
-  console.log(
-    `[battles] wrote ${battles.length} battles -> ${path.relative(ROOT, OUTPUT_PATH)}`,
-  );
+  console.log(`[battles] wrote ${battles.length} battles -> ${path.relative(ROOT, OUTPUT_PATH)}`);
 }
 
 build().catch((err) => {

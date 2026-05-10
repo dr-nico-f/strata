@@ -22,12 +22,36 @@ const SHORTCUTS: Array<{ keys: string; description: string }> = [
 ];
 
 const FEATURES: Array<{ name: string; description: string }> = [
-  { name: "Story tours", description: "Press T or click ▶ Stories — 33 curated tours through ~50 moments of world history, with arrow-key navigation." },
-  { name: "Click any country", description: "Pin a country tooltip and dim the rest of the world. Press \"Show country details\" to open the side panel of cities, events, battles, people, and disasters." },
-  { name: "Multi-layer chooser", description: "Click somewhere two or more layers overlap (e.g. a city inside a country with a language overlay) — a small popup lets you pick which one to pin." },
-  { name: "City population sparkline", description: "Pin a city — the tooltip shows its full population trajectory with the current year highlighted." },
-  { name: "Animated routes", description: "Trade routes, migration corridors, and migration flows march in the direction of travel." },
-  { name: "Watch the cities", description: "Scrub the year slider — newly founded cities flash gold, abandoned ones flash red." },
+  {
+    name: "Story tours",
+    description:
+      "Press T or click ▶ Stories — 33 curated tours through ~50 moments of world history, with arrow-key navigation.",
+  },
+  {
+    name: "Click any country",
+    description:
+      'Pin a country tooltip and dim the rest of the world. Press "Show country details" to open the side panel of cities, events, battles, people, and disasters.',
+  },
+  {
+    name: "Multi-layer chooser",
+    description:
+      "Click somewhere two or more layers overlap (e.g. a city inside a country with a language overlay) — a small popup lets you pick which one to pin.",
+  },
+  {
+    name: "City population sparkline",
+    description:
+      "Pin a city — the tooltip shows its full population trajectory with the current year highlighted.",
+  },
+  {
+    name: "Animated routes",
+    description:
+      "Trade routes, migration corridors, and migration flows march in the direction of travel.",
+  },
+  {
+    name: "Watch the cities",
+    description:
+      "Scrub the year slider — newly founded cities flash gold, abandoned ones flash red.",
+  },
 ];
 
 const URL_PARAMS: Array<{ name: string; description: string }> = [
@@ -229,13 +253,9 @@ export function HelpOverlay() {
             (CC BY 4.0)
           </li>
           <li>
-            <strong>Cities</strong> - 251 hand-curated historical cities merged
-            with the top 800 modern cities by population from{" "}
-            <a
-              href="https://www.geonames.org/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <strong>Cities</strong> - 251 hand-curated historical cities merged with the top 800
+            modern cities by population from{" "}
+            <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">
               GeoNames cities15000
             </a>{" "}
             (CC BY 4.0)
@@ -251,9 +271,8 @@ export function HelpOverlay() {
             </a>
           </li>
           <li>
-            <strong>Religions, pre-1945</strong> - schematic spread polygons
-            anchored to Wikidata Q-IDs and standard atlases (Hartz, Kinder &
-            Hilgemann)
+            <strong>Religions, pre-1945</strong> - schematic spread polygons anchored to Wikidata
+            Q-IDs and standard atlases (Hartz, Kinder & Hilgemann)
           </li>
           <li>
             <strong>Population</strong> - per-country curves from{" "}
@@ -264,13 +283,9 @@ export function HelpOverlay() {
             >
               Our World in Data
             </a>{" "}
-            (HYDE 3.3 + Gapminder + UN WPP, CC BY 4.0), 237 countries from
-            10,000 BCE to 2023; centroids + areas via{" "}
-            <a
-              href="https://restcountries.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            (HYDE 3.3 + Gapminder + UN WPP, CC BY 4.0), 237 countries from 10,000 BCE to 2023;
+            centroids + areas via{" "}
+            <a href="https://restcountries.com/" target="_blank" rel="noreferrer">
               restcountries.com
             </a>
           </li>
@@ -278,47 +293,32 @@ export function HelpOverlay() {
             <strong>Climate</strong> - HadCRUT5 / Marcott / PAGES 2k anchors
           </li>
           <li>
-            <strong>Battles</strong> - 41 hand-curated entries plus ~920 battles
-            from{" "}
-            <a
-              href="https://www.wikidata.org/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <strong>Battles</strong> - 41 hand-curated entries plus ~920 battles from{" "}
+            <a href="https://www.wikidata.org/" target="_blank" rel="noreferrer">
               Wikidata
             </a>{" "}
             (CC0), filtered by Wikipedia sitelink count
           </li>
           <li>
-            <strong>Disasters</strong> - 15 hand-curated entries plus ~500
-            major earthquakes from the{" "}
-            <a
-              href="https://earthquake.usgs.gov/fdsnws/event/1/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <strong>Disasters</strong> - 15 hand-curated entries plus ~500 major earthquakes from
+            the{" "}
+            <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noreferrer">
               USGS earthquake catalog
             </a>{" "}
-            (M ≥ 7.5, public domain) and ~470 historical eruptions, tsunamis,
-            epidemics, famines, and cyclones from Wikidata
+            (M ≥ 7.5, public domain) and ~470 historical eruptions, tsunamis, epidemics, famines,
+            and cyclones from Wikidata
           </li>
           <li>
-            <strong>Migrations</strong> - 18 hand-curated mass population
-            movements (Bantu expansion, Indo-European, Polynesian voyaging,
-            Atlantic slave trade, etc.)
+            <strong>Migrations</strong> - 18 hand-curated mass population movements (Bantu
+            expansion, Indo-European, Polynesian voyaging, Atlantic slave trade, etc.)
           </li>
           <li>
-            <strong>Languages, peoples, events, notable people</strong> -
-            hand-curated from Wikipedia and standard reference works
+            <strong>Languages, peoples, events, notable people</strong> - hand-curated from
+            Wikipedia and standard reference works
           </li>
           <li>
-            <strong>Live Wikipedia summaries</strong> - pinned tooltips fetch
-            from{" "}
-            <a
-              href="https://www.mediawiki.org/wiki/API:REST_API"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <strong>Live Wikipedia summaries</strong> - pinned tooltips fetch from{" "}
+            <a href="https://www.mediawiki.org/wiki/API:REST_API" target="_blank" rel="noreferrer">
               Wikipedia's REST summary API
             </a>
           </li>

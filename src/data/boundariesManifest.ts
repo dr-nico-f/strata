@@ -58,8 +58,7 @@ export const BOUNDARY_SNAPSHOTS: readonly BoundarySnapshot[] = [
   { year: 2010, file: "world_2010.geojson" },
 ] as const;
 
-export const BOUNDARY_SNAPSHOT_YEARS: readonly number[] =
-  BOUNDARY_SNAPSHOTS.map((s) => s.year);
+export const BOUNDARY_SNAPSHOT_YEARS: readonly number[] = BOUNDARY_SNAPSHOTS.map((s) => s.year);
 
 export function fileForYear(snapshotYear: number): string {
   const found = BOUNDARY_SNAPSHOTS.find((s) => s.year === snapshotYear);

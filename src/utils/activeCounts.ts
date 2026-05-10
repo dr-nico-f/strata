@@ -27,13 +27,11 @@ export function getActiveCount(layer: LayerId, year: number): number {
         (c) => year >= c.founded && (c.abandoned === undefined || year <= c.abandoned),
       ).length;
     case "events":
-      return EVENTS.filter((e) => Math.abs(year - e.year) <= EVENT_WINDOW)
-        .length;
+      return EVENTS.filter((e) => Math.abs(year - e.year) <= EVENT_WINDOW).length;
     case "connections":
       return CONNECTIONS.filter((c) => year >= c.start && year <= c.end).length;
     case "battles":
-      return BATTLES.filter((b) => Math.abs(year - b.year) <= BATTLE_WINDOW)
-        .length;
+      return BATTLES.filter((b) => Math.abs(year - b.year) <= BATTLE_WINDOW).length;
     case "population":
       // Count countries with non-zero modeled population at this year. OWID's
       // country list is ~240 entries but pre-modern centuries leave most

@@ -1,10 +1,4 @@
-import {
-  LAYER_IDS,
-  THEMES,
-  type LayerId,
-  type ProjectionMode,
-  type ThemeId,
-} from "../store";
+import { LAYER_IDS, THEMES, type LayerId, type ProjectionMode, type ThemeId } from "../store";
 
 const KEY = "history-sim:state:v1";
 

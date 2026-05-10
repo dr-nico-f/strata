@@ -6,9 +6,11 @@ import { pushRecentTour } from "../utils/localState";
 // Register a chapter-count lookup so the store's advanceTour can clamp
 // without importing the data module (which would create a cycle).
 if (typeof window !== "undefined") {
-  (window as unknown as {
-    __hsChapterCount: (id: string) => number | undefined;
-  }).__hsChapterCount = (id: string) => findStory(id)?.chapters.length;
+  (
+    window as unknown as {
+      __hsChapterCount: (id: string) => number | undefined;
+    }
+  ).__hsChapterCount = (id: string) => findStory(id)?.chapters.length;
 }
 
 /**
@@ -289,11 +291,7 @@ export function StoryPlayer() {
             Finish
           </button>
         ) : (
-          <button
-            onClick={() => advanceTour(1)}
-            style={{ minWidth: 80 }}
-            title="Next chapter (→)"
-          >
+          <button onClick={() => advanceTour(1)} style={{ minWidth: 80 }} title="Next chapter (→)">
             Next →
           </button>
         )}

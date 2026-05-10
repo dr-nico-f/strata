@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { PEOPLE, PersonKind } from "../data/people";
 import { formatYear, useStore } from "../store";

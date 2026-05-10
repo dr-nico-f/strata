@@ -29,8 +29,7 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, "..");
 
 const SPARQL_URL = "https://query.wikidata.org/sparql";
-const USER_AGENT =
-  "Strata/1.0 (https://github.com/dr-nico-f/strata) build-disasters.mjs";
+const USER_AGENT = "Strata/1.0 (https://github.com/dr-nico-f/strata) build-disasters.mjs";
 
 const USGS_MIN_MAG = 7.5;
 const USGS_START = "1900-01-01";
@@ -39,12 +38,7 @@ const USGS_URL = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojso
 
 const REQUEST_DELAY_MS = 600;
 
-const OUTPUT_PATH = path.join(
-  ROOT,
-  "src",
-  "data",
-  "disasters.live.generated.ts",
-);
+const OUTPUT_PATH = path.join(ROOT, "src", "data", "disasters.live.generated.ts");
 
 function slugify(s) {
   return s
@@ -151,7 +145,13 @@ async function sparql(query) {
 
 const WIKIDATA_TYPES = [
   // Earthquakes pre-1900 only (USGS handles modern ones).
-  { kind: "earthquake", qid: "Q8065", minSitelinks: 5, yearMax: 1899, label: "earthquake (pre-1900)" },
+  {
+    kind: "earthquake",
+    qid: "Q8065",
+    minSitelinks: 5,
+    yearMax: 1899,
+    label: "earthquake (pre-1900)",
+  },
   { kind: "volcano", qid: "Q7944", minSitelinks: 5, label: "volcanic eruption" },
   { kind: "tsunami", qid: "Q179168", minSitelinks: 3, label: "tsunami" },
   { kind: "plague", qid: "Q12184", minSitelinks: 4, label: "pandemic" },
@@ -161,9 +161,7 @@ const WIKIDATA_TYPES = [
 ];
 
 function buildSparql(spec) {
-  const yearFilter = spec.yearMax !== undefined
-    ? `FILTER(YEAR(?date) <= ${spec.yearMax})`
-    : "";
+  const yearFilter = spec.yearMax !== undefined ? `FILTER(YEAR(?date) <= ${spec.yearMax})` : "";
   return `
     SELECT ?d ?dLabel ?date ?coord ?sitelinks WHERE {
       ?d wdt:P31/wdt:P279* wd:${spec.qid} ;
@@ -226,9 +224,7 @@ async function fetchWikidataDisasters() {
 async function build() {
   console.log("[disasters] building...");
   const { ids: curatedIds, names: curatedNames } = readCuratedKeys();
-  console.log(
-    `[disasters] curated set: ${curatedIds.size} ids / ${curatedNames.size} names`,
-  );
+  console.log(`[disasters] curated set: ${curatedIds.size} ids / ${curatedNames.size} names`);
 
   const usgs = await fetchUsgs();
   const wikidata = await fetchWikidataDisasters();

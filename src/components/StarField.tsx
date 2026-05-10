@@ -160,11 +160,7 @@ export function StarField() {
       const y0 = rng() * cssH * 0.55;
       const dx = Math.cos(angle) * length * (rng() < 0.5 ? -1 : 1);
       const dy = Math.sin(angle) * length;
-      const tints = [
-        "rgba(255, 240, 200,",
-        "rgba(190, 220, 255,",
-        "rgba(255, 220, 180,",
-      ];
+      const tints = ["rgba(255, 240, 200,", "rgba(190, 220, 255,", "rgba(255, 220, 180,"];
       meteors.push({
         startTime: now,
         duration: 700 + rng() * 350,
@@ -236,8 +232,7 @@ export function StarField() {
       for (const s of stars) {
         let alpha = s.a;
         if (s.twinkle && !reduceMotion) {
-          alpha *=
-            0.55 + 0.45 * Math.sin(s.twinklePhase + time * s.twinkleSpeed);
+          alpha *= 0.55 + 0.45 * Math.sin(s.twinklePhase + time * s.twinkleSpeed);
         }
         // Light theme: invert star colour so they read against the pale sky.
         const color =
@@ -261,7 +256,8 @@ export function StarField() {
           const tailX = (m.x0 + m.dx * Math.max(0, t - 0.25)) * dpr;
           const tailY = (m.y0 + m.dy * Math.max(0, t - 0.25)) * dpr;
           // Fade-in / fade-out envelope so the streak doesn't pop.
-          const env = Math.sin(Math.min(1, t / 0.3) * Math.PI * 0.5) *
+          const env =
+            Math.sin(Math.min(1, t / 0.3) * Math.PI * 0.5) *
             Math.sin(Math.min(1, (1 - t) / 0.4) * Math.PI * 0.5);
           if (env <= 0) continue;
           const grad = ctx.createLinearGradient(tailX, tailY, headX, headY);
@@ -355,10 +351,13 @@ export function StarField() {
     // payoff, then settle into the 25-35s cadence.
     let firstMeteorTimer: number | null = null;
     if (!reduceMotion) {
-      firstMeteorTimer = window.setTimeout(() => {
-        spawnMeteor(performance.now());
-        scheduleNextMeteor();
-      }, 4_000 + Math.random() * 4_000);
+      firstMeteorTimer = window.setTimeout(
+        () => {
+          spawnMeteor(performance.now());
+          scheduleNextMeteor();
+        },
+        4_000 + Math.random() * 4_000,
+      );
     }
 
     // Always-on rAF loop in globe mode: drives twinkles + meteor animation.

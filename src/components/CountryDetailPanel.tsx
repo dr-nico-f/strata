@@ -17,11 +17,7 @@ function within(bbox: Bbox, lng: number, lat: number): boolean {
   return lng >= bbox[0] && lng <= bbox[2] && lat >= bbox[1] && lat <= bbox[3];
 }
 
-function pointInRing(
-  lng: number,
-  lat: number,
-  ring: GeoJSON.Position[],
-): boolean {
+function pointInRing(lng: number, lat: number, ring: GeoJSON.Position[]): boolean {
   // Standard ray-casting on a closed ring.
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -30,18 +26,13 @@ function pointInRing(
     const xj = ring[j][0];
     const yj = ring[j][1];
     const intersect =
-      yi > lat !== yj > lat &&
-      lng < ((xj - xi) * (lat - yi)) / (yj - yi + 1e-12) + xi;
+      yi > lat !== yj > lat && lng < ((xj - xi) * (lat - yi)) / (yj - yi + 1e-12) + xi;
     if (intersect) inside = !inside;
   }
   return inside;
 }
 
-function pointInPolygon(
-  lng: number,
-  lat: number,
-  poly: GeoJSON.Position[][],
-): boolean {
+function pointInPolygon(lng: number, lat: number, poly: GeoJSON.Position[][]): boolean {
   if (!poly[0] || !pointInRing(lng, lat, poly[0])) return false;
   for (let i = 1; i < poly.length; i++) {
     if (pointInRing(lng, lat, poly[i])) return false;
@@ -49,11 +40,7 @@ function pointInPolygon(
   return true;
 }
 
-function pointInGeometry(
-  lng: number,
-  lat: number,
-  geom: GeoJSON.Geometry,
-): boolean {
+function pointInGeometry(lng: number, lat: number, geom: GeoJSON.Geometry): boolean {
   if (geom.type === "Polygon") return pointInPolygon(lng, lat, geom.coordinates);
   if (geom.type === "MultiPolygon") {
     for (const poly of geom.coordinates) {
@@ -75,9 +62,7 @@ interface SectionItem {
   lat: number;
 }
 
-const RELIGION_LOOKUP = new Map(
-  MODERN_RELIGION_BY_COUNTRY.map((e) => [e.name, e]),
-);
+const RELIGION_LOOKUP = new Map(MODERN_RELIGION_BY_COUNTRY.map((e) => [e.name, e]));
 
 type Section = "all" | "cities" | "events" | "battles" | "people" | "disasters";
 
@@ -129,8 +114,7 @@ export function CountryDetailPanel() {
     const cities: SectionItem[] = CITIES.filter((c) => inFocus(c.lng, c.lat))
       .filter(
         (c) =>
-          deferredYear >= c.founded &&
-          (c.abandoned === undefined || deferredYear <= c.abandoned),
+          deferredYear >= c.founded && (c.abandoned === undefined || deferredYear <= c.abandoned),
       )
       .slice(0, 60)
       .map((c) => ({
@@ -167,9 +151,7 @@ export function CountryDetailPanel() {
         lng: b.lng,
         lat: b.lat,
       }));
-    const people: SectionItem[] = NOTABLE_PEOPLE.filter((p) =>
-      inFocus(p.lng, p.lat),
-    )
+    const people: SectionItem[] = NOTABLE_PEOPLE.filter((p) => inFocus(p.lng, p.lat))
       .filter((p) => deferredYear >= p.birth && deferredYear <= p.death)
       .slice(0, 30)
       .map((p) => ({
@@ -182,9 +164,7 @@ export function CountryDetailPanel() {
         lng: p.lng,
         lat: p.lat,
       }));
-    const disasters: SectionItem[] = DISASTERS.filter((d) =>
-      inFocus(d.lng, d.lat),
-    )
+    const disasters: SectionItem[] = DISASTERS.filter((d) => inFocus(d.lng, d.lat))
       .filter((d) => Math.abs(deferredYear - d.year) <= 80)
       .slice(0, 20)
       .map((d) => ({
@@ -197,9 +177,7 @@ export function CountryDetailPanel() {
         lat: d.lat,
       }));
     const religion =
-      deferredYear >= MODERN_RELIGION_MIN_YEAR
-        ? RELIGION_LOOKUP.get(country.name)
-        : undefined;
+      deferredYear >= MODERN_RELIGION_MIN_YEAR ? RELIGION_LOOKUP.get(country.name) : undefined;
     return { cities, events, battles, people, disasters, religion };
   }, [country, deferredYear]);
 
@@ -273,7 +251,14 @@ export function CountryDetailPanel() {
           marginBottom: 4,
         }}
       >
-        <div style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: 1, textTransform: "uppercase" }}>
+        <div
+          style={{
+            fontSize: 11,
+            color: "var(--text-muted)",
+            letterSpacing: 1,
+            textTransform: "uppercase",
+          }}
+        >
           Country detail · {formatYear(year)}
         </div>
         <button
@@ -284,14 +269,10 @@ export function CountryDetailPanel() {
           ✕
         </button>
       </div>
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>
-        {country.name}
-      </div>
+      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>{country.name}</div>
       <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 8 }}>
         {total} active feature{total === 1 ? "" : "s"} in this region
-        {isStale && (
-          <span style={{ marginLeft: 8, opacity: 0.7 }}>· updating…</span>
-        )}
+        {isStale && <span style={{ marginLeft: 8, opacity: 0.7 }}>· updating…</span>}
       </div>
 
       <div
@@ -319,9 +300,7 @@ export function CountryDetailPanel() {
           const count =
             chip.id === "all"
               ? total
-              : (
-                  data[chip.id as Exclude<Section, "all">] as SectionItem[]
-                ).length;
+              : (data[chip.id as Exclude<Section, "all">] as SectionItem[]).length;
           const active = section === chip.id;
           const dimmed = chip.id !== "all" && count === 0;
           return (
@@ -339,9 +318,7 @@ export function CountryDetailPanel() {
                 padding: "4px 10px",
                 borderRadius: 999,
                 border: `1px solid ${active ? "var(--accent)" : "var(--panel-border)"}`,
-                background: active
-                  ? "rgba(245, 185, 66, 0.22)"
-                  : "rgba(255, 255, 255, 0.05)",
+                background: active ? "rgba(245, 185, 66, 0.22)" : "rgba(255, 255, 255, 0.05)",
                 color: active
                   ? "var(--accent-strong)"
                   : dimmed
@@ -353,15 +330,13 @@ export function CountryDetailPanel() {
               }}
             >
               {chip.label}
-              {chip.id !== "all" && (
-                <span style={{ opacity: 0.65, marginLeft: 5 }}>{count}</span>
-              )}
+              {chip.id !== "all" && <span style={{ opacity: 0.65, marginLeft: 5 }}>{count}</span>}
             </button>
           );
         })}
       </div>
 
-      {data.religion && (section === "all") && (
+      {data.religion && section === "all" && (
         <Section title="Religion (Pew Research)">
           <div style={{ fontSize: 13 }}>
             {MODERN_RELIGION_LABEL[data.religion.religion]}{" "}
@@ -375,81 +350,50 @@ export function CountryDetailPanel() {
       {(section === "all" || section === "cities") && data.cities.length > 0 && (
         <Section title={`Cities (${data.cities.length})`}>
           {data.cities.map((c) => (
-            <Row
-              key={c.id}
-              item={c}
-              layer="cities"
-              onClick={() => goto(c, "cities")}
-            />
+            <Row key={c.id} item={c} layer="cities" onClick={() => goto(c, "cities")} />
           ))}
         </Section>
       )}
       {(section === "all" || section === "events") && data.events.length > 0 && (
         <Section title={`Events (${data.events.length})`}>
           {data.events.map((e) => (
-            <Row
-              key={e.id}
-              item={e}
-              layer="events"
-              onClick={() => goto(e, "events")}
-            />
+            <Row key={e.id} item={e} layer="events" onClick={() => goto(e, "events")} />
           ))}
         </Section>
       )}
       {(section === "all" || section === "battles") && data.battles.length > 0 && (
         <Section title={`Battles (${data.battles.length})`}>
           {data.battles.map((b) => (
-            <Row
-              key={b.id}
-              item={b}
-              layer="battles"
-              onClick={() => goto(b, "battles")}
-            />
+            <Row key={b.id} item={b} layer="battles" onClick={() => goto(b, "battles")} />
           ))}
         </Section>
       )}
       {(section === "all" || section === "people") && data.people.length > 0 && (
         <Section title={`Notable people (${data.people.length})`}>
           {data.people.map((p) => (
-            <Row
-              key={p.id}
-              item={p}
-              layer="people"
-              onClick={() => goto(p, "people")}
-            />
+            <Row key={p.id} item={p} layer="people" onClick={() => goto(p, "people")} />
           ))}
         </Section>
       )}
       {(section === "all" || section === "disasters") && data.disasters.length > 0 && (
         <Section title={`Disasters (${data.disasters.length})`}>
           {data.disasters.map((d) => (
-            <Row
-              key={d.id}
-              item={d}
-              layer="disasters"
-              onClick={() => goto(d, "disasters")}
-            />
+            <Row key={d.id} item={d} layer="disasters" onClick={() => goto(d, "disasters")} />
           ))}
         </Section>
       )}
 
       {total === 0 && !data.religion && (
         <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 14 }}>
-          No active features in this region for {formatYear(year)}. Try moving the
-          time slider or zooming out.
+          No active features in this region for {formatYear(year)}. Try moving the time slider or
+          zooming out.
         </div>
       )}
     </div>
   );
 }
 
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ marginTop: 14 }}>
       <div
@@ -468,14 +412,7 @@ function Section({
   );
 }
 
-function Row({
-  item,
-  onClick,
-}: {
-  item: SectionItem;
-  layer: string;
-  onClick: () => void;
-}) {
+function Row({ item, onClick }: { item: SectionItem; layer: string; onClick: () => void }) {
   return (
     <div
       onClick={onClick}
@@ -486,9 +423,7 @@ function Row({
         fontSize: 12,
         lineHeight: 1.4,
       }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.background = "rgba(255,255,255,0.05)")
-      }
+      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
       <div style={{ fontWeight: 500 }}>
@@ -526,4 +461,3 @@ function Row({
     </div>
   );
 }
-

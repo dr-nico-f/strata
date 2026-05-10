@@ -1,13 +1,6 @@
 import type { Map as MaplibreMap } from "maplibre-gl";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  HoverInfo,
-  MAX_YEAR,
-  MIN_YEAR,
-  formatYear,
-  useStore,
-  wikipediaUrl,
-} from "../store";
+import { HoverInfo, MAX_YEAR, MIN_YEAR, formatYear, useStore, wikipediaUrl } from "../store";
 import { subscribeMapInstance } from "../utils/mapInstance";
 import { useWikipediaSummary } from "../utils/useWikipediaSummary";
 import { CityPopulationSparkline } from "./CityPopulationSparkline";
@@ -29,9 +22,7 @@ export function Tooltip() {
   // Live screen coords for the pinned feature, recomputed locally as the
   // camera animates. Hover tooltips keep using hover.x / hover.y because
   // those are already in screen space and only update on mousemove.
-  const [pinnedScreen, setPinnedScreen] = useState<{ x: number; y: number } | null>(
-    null,
-  );
+  const [pinnedScreen, setPinnedScreen] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!isLocked || locked?.lng === undefined || locked?.lat === undefined) {
@@ -107,8 +98,7 @@ export function Tooltip() {
   if (left < 8) left = 8;
   if (top < 8) top = 8;
 
-  const showRange =
-    active.rangeStart !== undefined && active.rangeEnd !== undefined;
+  const showRange = active.rangeStart !== undefined && active.rangeEnd !== undefined;
 
   // Compute leader-line endpoint on the panel edge closest to the cursor
   const panelCenterX = left + size.w / 2;
@@ -146,12 +136,7 @@ export function Tooltip() {
           strokeWidth={isLocked ? 1.5 : 1}
           strokeDasharray={isLocked ? "none" : "2 4"}
         />
-        <circle
-          cx={anchorX}
-          cy={anchorY}
-          r={isLocked ? 5 : 3.5}
-          fill="var(--leader)"
-        />
+        <circle cx={anchorX} cy={anchorY} r={isLocked ? 5 : 3.5} fill="var(--leader)" />
       </svg>
       <div
         ref={ref}
@@ -210,28 +195,24 @@ export function Tooltip() {
                 ★ capital
               </span>
             )}
-            {active.layer === "cities" &&
-              active.ruinAge !== undefined &&
-              active.ruinAge > 0 && (
-                <span
-                  style={{
-                    fontSize: 10,
-                    letterSpacing: 0.4,
-                    textTransform: "uppercase",
-                    color: "#c89060",
-                    border: "1px solid rgba(200, 144, 96, 0.45)",
-                    borderRadius: 3,
-                    padding: "1px 5px",
-                    lineHeight: 1.2,
-                  }}
-                  title="Abandoned"
-                >
-                  ruin
-                </span>
-              )}
-            {isLocked && (
-              <span style={{ color: "var(--accent-strong)" }}>· pinned</span>
+            {active.layer === "cities" && active.ruinAge !== undefined && active.ruinAge > 0 && (
+              <span
+                style={{
+                  fontSize: 10,
+                  letterSpacing: 0.4,
+                  textTransform: "uppercase",
+                  color: "#c89060",
+                  border: "1px solid rgba(200, 144, 96, 0.45)",
+                  borderRadius: 3,
+                  padding: "1px 5px",
+                  lineHeight: 1.2,
+                }}
+                title="Abandoned"
+              >
+                ruin
+              </span>
             )}
+            {isLocked && <span style={{ color: "var(--accent-strong)" }}>· pinned</span>}
           </div>
           {isLocked && (
             <div style={{ display: "flex", gap: 4 }}>
@@ -276,12 +257,7 @@ export function Tooltip() {
         </div>
         <div style={{ fontSize: 16, fontWeight: 600 }}>{active.name}</div>
         {active.layer === "cities" && (
-          <CityMeta
-            pop={active.pop}
-            cc={active.cc}
-            ruinAge={active.ruinAge}
-            year={year}
-          />
+          <CityMeta pop={active.pop} cc={active.cc} ruinAge={active.ruinAge} year={year} />
         )}
         {active.detail && (
           <div
@@ -295,15 +271,9 @@ export function Tooltip() {
           </div>
         )}
         {showRange && (
-          <MiniTimeline
-            start={active.rangeStart!}
-            end={active.rangeEnd!}
-            year={year}
-          />
+          <MiniTimeline start={active.rangeStart!} end={active.rangeEnd!} year={year} />
         )}
-        {active.pointYear !== undefined && (
-          <PointMarker year={active.pointYear} current={year} />
-        )}
+        {active.pointYear !== undefined && <PointMarker year={active.pointYear} current={year} />}
         {isLocked && active.layer === "cities" && (
           <CityPopulationSparkline cityId={active.id} year={year} />
         )}
@@ -438,15 +408,7 @@ export function Tooltip() {
   );
 }
 
-function MiniTimeline({
-  start,
-  end,
-  year,
-}: {
-  start: number;
-  end: number;
-  year: number;
-}) {
+function MiniTimeline({ start, end, year }: { start: number; end: number; year: number }) {
   const total = MAX_YEAR - MIN_YEAR;
   const startPct = ((start - MIN_YEAR) / total) * 100;
   const widthPct = ((end - start) / total) * 100;
@@ -546,9 +508,7 @@ function CityMeta({
         fontVariantNumeric: "tabular-nums",
       }}
     >
-      {popText && (
-        <span title={`Population at ${formatYear(year)}`}>{popText}</span>
-      )}
+      {popText && <span title={`Population at ${formatYear(year)}`}>{popText}</span>}
       {cc && <span style={{ opacity: 0.7 }}>· {cc}</span>}
       {ruinText && <span style={{ color: "#c89060" }}>· {ruinText}</span>}
     </div>

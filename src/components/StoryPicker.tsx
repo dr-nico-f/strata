@@ -149,11 +149,7 @@ export function StoryPicker() {
                 }}
               >
                 {list.map((story) => (
-                  <StoryCard
-                    key={story.id}
-                    story={story}
-                    onSelect={() => startTour(story.id, 0)}
-                  />
+                  <StoryCard key={story.id} story={story} onSelect={() => startTour(story.id, 0)} />
                 ))}
               </div>
             </div>
@@ -180,12 +176,8 @@ function StoryCard({
         textAlign: "left",
         padding: "10px 12px",
         borderRadius: 8,
-        border: highlight
-          ? "1px solid var(--accent)"
-          : "1px solid var(--panel-border)",
-        background: highlight
-          ? "rgba(245, 185, 66, 0.08)"
-          : "rgba(255,255,255,0.03)",
+        border: highlight ? "1px solid var(--accent)" : "1px solid var(--panel-border)",
+        background: highlight ? "rgba(245, 185, 66, 0.08)" : "rgba(255,255,255,0.03)",
         cursor: "pointer",
         lineHeight: 1.35,
       }}
@@ -200,9 +192,7 @@ function StoryCard({
       >
         {story.title}
       </div>
-      <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
-        {story.summary}
-      </div>
+      <div style={{ fontSize: 11, color: "var(--text-muted)" }}>{story.summary}</div>
       <div
         style={{
           fontSize: 10,

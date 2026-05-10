@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import {
   MIGRATIONS,
@@ -205,12 +201,7 @@ export function useMigrationsLayer(map: MaplibreMap | null) {
   useEffect(() => {
     if (!map || setupForMap.current !== map) return;
     const v = visible ? "visible" : "none";
-    for (const id of [
-      CASE_LAYER_ID,
-      LINE_LAYER_ID,
-      ORIGIN_LAYER_ID,
-      DEST_LAYER_ID,
-    ]) {
+    for (const id of [CASE_LAYER_ID, LINE_LAYER_ID, ORIGIN_LAYER_ID, DEST_LAYER_ID]) {
       map.setLayoutProperty(id, "visibility", v);
     }
   }, [map, visible]);

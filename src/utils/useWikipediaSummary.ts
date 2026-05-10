@@ -105,5 +105,5 @@ export function useWikipediaSummary(
     };
   }, [slug, enabled]);
 
-  return { summary: slug ? cache.get(slug) ?? null : null, loading, error };
+  return { summary: slug ? (cache.get(slug) ?? null) : null, loading, error };
 }

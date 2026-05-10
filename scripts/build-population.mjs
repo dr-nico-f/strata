@@ -30,8 +30,7 @@ const ROOT = resolve(__dirname, "..");
 
 const OWID_URL =
   "https://ourworldindata.org/grapher/population.csv?useColumnShortNames=true&v=1&csvType=full";
-const REST_URL =
-  "https://restcountries.com/v3.1/all?fields=cca2,cca3,name,latlng,area,region";
+const REST_URL = "https://restcountries.com/v3.1/all?fields=cca2,cca3,name,latlng,area,region";
 
 const CACHE_DIR = "/tmp";
 const OWID_CACHE = resolve(CACHE_DIR, "owid_population.csv");
@@ -235,9 +234,7 @@ function build() {
     "export const OWID_COUNTRIES: readonly OwidCountry[] = [",
   );
   for (const c of merged) {
-    const curveStr = c.curve
-      .map(([y, p]) => `[${y},${fmtPop(p)}]`)
-      .join(",");
+    const curveStr = c.curve.map(([y, p]) => `[${y},${fmtPop(p)}]`).join(",");
     lines.push(
       "  {",
       `    code: "${c.code}",`,
@@ -254,9 +251,7 @@ function build() {
   lines.push("];", "");
 
   // World total — useful for headers, sparklines, sanity displays.
-  const worldStr = owid.world
-    .map(([y, p]) => `[${y},${fmtPop(p)}]`)
-    .join(",");
+  const worldStr = owid.world.map(([y, p]) => `[${y},${fmtPop(p)}]`).join(",");
   lines.push(
     "/** World population, in millions, by year. */",
     "export const OWID_WORLD_CURVE: ReadonlyArray<[number, number]> = [",

@@ -99,19 +99,13 @@ function featureToChoiceOption(
   }
 
   const name =
-    (props.name as string | undefined) ??
-    (props.NAME as string | undefined) ??
-    "Unknown";
+    (props.name as string | undefined) ?? (props.NAME as string | undefined) ?? "Unknown";
   const id = (props.id as string | undefined) ?? undefined;
   const detail = (props.note as string | undefined) ?? undefined;
   const wikipedia = (props.wikipedia as string | undefined) ?? undefined;
 
-  const start = (props.start ?? props.founded ?? props.birth) as
-    | number
-    | undefined;
-  const end = (props.end ?? props.abandoned ?? props.death) as
-    | number
-    | undefined;
+  const start = (props.start ?? props.founded ?? props.birth) as number | undefined;
+  const end = (props.end ?? props.abandoned ?? props.death) as number | undefined;
   const pointYear = (props.year ?? props.pointYear) as number | undefined;
 
   return {
@@ -159,10 +153,7 @@ const TILES_BY_THEME: Record<ThemeId, string[]> = {
 // Paint tweaks applied on top of the base tiles for each theme. Sepia
 // uses Voyager (already warm) and pushes saturation + hue toward the
 // classic browning sepia tone; dark and light render their tiles as-is.
-const PAINT_BY_THEME: Record<
-  ThemeId,
-  Record<string, number | number[] | string>
-> = {
+const PAINT_BY_THEME: Record<ThemeId, Record<string, number | number[] | string>> = {
   dark: {},
   light: {},
   sepia: {
@@ -180,8 +171,7 @@ function styleFor(theme: ThemeId): StyleSpecification {
     // silently no-ops on `text-field`. Protomaps hosts a public Noto Sans
     // glyph PBF endpoint that's free, CDN-backed, and supports the font
     // stacks our boundary labels reference.
-    glyphs:
-      "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+    glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
     sources: {
       carto: {
         type: "raster",
@@ -249,9 +239,7 @@ export function MapView() {
     //      individual handlers just did and open the chooser instead.
     //   3. Otherwise leave the per-layer handler's setLocked alone.
     instance.on("click", (e) => {
-      const present = INTERACTIVE_LAYER_IDS.filter((id) =>
-        instance.getLayer(id),
-      );
+      const present = INTERACTIVE_LAYER_IDS.filter((id) => instance.getLayer(id));
       const feats = present.length
         ? instance.queryRenderedFeatures(e.point, { layers: present })
         : [];
@@ -310,9 +298,7 @@ export function MapView() {
     const layers = map.getStyle().layers ?? [];
     const cartoIdx = layers.findIndex((l) => l.id === "carto-tiles");
     const beforeId =
-      cartoIdx >= 0 && cartoIdx < layers.length - 1
-        ? layers[cartoIdx + 1].id
-        : undefined;
+      cartoIdx >= 0 && cartoIdx < layers.length - 1 ? layers[cartoIdx + 1].id : undefined;
     if (map.getLayer("carto-tiles")) map.removeLayer("carto-tiles");
     map.removeSource("carto");
     map.addSource("carto", {
@@ -386,17 +372,17 @@ export function MapView() {
   useEffect(() => {
     if (!map) return;
     const onFlyto = (e: Event) => {
-      const detail = (e as CustomEvent<
-        ContinentView | { center: [number, number]; zoom?: number; duration?: number }
-      >).detail;
+      const detail = (
+        e as CustomEvent<
+          ContinentView | { center: [number, number]; zoom?: number; duration?: number }
+        >
+      ).detail;
       if (!detail) return;
       map.flyTo({
         center: detail.center,
         zoom: detail.zoom ?? map.getZoom(),
         duration:
-          "duration" in detail && typeof detail.duration === "number"
-            ? detail.duration
-            : 900,
+          "duration" in detail && typeof detail.duration === "number" ? detail.duration : 900,
         essential: true,
       });
     };

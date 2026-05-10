@@ -129,12 +129,8 @@ export function LayerChoicePopup() {
             textAlign: "left",
             color: "var(--text)",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "rgba(255,255,255,0.06)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "transparent")
-          }
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
           <span
             style={{

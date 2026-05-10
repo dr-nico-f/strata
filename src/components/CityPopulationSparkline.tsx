@@ -66,8 +66,7 @@ export function CityPopulationSparkline({
   }
 
   const { points, start, end, maxPop } = sample;
-  const xFor = (yr: number) =>
-    PAD_X + ((yr - start) / (end - start)) * (W - PAD_X * 2);
+  const xFor = (yr: number) => PAD_X + ((yr - start) / (end - start)) * (W - PAD_X * 2);
   const yFor = (pop: number) => {
     const t = pop / maxPop;
     return H - PAD_Y - t * (H - PAD_Y * 2);
@@ -75,9 +74,7 @@ export function CityPopulationSparkline({
 
   // Build the area + line path
   const linePath = points
-    .map(
-      (p, i) => `${i === 0 ? "M" : "L"}${xFor(p.year).toFixed(1)},${yFor(p.pop).toFixed(1)}`,
-    )
+    .map((p, i) => `${i === 0 ? "M" : "L"}${xFor(p.year).toFixed(1)},${yFor(p.pop).toFixed(1)}`)
     .join(" ");
   const areaPath = `${linePath} L${xFor(end).toFixed(1)},${(H - PAD_Y).toFixed(1)} L${xFor(start).toFixed(1)},${(H - PAD_Y).toFixed(1)} Z`;
 
@@ -99,14 +96,9 @@ export function CityPopulationSparkline({
           : "—";
 
   // Peak label for context.
-  const peak = points.reduce(
-    (acc, p) => (p.pop > acc.pop ? p : acc),
-    points[0],
-  );
+  const peak = points.reduce((acc, p) => (p.pop > acc.pop ? p : acc), points[0]);
   const peakLabel =
-    peak.pop >= 1000
-      ? `${(peak.pop / 1000).toFixed(1)}M`
-      : `${Math.round(peak.pop)}k`;
+    peak.pop >= 1000 ? `${(peak.pop / 1000).toFixed(1)}M` : `${Math.round(peak.pop)}k`;
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -150,21 +142,9 @@ export function CityPopulationSparkline({
             <stop offset="100%" stopColor="rgba(95, 209, 160, 0.05)" />
           </linearGradient>
         </defs>
-        <rect
-          x={0}
-          y={0}
-          width={W}
-          height={H}
-          fill="rgba(255,255,255,0.03)"
-          rx={4}
-        />
+        <rect x={0} y={0} width={W} height={H} fill="rgba(255,255,255,0.03)" rx={4} />
         <path d={areaPath} fill="url(#hs-pop-grad)" />
-        <path
-          d={linePath}
-          fill="none"
-          stroke="rgba(95, 209, 160, 0.95)"
-          strokeWidth={1.4}
-        />
+        <path d={linePath} fill="none" stroke="rgba(95, 209, 160, 0.95)" strokeWidth={1.4} />
         {inLifetime && (
           <>
             <line
@@ -197,7 +177,9 @@ export function CityPopulationSparkline({
           fontVariantNumeric: "tabular-nums",
         }}
       >
-        <span>peak {peakLabel} · {Math.round(peak.year)}</span>
+        <span>
+          peak {peakLabel} · {Math.round(peak.year)}
+        </span>
         <span>
           {Math.round(start)} → {Math.round(end)}
         </span>

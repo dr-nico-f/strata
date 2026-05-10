@@ -150,8 +150,7 @@ function buildIndex(): SearchHit[] {
 
   for (const rel of RELIGIONS) {
     // Use the latest stage for centroid (more representative for modern users)
-    const stage =
-      activeReligionStage(rel, 2025) ?? rel.stages[rel.stages.length - 1];
+    const stage = activeReligionStage(rel, 2025) ?? rel.stages[rel.stages.length - 1];
     const [lng, lat] = centroid(stage.polygon);
     hits.push({
       id: `religions:${rel.id}`,
@@ -166,8 +165,7 @@ function buildIndex(): SearchHit[] {
   }
 
   for (const lang of LANGUAGE_FAMILIES) {
-    const stage =
-      activeLanguageStage(lang, 0) ?? lang.stages[lang.stages.length - 1];
+    const stage = activeLanguageStage(lang, 0) ?? lang.stages[lang.stages.length - 1];
     const [lng, lat] = centroid(stage.polygon);
     hits.push({
       id: `languages:${lang.id}`,

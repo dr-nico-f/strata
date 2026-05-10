@@ -27,9 +27,7 @@ export function useKeyboard() {
       const target = ev.target as HTMLElement | null;
       if (
         target &&
-        (target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.isContentEditable)
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
       ) {
         return;
       }
@@ -41,11 +39,7 @@ export function useKeyboard() {
       // like Cmd+Shift+R (hard refresh) work normally. The arrow-key handler
       // below intentionally consults ctrlKey/metaKey as a "big step" modifier,
       // so we let arrow keys through this guard.
-      if (
-        (ev.metaKey || ev.ctrlKey) &&
-        ev.key !== "ArrowLeft" &&
-        ev.key !== "ArrowRight"
-      ) {
+      if ((ev.metaKey || ev.ctrlKey) && ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") {
         return;
       }
 
@@ -190,13 +184,7 @@ export function useKeyboard() {
           store.advanceTour(dir > 0 ? 1 : -1);
           return;
         }
-        const step = ev.shiftKey
-          ? 100
-          : ev.altKey
-            ? 10
-            : ev.ctrlKey || ev.metaKey
-              ? 500
-              : 1;
+        const step = ev.shiftKey ? 100 : ev.altKey ? 10 : ev.ctrlKey || ev.metaKey ? 500 : 1;
         store.setPlaying(false);
         store.setYear(store.year + dir * step);
         return;

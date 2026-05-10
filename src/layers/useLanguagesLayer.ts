@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { LANGUAGE_FAMILIES, activeLanguageStage } from "../data/languages";
 import { useStore } from "../store";
@@ -14,8 +10,8 @@ const LINE_LAYER_ID = "languages-line";
 const LABEL_LAYER_ID = "languages-label";
 
 const close = (poly: Array<[number, number]>): Array<[number, number]> =>
-  poly.length && (poly[0][0] !== poly[poly.length - 1][0] ||
-    poly[0][1] !== poly[poly.length - 1][1])
+  poly.length &&
+  (poly[0][0] !== poly[poly.length - 1][0] || poly[0][1] !== poly[poly.length - 1][1])
     ? [...poly, poly[0]]
     : poly;
 
@@ -113,22 +109,32 @@ export function useLanguagesLayer(map: MaplibreMap | null) {
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 0,
-            10, 10,
-            100, 12,
-            1000, 15,
-            5000, 18,
+            0,
+            0,
+            10,
+            10,
+            100,
+            12,
+            1000,
+            15,
+            5000,
+            18,
           ],
           4,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 11,
-            10, 13,
-            100, 15,
-            1000, 19,
-            5000, 23,
+            0,
+            11,
+            10,
+            13,
+            100,
+            15,
+            1000,
+            19,
+            5000,
+            23,
           ],
         ],
         "text-letter-spacing": 0.22,
@@ -214,29 +220,17 @@ export function useLanguagesLayer(map: MaplibreMap | null) {
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "light") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(50, 40, 60, 0.82)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(252, 250, 240, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(252, 250, 240, 0.92)");
     } else if (theme === "sepia") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(60, 35, 18, 0.82)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", [
         "coalesce",
         ["get", "_color"],
         "rgba(220, 220, 240, 0.8)",
       ]);
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(15, 12, 8, 0.75)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(15, 12, 8, 0.75)");
     }
   }, [map, theme]);
 

@@ -5,13 +5,7 @@ import { BOUNDARY_SNAPSHOT_YEARS } from "../data/boundariesManifest";
 import { ERAS } from "../data/eras";
 import { EVENTS } from "../data/events";
 import { PEOPLE as NOTABLE_PEOPLE } from "../data/people";
-import {
-  DEFAULT_YEAR,
-  MAX_YEAR,
-  MIN_YEAR,
-  formatYear,
-  useStore,
-} from "../store";
+import { DEFAULT_YEAR, MAX_YEAR, MIN_YEAR, formatYear, useStore } from "../store";
 import { DENSITY, DENSITY_BIN_SIZE } from "../utils/density";
 import { pickSnapshotYear } from "../utils/pickSnapshot";
 
@@ -178,9 +172,7 @@ export function TimeSlider() {
 
   // Hover preview shown while the cursor is over the slider track.
   // `pendingX` is rAF-throttled; `preview` is what's actually rendered.
-  const [preview, setPreview] = useState<{ year: number; x: number } | null>(
-    null,
-  );
+  const [preview, setPreview] = useState<{ year: number; x: number } | null>(null);
   const previewRafRef = useRef<number | null>(null);
   const previewPendingRef = useRef<{ year: number; x: number } | null>(null);
 
@@ -261,9 +253,10 @@ export function TimeSlider() {
     setPlaying(false);
     // Bias toward the last 5000 years (the range with the richest data)
     const r = Math.random();
-    const y = r < 0.7
-      ? Math.floor(-3000 + Math.random() * (MAX_YEAR + 3000))
-      : Math.floor(MIN_YEAR + Math.random() * TOTAL_RANGE);
+    const y =
+      r < 0.7
+        ? Math.floor(-3000 + Math.random() * (MAX_YEAR + 3000))
+        : Math.floor(MIN_YEAR + Math.random() * TOTAL_RANGE);
     setYear(y);
   };
 
@@ -384,10 +377,7 @@ export function TimeSlider() {
         />
         <SnapshotTicks />
         {previewMemo && (
-          <SliderHoverChip
-            preview={previewMemo}
-            onJump={() => setYear(previewMemo.year)}
-          />
+          <SliderHoverChip preview={previewMemo} onJump={() => setYear(previewMemo.year)} />
         )}
         {loading && (
           <div
@@ -466,11 +456,7 @@ export function TimeSlider() {
         >
           <NowIcon />
         </TransportButton>
-        <TransportButton
-          onClick={surprise}
-          title="Random year (R)"
-          ariaLabel="Random year"
-        >
+        <TransportButton onClick={surprise} title="Random year (R)" ariaLabel="Random year">
           <ShuffleIcon />
         </TransportButton>
         <TransportButton
@@ -518,9 +504,7 @@ function TransportButton({
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        background: primary
-          ? "var(--accent-strong, #f5b942)"
-          : "rgba(255, 255, 255, 0.05)",
+        background: primary ? "var(--accent-strong, #f5b942)" : "rgba(255, 255, 255, 0.05)",
         border: primary
           ? "1px solid var(--accent-strong, #f5b942)"
           : "1px solid var(--panel-border)",
@@ -541,13 +525,7 @@ function TransportButton({
  */
 const PLAY_SPEEDS: ReadonlyArray<number> = [0.1, 0.5, 1, 2, 5];
 
-function PlaySpeedControl({
-  speed,
-  setSpeed,
-}: {
-  speed: number;
-  setSpeed: (s: number) => void;
-}) {
+function PlaySpeedControl({ speed, setSpeed }: { speed: number; setSpeed: (s: number) => void }) {
   return (
     <div
       role="group"
@@ -579,9 +557,7 @@ function PlaySpeedControl({
               padding: "0 8px",
               borderRadius: 6,
               border: "none",
-              background: active
-                ? "var(--accent-strong, #f5b942)"
-                : "transparent",
+              background: active ? "var(--accent-strong, #f5b942)" : "transparent",
               color: active ? "#0a0d14" : "var(--text-muted)",
               fontSize: 11,
               fontWeight: 600,
@@ -807,9 +783,7 @@ function EraPresets({
               fontSize: 12,
               padding: "3px 8px",
               borderColor: active ? "var(--accent)" : "var(--panel-border)",
-              background: active
-                ? "rgba(245, 185, 66, 0.15)"
-                : "rgba(255, 255, 255, 0.04)",
+              background: active ? "rgba(245, 185, 66, 0.15)" : "rgba(255, 255, 255, 0.04)",
               color: active ? "var(--accent-strong)" : "var(--text)",
             }}
           >

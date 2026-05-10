@@ -236,7 +236,7 @@ export const STORIES: readonly Story[] = [
         year: -49,
         title: "Alea iacta est",
         narration:
-          "Caesar, refused a second consulship, leads a single legion across the Rubicon — the legal northern boundary of Italy. \"The die is cast.\" Rome's civil wars begin; the Republic does not survive them.",
+          'Caesar, refused a second consulship, leads a single legion across the Rubicon — the legal northern boundary of Italy. "The die is cast." Rome\'s civil wars begin; the Republic does not survive them.',
         center: [12.5, 44.0],
         zoom: 5.5,
         pinAt: [12.4, 44.1],
@@ -366,7 +366,7 @@ export const STORIES: readonly Story[] = [
         year: 793,
         title: "Heathen men ravage God's church",
         narration:
-          "On 8 June, raiders from Norway sack the wealthy monastery on Lindisfarne. The Anglo-Saxon Chronicle records: \"the harrying of heathen men miserably destroyed God's church.\" The Viking Age has begun.",
+          'On 8 June, raiders from Norway sack the wealthy monastery on Lindisfarne. The Anglo-Saxon Chronicle records: "the harrying of heathen men miserably destroyed God\'s church." The Viking Age has begun.',
         center: [-1.8, 55.7],
         zoom: 6,
         pinAt: [-1.8, 55.68],

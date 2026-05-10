@@ -39,13 +39,14 @@ export function BackBreadcrumb() {
   const display = recent.slice(0, 5);
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{ position: "relative", display: "inline-block" }}
-    >
+    <div ref={wrapperRef} style={{ position: "relative", display: "inline-block" }}>
       <button
         onClick={() => setOpen((o) => !o)}
-        title={open ? "Hide recent years" : `${display.length} recent year${display.length === 1 ? "" : "s"}`}
+        title={
+          open
+            ? "Hide recent years"
+            : `${display.length} recent year${display.length === 1 ? "" : "s"}`
+        }
         style={{
           display: "flex",
           alignItems: "center",
