@@ -406,7 +406,7 @@ export function MapView() {
           const a = document.createElement("a");
           const y = useStore.getState().year;
           const yearLabel = y < 0 ? `bc${Math.abs(y)}` : `ce${y}`;
-          a.download = `history-sim-${yearLabel}.png`;
+          a.download = `strata-${yearLabel}.png`;
           a.href = url;
           a.click();
         });

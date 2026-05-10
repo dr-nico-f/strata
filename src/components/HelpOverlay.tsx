@@ -79,7 +79,7 @@ export function HelpOverlay() {
             zIndex: 1,
           }}
         >
-          <div style={{ fontSize: 18, fontWeight: 600 }}>History Sim · help</div>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>Strata · help</div>
           <button onClick={() => setOpen(false)} title="Close (ESC)">
             ✕
           </button>
