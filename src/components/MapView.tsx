@@ -1,6 +1,6 @@
 import maplibregl, { Map as MaplibreMap, StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBattlesLayer } from "../layers/useBattlesLayer";
 import { useBoundariesLayer } from "../layers/useBoundariesLayer";
 import { useCitiesLayer } from "../layers/useCitiesLayer";
@@ -214,7 +214,6 @@ export function MapView() {
   const autoSpin = useStore((s) => s.autoSpin);
   const setLocked = useStore((s) => s.setLocked);
 
-  const initialStyle = useMemo(() => styleFor(theme), []);
   // Map is constructed ONCE. Theme changes used to recreate the entire
   // MapLibre instance — tearing down all GeoJSON sources, layers, event
   // listeners, and re-fetching every boundary snapshot. Now we just swap
@@ -298,6 +297,7 @@ export function MapView() {
       instance.remove();
       setMap(null);
     };
+    // Mount-once effect — map instance created and torn down exactly once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -442,9 +442,6 @@ export function MapView() {
   usePeopleLayer(map);
   usePopulationLayer(map);
   useFocusMaskLayer(map);
-
-  // initialStyle reference kept to silence unused-warnings if any tooling complains
-  void initialStyle;
 
   return (
     <div
