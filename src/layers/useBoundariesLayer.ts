@@ -215,9 +215,9 @@ function deriveTextColor(fill: string | undefined): string {
   // Fallback: nearly-white. Always legible against a halo of any colour.
   const fallback = "rgba(245, 247, 252, 0.95)";
   if (!fill) return fallback;
-  let r = 0;
-  let g = 0;
-  let b = 0;
+  let r: number;
+  let g: number;
+  let b: number;
   if (fill.startsWith("#")) {
     const hex = fill.slice(1);
     if (hex.length === 3) {
