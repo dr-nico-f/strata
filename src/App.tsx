@@ -173,6 +173,7 @@ function Header() {
   const setNowPanelOpen = useStore((s) => s.setNowPanelOpen);
   const nowPanelOpen = useStore((s) => s.nowPanelOpen);
   const setStoryPickerOpen = useStore((s) => s.setStoryPickerOpen);
+  const setHelpOpen = useStore((s) => s.setHelpOpen);
   const setYear = useStore((s) => s.setYear);
   const year = useStore((s) => s.year);
   const hideUi = useStore((s) => s.hideUi);
@@ -248,38 +249,60 @@ function Header() {
         >
           Strata — History Simulation
         </button>
-        <div style={{ fontSize: 14 }}>
-          Drag the slider, hop eras, toggle layers, press <kbd style={kbdStyle}>?</kbd> for help
-          {" · "}
+        <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
+          Drag the slider, hop eras, and toggle layers to explore.
+        </div>
+        <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
+          <button
+            onClick={() => setHelpOpen(true)}
+            style={{
+              fontSize: 12,
+              padding: "3px 10px",
+              background: "rgba(255, 255, 255, 0.06)",
+              border: "1px solid var(--panel-border)",
+              borderRadius: 6,
+              color: "var(--text)",
+              fontWeight: 500,
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+            title="Keyboard shortcuts & feature guide (?)"
+          >
+            <span style={{ fontSize: 13, fontWeight: 700, opacity: 0.7 }}>?</span> Help
+          </button>
           <button
             onClick={() => setStoryPickerOpen(true)}
             style={{
               fontSize: 12,
-              padding: "1px 8px",
-              marginLeft: 2,
+              padding: "3px 10px",
               background: "rgba(245, 185, 66, 0.12)",
-              borderColor: "var(--accent)",
+              border: "1px solid var(--accent)",
+              borderRadius: 6,
               color: "var(--accent-strong)",
               fontWeight: 600,
+              cursor: "pointer",
             }}
             title="Browse curated tours (T)"
           >
             ▶ Stories
           </button>
           {!nowPanelOpen && (
-            <>
-              {" · "}
-              <button
-                onClick={() => setNowPanelOpen(true)}
-                style={{
-                  fontSize: 12,
-                  padding: "1px 6px",
-                  marginLeft: 2,
-                }}
-              >
-                Show what's active
-              </button>
-            </>
+            <button
+              onClick={() => setNowPanelOpen(true)}
+              style={{
+                fontSize: 12,
+                padding: "3px 10px",
+                background: "rgba(255, 255, 255, 0.06)",
+                border: "1px solid var(--panel-border)",
+                borderRadius: 6,
+                color: "var(--text)",
+                cursor: "pointer",
+              }}
+            >
+              Show what's active
+            </button>
           )}
         </div>
         {/* Climate badge — shows the global temperature anomaly + epoch
@@ -331,12 +354,3 @@ function Header() {
     </div>
   );
 }
-
-const kbdStyle: React.CSSProperties = {
-  fontFamily: "monospace",
-  fontSize: 12,
-  background: "rgba(255,255,255,0.08)",
-  border: "1px solid var(--panel-border)",
-  borderRadius: 3,
-  padding: "0 4px",
-};
