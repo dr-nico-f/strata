@@ -87,6 +87,7 @@ Strata started as a curiosity: _what would it look like to stack every dimension
 | `H`                         | Hide all UI (screenshot mode)          |
 | `R`                         | Jump to a random year                  |
 | `?`                         | Open help overlay                      |
+| `Shift` + `N`               | Snap to nearest boundary snapshot      |
 | `[` / `]`                   | Cycle through active features          |
 | `Esc`                       | Dismiss panels / unlock pinned feature |
 
@@ -115,14 +116,14 @@ Outputs a static site to `dist/`.
 
 Some layers merge hand-curated data with live sources pulled by Node scripts:
 
-| Script                     | Source                                | Output                                   |
-| -------------------------- | ------------------------------------- | ---------------------------------------- |
-| `npm run build:cities`     | GeoNames cities15000 dump             | `src/data/cities.geonames.generated.ts`  |
-| `npm run build:battles`    | Wikidata SPARQL                       | `src/data/battles.wikidata.generated.ts` |
-| `npm run build:disasters`  | USGS earthquake catalog + Wikidata    | `src/data/disasters.live.generated.ts`   |
-| `npm run build:population` | Our World in Data + restcountries.com | `src/data/population.owid.generated.ts`  |
+| Script                     | Source                                | Output                              |
+| -------------------------- | ------------------------------------- | ----------------------------------- |
+| `npm run build:cities`     | GeoNames cities15000 dump             | `public/data/cities-geonames.json`  |
+| `npm run build:battles`    | Wikidata SPARQL                       | `public/data/battles-wikidata.json` |
+| `npm run build:disasters`  | USGS earthquake catalog + Wikidata    | `public/data/disasters-live.json`   |
+| `npm run build:population` | Our World in Data + restcountries.com | `public/data/population-owid.json`  |
 
-Generated files are committed so the app builds without running these scripts. Re-run them to pull fresh data.
+Generated JSON files are committed under `public/data/` so the app builds without running these scripts. At runtime, facade modules in `src/data/` fetch and merge them asynchronously after initial render. Re-run the scripts to pull fresh data.
 
 ---
 
@@ -177,16 +178,13 @@ src/
     connections.ts                   # 14 trade/migration routes
     events.ts                        # 75 historical events
     cities.curated.ts                # hand-curated cities with founding dates
-    cities.geonames.generated.ts     # auto-generated from GeoNames
-    cities.ts                        # merge logic (curated + GeoNames)
+    cities.ts                        # async facade (curated + GeoNames JSON)
     battles.curated.ts               # hand-curated battles
-    battles.wikidata.generated.ts    # auto-generated from Wikidata
-    battles.ts                       # merge logic
+    battles.ts                       # async facade (curated + Wikidata JSON)
     disasters.curated.ts             # hand-curated disasters
-    disasters.live.generated.ts      # auto-generated (USGS + Wikidata)
-    disasters.ts                     # merge logic
-    population.ts                    # population layer config
-    population.owid.generated.ts     # per-country curves from OWID
+    disasters.ts                     # async facade (curated + USGS/Wikidata JSON)
+    population.ts                    # async facade (OWID JSON)
+    loadAllGenerated.ts              # orchestrator — fetches all JSON, bumps dataVersion
     people.ts                        # notable historical figures
     religions.ts                     # religion spread data
     religions.modern.ts              # modern religion polygons
@@ -210,10 +208,10 @@ src/
     antLine.ts                       # animated dashed-line effect
     useDeferredYear.ts               # deferred year for expensive layers
 scripts/
-  build-cities.mjs                   # GeoNames → generated cities
-  build-battles.mjs                  # Wikidata → generated battles
-  build-disasters.mjs                # USGS + Wikidata → generated disasters
-  build-population.mjs               # OWID + restcountries → generated population
+  build-cities.mjs                   # GeoNames → public/data/cities-geonames.json
+  build-battles.mjs                  # Wikidata → public/data/battles-wikidata.json
+  build-disasters.mjs                # USGS + Wikidata → public/data/disasters-live.json
+  build-population.mjs               # OWID + restcountries → public/data/population-owid.json
 ```
 
 ---
@@ -228,19 +226,19 @@ flowchart TB
         WikidataSPARQL["Wikidata SPARQL"] --> scripts
         USGSCatalog["USGS Catalog"] --> scripts
         OWIDData["Our World in Data"] --> scripts
-        scripts --> generated[".generated.ts files"]
+        scripts --> jsonFiles["public/data/*.json"]
     end
 
     subgraph dataModules ["Data Layer"]
         direction LR
-        generated --> merged["Merged TS Modules"]
-        curated["Hand-Curated TS\n(peoples, religions, events,\nstories, migrations, ...)"] --> merged
+        jsonFiles -->|"fetch on mount"| facades["Async Facade Modules\n(cities.ts, battles.ts,\ndisasters.ts, population.ts)"]
+        curated["Hand-Curated TS\n(peoples, religions, events,\nstories, migrations, ...)"] --> facades
     end
 
-    merged --> store
+    facades --> store
 
     subgraph runtime ["Runtime"]
-        store["Zustand Store\n(year, layers, theme, projection,\nhover, locked, tour, focus)"]
+        store["Zustand Store\n(year, layers, theme, projection,\nhover, locked, tour, dataVersion)"]
         store --> layerHooks["14 Layer Hooks\n(useBoundariesLayer, useCitiesLayer,\nuseBattlesLayer, usePopulationLayer, ...)"]
         store --> uiComponents["React Components\n(TimeSlider, Tooltip, SearchBar,\nStoryPlayer, LayerToggles, ...)"]
         layerHooks --> maplibre["MapLibre GL JS"]
@@ -261,7 +259,7 @@ flowchart TB
     uiComponents --> canvas
 ```
 
-**Data flows in two phases.** At build time, Node scripts pull from external APIs (GeoNames, Wikidata, USGS, OWID) and write `.generated.ts` files that are committed to the repo. At runtime, the Zustand store drives 14 independent layer hooks — each subscribing to `year` and `layers` state, projecting its dataset into GeoJSON sources on the MapLibre map. Boundary snapshots are the only data fetched at runtime (on demand from `public/data/`). The store also syncs bidirectionally with the URL for shareable deep links and with `localStorage` for session persistence.
+**Data flows in two phases.** At build time, Node scripts pull from external APIs (GeoNames, Wikidata, USGS, OWID) and write JSON files to `public/data/`. At runtime, the app renders immediately with hand-curated data, then async facade modules fetch and merge the generated JSON datasets — bumping a `dataVersion` counter in the Zustand store so layer hooks and components re-render progressively. The store drives 14 independent layer hooks, each subscribing to `year`, `layers`, and `dataVersion`, projecting its dataset into GeoJSON sources on the MapLibre map. Boundary snapshots are fetched on demand. The store also syncs bidirectionally with the URL for shareable deep links and with `localStorage` for session persistence.
 
 ---
 

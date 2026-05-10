@@ -25,7 +25,7 @@ const FEATURES: Array<{ name: string; description: string }> = [
   {
     name: "Story tours",
     description:
-      "Press T or click ▶ Stories — 33 curated tours through ~50 moments of world history, with arrow-key navigation.",
+      "Press T or click ▶ Stories — 35 curated tours through ~50 moments of world history, with arrow-key navigation.",
   },
   {
     name: "Click any country",

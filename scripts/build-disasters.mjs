@@ -14,8 +14,8 @@
  *      - Notability filter via wikibase:sitelinks >= N.
  *      - License: Wikidata content is published under CC0.
  *
- * The output is a single TypeScript file (`disasters.live.generated.ts`) that
- * the runtime merges with the curated list.
+ * The output is a JSON file (`public/data/disasters-live.json`) that
+ * the runtime fetches and merges with the curated list.
  *
  * Re-run with `npm run build:disasters`.
  */

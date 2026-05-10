@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Pull battles from Wikidata via the public SPARQL endpoint and emit a
- * TypeScript file the app imports alongside the curated battles list.
+ * JSON file (public/data/battles-wikidata.json) fetched at runtime.
  *
  * Strategy:
  *   - Walk history in 200-year chunks from -3000 to 2025 (well before

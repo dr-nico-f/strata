@@ -1,6 +1,6 @@
 // scripts/build-cities.mjs
 // -----------------------------------------------------------------------------
-// Generates src/data/cities.geonames.generated.ts from the GeoNames
+// Generates public/data/cities-geonames.json from the GeoNames
 // `cities15000.txt` dump (https://download.geonames.org/export/dump/, CC BY 4.0).
 //
 // Usage:
@@ -13,7 +13,7 @@
 //   3. Picks the top N (default 800) by population.
 //   4. Drops entries that collide with the hand-curated list in
 //      src/data/cities.curated.ts so the curated metadata wins.
-//   5. Emits src/data/cities.geonames.generated.ts.
+//   5. Emits public/data/cities-geonames.json (fetched at runtime).
 //
 // IMPORTANT: GeoNames does not include founding dates. Modern cities here
 // default to founded=1900, which means they appear from the 20th century

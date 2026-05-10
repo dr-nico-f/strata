@@ -13,7 +13,7 @@
  *      - Licensed Mozilla Public License v2.
  *
  * Output:
- *   src/data/population.owid.generated.ts -- the runtime layer reads this.
+ *   public/data/population-owid.json -- fetched at runtime by the population layer.
  *
  * Usage:
  *   node scripts/build-population.mjs           # uses /tmp cache when present
