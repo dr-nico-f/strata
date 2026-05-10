@@ -1,12 +1,24 @@
-# Strata
+# Strata 🌍
 
-An interactive world map that lets you explore ~12,000 years of human history. Scrub a time slider from **10,000 BCE to 2025 CE** and watch thirteen data layers reveal the shifting state of the world — political boundaries, peoples, trade routes, cities, battles, religions, languages, migrations, climate, and more.
+**Interactive Historical World Map**
+
+Strata lets you explore ~12,000 years of human history on an interactive world map. Scrub a time slider from **10,000 BCE to 2025 CE** and watch thirteen data layers reveal the shifting state of the world — political boundaries, peoples, trade routes, cities, battles, religions, languages, migrations, climate, and more.
 
 Built with **React 18**, **TypeScript**, **MapLibre GL JS 5**, and **Zustand**. No backend — everything is static and deployable anywhere.
 
-![status](https://img.shields.io/badge/version-1.0-blue)
+![screenshot](docs/screenshot.png)
 
-## Features
+---
+
+## 💡 Motivation
+
+History is inherently spatial and layered — empires rise and overlap, trade routes connect distant cultures, migrations reshape demographics, and the physical world itself changes as sea levels shift. But most history resources present this as flat text, isolated maps, or rigid timelines that you can't explore freely.
+
+Strata started as a curiosity: *what would it look like to stack every dimension of history onto a single interactive map and let you scrub through time?* It grew into a full data visualization project that combines hand-curated editorial content with machine-pulled datasets from Wikidata, GeoNames, USGS, and Our World in Data — blending human judgment with scalable data pipelines.
+
+---
+
+## 🚀 Features
 
 ### Map & timeline
 - Time slider spanning **10,000 BCE – 2025 CE** with era preset buttons (Last Glacial Max → Modern)
@@ -51,7 +63,7 @@ Built with **React 18**, **TypeScript**, **MapLibre GL JS 5**, and **Zustand**. 
 - **Share button** copies a deep link (including pinned feature focus)
 - **Save view as PNG** exports the current map canvas
 
-### Keyboard shortcuts
+### ⌨️ Keyboard shortcuts
 | Key | Action |
 |-----|--------|
 | `←` / `→` | Step year ±1 |
@@ -70,7 +82,9 @@ Built with **React 18**, **TypeScript**, **MapLibre GL JS 5**, and **Zustand**. 
 | `[` / `]` | Cycle through active features |
 | `Esc` | Dismiss panels / unlock pinned feature |
 
-## Run locally
+---
+
+## ⚙️ Setup
 
 ```bash
 npm install
@@ -79,7 +93,7 @@ npm run dev
 
 Open <http://localhost:5173>.
 
-## Build for production
+### Build for production
 
 ```bash
 npm run build
@@ -87,7 +101,9 @@ npm run build
 
 Outputs a static site to `dist/`.
 
-## Data pipelines
+---
+
+## 🔄 Data pipelines
 
 Some layers merge hand-curated data with live sources pulled by Node scripts:
 
@@ -100,7 +116,9 @@ Some layers merge hand-curated data with live sources pulled by Node scripts:
 
 Generated files are committed so the app builds without running these scripts. Re-run them to pull fresh data.
 
-## Project layout
+---
+
+## 🧱 Project layout
 
 ```
 public/
@@ -190,7 +208,9 @@ scripts/
   build-population.mjs               # OWID + restcountries → generated population
 ```
 
-## Tech stack
+---
+
+## 🛠️ Tech stack
 
 | | |
 |-|-|
@@ -203,7 +223,9 @@ scripts/
 | **Build** | Vite 5 |
 | **Data sources** | GeoNames, Wikidata SPARQL, USGS, Our World in Data, Wikipedia REST |
 
-## Attribution
+---
+
+## 📝 Attribution
 
 - Boundary GeoJSONs: [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps) (CC BY-SA 4.0)
 - Basemap tiles: [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors / [CARTO](https://carto.com/attributions)
@@ -214,6 +236,8 @@ scripts/
 - Population data: [Our World in Data](https://ourworldindata.org/grapher/population) (CC BY 4.0), combining HYDE v3.3, Gapminder, and UN WPP
 - Country metadata: [restcountries.com](https://restcountries.com/) (MPL 2.0)
 
-## License
+---
 
-MIT
+## 📜 License
+
+MIT © 2025–2026 — Created by Nico
