@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { STORIES, STORIES_BY_ERA, findStory, type Story } from "../data/stories";
 import { useStore } from "../store";
+import { useFocusTrap } from "../utils/useFocusTrap";
 import { readRecentTours } from "../utils/localState";
 
 export function StoryPicker() {
@@ -14,6 +15,8 @@ export function StoryPicker() {
       .map(findStory)
       .filter((s): s is Story => !!s);
   }, [open]);
+  const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open, () => setOpen(false));
   if (!open) return null;
   const eras = Object.keys(STORIES_BY_ERA) as Story["era"][];
   const totalChapters = STORIES.reduce((n, s) => n + s.chapters.length, 0);
@@ -32,6 +35,10 @@ export function StoryPicker() {
       }}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Story tours"
         onClick={(e) => e.stopPropagation()}
         style={{
           width: "min(720px, 92vw)",

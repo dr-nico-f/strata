@@ -377,6 +377,8 @@ export function TimeSlider() {
           max={SLIDER_RES}
           step={1}
           value={yearToSlider(year)}
+          aria-label="Year"
+          aria-valuetext={formatYear(year)}
           onChange={(e) => setYear(sliderToYear(Number(e.target.value)))}
           style={{ width: "100%", display: "block", position: "relative" }}
         />
@@ -795,6 +797,7 @@ function EraPresets({
         return (
           <button
             key={era.id}
+            aria-pressed={active}
             onClick={() => {
               setPlaying(false);
               setYear(era.year);
