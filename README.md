@@ -1,5 +1,7 @@
 # Strata 🌍
 
+[![GitHub release](https://img.shields.io/github/v/release/dr-nico-f/strata)](https://github.com/dr-nico-f/strata/releases) [![CI](https://github.com/dr-nico-f/strata/actions/workflows/ci.yml/badge.svg)](https://github.com/dr-nico-f/strata/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Interactive Historical World Map** &nbsp; | &nbsp; [**Live Demo**](https://dr-nico-f.github.io/strata/)
 
 Strata lets you explore ~12,000 years of human history on an interactive world map. Scrub a time slider from **10,000 BCE to 2025 CE** and watch thirteen data layers reveal the shifting state of the world — political boundaries, peoples, trade routes, cities, battles, religions, languages, migrations, climate, and more.
