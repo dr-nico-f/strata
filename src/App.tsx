@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { ClimateBand } from "./components/ClimateBand";
 import { climateAt, climateColor } from "./data/climate";
+import { loadAllGeneratedData } from "./data/loadAllGenerated";
 import { CountryDetailPanel } from "./components/CountryDetailPanel";
 import { LayerChoicePopup } from "./components/LayerChoicePopup";
 import { LayerToggles } from "./components/LayerToggles";
@@ -121,6 +122,10 @@ export default function App() {
   useKeyboard();
   useUrlSync();
   useFocusFromUrl();
+
+  useEffect(() => {
+    loadAllGeneratedData();
+  }, []);
 
   // Apply the active theme as a data attribute on <html> for our CSS variables.
   const theme = useStore((s) => s.theme);

@@ -179,6 +179,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
   const visible = useStore((s) => s.layers.battles);
   const theme = useStore((s) => s.theme);
   const setHover = useStore((s) => s.setHover);
+  const dataVersion = useStore((s) => s.dataVersion);
   const setupForMap = useRef<MaplibreMap | null>(null);
   const sparksRef = useRef<Spark[]>([]);
   const shockwavesRef = useRef<Shockwave[]>([]);
@@ -675,7 +676,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
     ) {
       ensureLoop(map);
     }
-  }, [map, year, visible]);
+  }, [map, year, visible, dataVersion]);
 
   // Final unmount: kill the loop and drop refs.
   useEffect(() => {

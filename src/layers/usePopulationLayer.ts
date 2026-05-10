@@ -270,6 +270,7 @@ export function usePopulationLayer(map: MaplibreMap | null) {
   const liveYear = useStore((s) => s.year);
   const visible = useStore((s) => s.layers.population);
   const setHover = useStore((s) => s.setHover);
+  const dataVersion = useStore((s) => s.dataVersion);
   const setupForMap = useRef<MaplibreMap | null>(null);
   // Latest year is captured by closure inside the hover handler. We update
   // this ref whenever year changes so the formatted detail stays in sync.
@@ -375,7 +376,7 @@ export function usePopulationLayer(map: MaplibreMap | null) {
     else if (year < 1900) opacity = 0.74;
     else opacity = 0.8;
     map.setPaintProperty(DOT_LAYER_ID, "circle-opacity", opacity);
-  }, [map, year, visible]);
+  }, [map, year, visible, dataVersion]);
 }
 
 // HMR: this file installs MapLibre event listeners and layers via a

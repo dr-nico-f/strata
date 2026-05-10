@@ -38,4 +38,14 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-maplibre": ["maplibre-gl"],
+          "vendor-react": ["react", "react-dom", "react/jsx-runtime"],
+        },
+      },
+    },
+  },
 });

@@ -102,6 +102,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
   const visible = useStore((s) => s.layers.cities);
   const theme = useStore((s) => s.theme);
   const setHover = useStore((s) => s.setHover);
+  const dataVersion = useStore((s) => s.dataVersion);
   const setupForMap = useRef<MaplibreMap | null>(null);
   const prevYearRef = useRef<number | null>(null);
   const pulsesRef = useRef<Pulse[]>([]);
@@ -816,7 +817,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
     if (!map || setupForMap.current !== map || !visible) return;
     const fc = buildFeatures(year);
     (map.getSource(SOURCE_ID) as GeoJSONSource | undefined)?.setData(fc);
-  }, [map, year, visible]);
+  }, [map, year, visible, dataVersion]);
 
   // When the layer is hidden or the host map is torn down, drop any in-flight
   // pulses + rAF so we don't keep updating an invisible source on every
