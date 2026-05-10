@@ -102,13 +102,13 @@ export function writeUrlState(state: {
     .join("");
   params.set("l", lettersOn);
 
-  if (state.projection !== "flat") {
+  if (state.projection !== "globe") {
     params.set("p", state.projection);
   } else {
     params.delete("p");
   }
 
-  if (state.theme !== "dark") {
+  if (state.theme !== "sepia") {
     params.set("t", state.theme);
   } else {
     params.delete("t");
