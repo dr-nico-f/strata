@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatYear, useStore } from "../store";
 import { searchAll, SearchHit } from "../utils/searchIndex";
+import { useFocusTrap } from "../utils/useFocusTrap";
 
 const LAYER_COLOR: Record<string, string> = {
   era: "#8a8aa6",
@@ -30,6 +31,12 @@ export function SearchBar() {
   const [q, setQ] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeSearch = useCallback(() => {
+    setOpen(false);
+    setQ("");
+  }, [setOpen]);
+  useFocusTrap(panelRef, open, closeSearch);
 
   const hits = useMemo(() => searchAll(q, 12), [q]);
 
@@ -130,6 +137,10 @@ export function SearchBar() {
       }}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search"
         onClick={(e) => e.stopPropagation()}
         style={{
           width: "min(640px, 92vw)",

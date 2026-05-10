@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { useStore } from "../store";
+import { useFocusTrap } from "../utils/useFocusTrap";
 
 const SHORTCUTS: Array<{ keys: string; description: string }> = [
   { keys: "T", description: "Browse story tours" },
@@ -39,6 +41,8 @@ const URL_PARAMS: Array<{ name: string; description: string }> = [
 export function HelpOverlay() {
   const open = useStore((s) => s.helpOpen);
   const setOpen = useStore((s) => s.setHelpOpen);
+  const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open, () => setOpen(false));
   if (!open) return null;
   return (
     <div
@@ -55,6 +59,10 @@ export function HelpOverlay() {
       }}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Help"
         onClick={(e) => e.stopPropagation()}
         style={{
           width: "min(640px, 92vw)",
