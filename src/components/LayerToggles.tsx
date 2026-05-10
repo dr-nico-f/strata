@@ -6,22 +6,21 @@ import { getActiveCount } from "../utils/activeCounts";
 import { CONTINENT_VIEWS } from "../utils/continents";
 import { ShareButton } from "./ShareButton";
 
-const LAYER_ORDER: { id: LayerId; label: string; key: string; color: string }[] =
-  [
-    { id: "boundaries", label: "Political boundaries", key: "B", color: "#7aa2ff" },
-    { id: "peoples", label: "Peoples & cultures", key: "P", color: "#f5b942" },
-    { id: "connections", label: "Trade & migration", key: "N", color: "#c39bff" },
-    { id: "cities", label: "Cities", key: "C", color: "#5fd1a0" },
-    { id: "events", label: "Events", key: "E", color: "#ff7a90" },
-    { id: "battles", label: "Battles", key: "X", color: "#ff5252" },
-    { id: "disasters", label: "Disasters", key: "D", color: "#ff6a00" },
-    { id: "people", label: "Notable people", key: "F", color: "#ffd86b" },
-    { id: "religions", label: "Religions", key: "I", color: "#7aa2ff" },
-    { id: "languages", label: "Language families", key: "L", color: "#f5b942" },
-    { id: "migrations", label: "Migrations", key: "M", color: "#5fd1a0" },
-    { id: "population", label: "Population dots", key: "O", color: "#ffe9a8" },
-    { id: "sealevel", label: "Sea level", key: "Y", color: "#3da9c7" },
-  ];
+const LAYER_ORDER: { id: LayerId; label: string; key: string; color: string }[] = [
+  { id: "boundaries", label: "Political boundaries", key: "B", color: "#7aa2ff" },
+  { id: "peoples", label: "Peoples & cultures", key: "P", color: "#f5b942" },
+  { id: "connections", label: "Trade & migration", key: "N", color: "#c39bff" },
+  { id: "cities", label: "Cities", key: "C", color: "#5fd1a0" },
+  { id: "events", label: "Events", key: "E", color: "#ff7a90" },
+  { id: "battles", label: "Battles", key: "X", color: "#ff5252" },
+  { id: "disasters", label: "Disasters", key: "D", color: "#ff6a00" },
+  { id: "people", label: "Notable people", key: "F", color: "#ffd86b" },
+  { id: "religions", label: "Religions", key: "I", color: "#7aa2ff" },
+  { id: "languages", label: "Language families", key: "L", color: "#f5b942" },
+  { id: "migrations", label: "Migrations", key: "M", color: "#5fd1a0" },
+  { id: "population", label: "Population dots", key: "O", color: "#ffe9a8" },
+  { id: "sealevel", label: "Sea level", key: "Y", color: "#3da9c7" },
+];
 
 const THEME_LABELS: Record<ThemeId, string> = {
   dark: "Dark",
@@ -161,11 +160,7 @@ export function LayerToggles() {
             }}
             title={`Toggle (${key})`}
           >
-            <input
-              type="checkbox"
-              checked={layers[id]}
-              onChange={() => toggleLayer(id)}
-            />
+            <input type="checkbox" checked={layers[id]} onChange={() => toggleLayer(id)} />
             <span
               style={{
                 display: "inline-block",
@@ -252,9 +247,7 @@ export function LayerToggles() {
             </button>
           </div>
 
-          <div
-            style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}
-          >
+          <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}>
             Boundary brightness
           </div>
           <input
@@ -279,9 +272,7 @@ export function LayerToggles() {
               <button
                 key={c.id}
                 onClick={() => {
-                  window.dispatchEvent(
-                    new CustomEvent("hs:flyto", { detail: c }),
-                  );
+                  window.dispatchEvent(new CustomEvent("hs:flyto", { detail: c }));
                   setFocusBbox(c.bbox ?? null);
                 }}
                 style={{ fontSize: 12, padding: "4px 6px" }}

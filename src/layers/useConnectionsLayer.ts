@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { CONNECTIONS } from "../data/connections";
 import { useStore } from "../store";
@@ -77,11 +73,7 @@ export function useConnectionsLayer(map: MaplibreMap | null) {
       id: TRADE_LAYER_ID,
       type: "line",
       source: SOURCE_ID,
-      filter: [
-        "all",
-        ["!=", ["get", "_waypoint"], true],
-        ["==", ["get", "kind"], "trade"],
-      ],
+      filter: ["all", ["!=", ["get", "_waypoint"], true], ["==", ["get", "kind"], "trade"]],
       layout: { "line-join": "round", "line-cap": "round" },
       paint: {
         "line-color": "#c39bff",
@@ -94,11 +86,7 @@ export function useConnectionsLayer(map: MaplibreMap | null) {
       id: MIGRATION_LAYER_ID,
       type: "line",
       source: SOURCE_ID,
-      filter: [
-        "all",
-        ["!=", ["get", "_waypoint"], true],
-        ["==", ["get", "kind"], "migration"],
-      ],
+      filter: ["all", ["!=", ["get", "_waypoint"], true], ["==", ["get", "kind"], "migration"]],
       layout: { "line-join": "round", "line-cap": "round" },
       paint: {
         "line-color": "#ffb079",
@@ -144,7 +132,8 @@ export function useConnectionsLayer(map: MaplibreMap | null) {
         setHover({
           layer: "connections",
           name: props.name,
-          detail: `${props.kind === "migration" ? "Migration" : "Trade route"}` +
+          detail:
+            `${props.kind === "migration" ? "Migration" : "Trade route"}` +
             (props.note ? ` — ${props.note}` : ""),
           x: e.originalEvent.clientX,
           y: e.originalEvent.clientY,
@@ -175,7 +164,8 @@ export function useConnectionsLayer(map: MaplibreMap | null) {
       useStore.getState().setLocked({
         layer: "connections",
         name: props.name,
-        detail: `${props.kind === "migration" ? "Migration" : "Trade route"}` +
+        detail:
+          `${props.kind === "migration" ? "Migration" : "Trade route"}` +
           (props.note ? ` — ${props.note}` : ""),
         x: e.originalEvent.clientX,
         y: e.originalEvent.clientY,
@@ -196,23 +186,14 @@ export function useConnectionsLayer(map: MaplibreMap | null) {
     // Marching-ants flow on both trade routes and migration corridors. The
     // dasharray paint we wrote in addLayer is overwritten each frame; the
     // initial value is just a placeholder for static-render conditions.
-    const cancel = startAntLineAnimation(
-      map,
-      [TRADE_LAYER_ID, MIGRATION_LAYER_ID],
-      55,
-    );
+    const cancel = startAntLineAnimation(map, [TRADE_LAYER_ID, MIGRATION_LAYER_ID], 55);
     return () => cancel();
   }, [map, setHover]);
 
   useEffect(() => {
     if (!map || setupForMap.current !== map) return;
     const v = visible ? "visible" : "none";
-    for (const id of [
-      CASE_LAYER_ID,
-      TRADE_LAYER_ID,
-      MIGRATION_LAYER_ID,
-      POINT_LAYER_ID,
-    ]) {
+    for (const id of [CASE_LAYER_ID, TRADE_LAYER_ID, MIGRATION_LAYER_ID, POINT_LAYER_ID]) {
       map.setLayoutProperty(id, "visibility", v);
     }
   }, [map, visible]);

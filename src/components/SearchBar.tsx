@@ -52,10 +52,7 @@ export function SearchBar() {
 
   useEffect(() => {
     function onKey(ev: KeyboardEvent) {
-      if (
-        ev.target instanceof HTMLInputElement ||
-        ev.target instanceof HTMLTextAreaElement
-      ) {
+      if (ev.target instanceof HTMLInputElement || ev.target instanceof HTMLTextAreaElement) {
         return;
       }
       if (ev.key === "/" || (ev.key === "k" && (ev.metaKey || ev.ctrlKey))) {
@@ -158,8 +155,7 @@ export function SearchBar() {
             alignItems: "center",
             gap: 10,
             padding: "12px 16px",
-            borderBottom:
-              "1px solid var(--panel-border, rgba(255, 255, 255, 0.08))",
+            borderBottom: "1px solid var(--panel-border, rgba(255, 255, 255, 0.08))",
           }}
         >
           <span style={{ fontSize: 18, opacity: 0.6 }}>⌕</span>
@@ -182,9 +178,7 @@ export function SearchBar() {
         </div>
         <div style={{ maxHeight: 360, overflow: "auto" }}>
           {hits.length === 0 && q.trim().length >= 2 && (
-            <div style={{ padding: 18, opacity: 0.6, fontSize: 13 }}>
-              No matches.
-            </div>
+            <div style={{ padding: 18, opacity: 0.6, fontSize: 13 }}>No matches.</div>
           )}
           {hits.length === 0 && q.trim().length < 2 && (
             <div style={{ padding: 18, opacity: 0.6, fontSize: 13 }}>
@@ -202,9 +196,7 @@ export function SearchBar() {
                 textAlign: "left",
                 padding: "10px 16px",
                 background:
-                  i === activeIdx
-                    ? "var(--panel-hover, rgba(255, 255, 255, 0.06))"
-                    : "transparent",
+                  i === activeIdx ? "var(--panel-hover, rgba(255, 255, 255, 0.06))" : "transparent",
                 border: "none",
                 color: "inherit",
                 cursor: "pointer",
@@ -263,8 +255,7 @@ export function SearchBar() {
           }}
         >
           <span>
-            <kbd style={kbdStyle}>↑↓</kbd> navigate ·{" "}
-            <kbd style={kbdStyle}>Enter</kbd> jump
+            <kbd style={kbdStyle}>↑↓</kbd> navigate · <kbd style={kbdStyle}>Enter</kbd> jump
           </span>
           <span>
             <kbd style={kbdStyle}>/</kbd> or <kbd style={kbdStyle}>⌘K</kbd> to open

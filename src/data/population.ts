@@ -7,11 +7,7 @@
  * rest of the app does not need to know that we used to ship 17 hand-curated
  * regions instead of ~240 ISO3 countries.
  */
-import {
-  OWID_COUNTRIES,
-  OWID_WORLD_CURVE,
-  type OwidCountry,
-} from "./population.owid.generated";
+import { OWID_COUNTRIES, OWID_WORLD_CURVE, type OwidCountry } from "./population.owid.generated";
 
 export { OWID_BUILD_DATE, OWID_WORLD_CURVE } from "./population.owid.generated";
 
@@ -44,10 +40,7 @@ export const POPULATION_REGIONS: readonly PopRegion[] = OWID_COUNTRIES.map(
 );
 
 /** Linear interpolation across an anchor curve. Returns population in millions. */
-function interpolate(
-  curve: ReadonlyArray<[number, number]>,
-  year: number,
-): number {
+function interpolate(curve: ReadonlyArray<[number, number]>, year: number): number {
   if (curve.length === 0) return 0;
   if (year <= curve[0][0]) return curve[0][1];
   if (year >= curve[curve.length - 1][0]) return curve[curve.length - 1][1];

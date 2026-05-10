@@ -23,9 +23,7 @@ export function getMapInstance(): MaplibreMap | null {
   return instance;
 }
 
-export function subscribeMapInstance(
-  fn: (m: MaplibreMap | null) => void,
-): () => void {
+export function subscribeMapInstance(fn: (m: MaplibreMap | null) => void): () => void {
   subscribers.add(fn);
   fn(instance);
   return () => {

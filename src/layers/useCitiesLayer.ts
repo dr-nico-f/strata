@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { CITIES, cityPopulationAt } from "../data/cities";
 import { useStore } from "../store";
@@ -125,65 +121,156 @@ export function useCitiesLayer(map: MaplibreMap | null) {
       source: SOURCE_ID,
       paint: {
         "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 2.6, 50, 3.6, 500, 5.0, 5000, 7.5, 20000, 10.0,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            2.6,
+            50,
+            3.6,
+            500,
+            5.0,
+            5000,
+            7.5,
+            20000,
+            10.0,
           ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 3.8, 50, 5.5, 500, 8.0, 5000, 13.0, 20000, 18.0,
+          3,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            3.8,
+            50,
+            5.5,
+            500,
+            8.0,
+            5000,
+            13.0,
+            20000,
+            18.0,
           ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 5.0, 50, 8.0, 500, 12.0, 5000, 22.0, 20000, 32.0,
+          6,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            5.0,
+            50,
+            8.0,
+            500,
+            12.0,
+            5000,
+            22.0,
+            20000,
+            32.0,
           ],
-          9, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 6.5, 50, 11.0, 500, 18.0, 5000, 36.0, 20000, 56.0,
+          9,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            6.5,
+            50,
+            11.0,
+            500,
+            18.0,
+            5000,
+            36.0,
+            20000,
+            56.0,
           ],
         ],
-        "circle-color": [
-          "case",
-          ["boolean", ["get", "isRuin"], false],
-          "#c89060",
-          "#5fd1a0",
-        ],
+        "circle-color": ["case", ["boolean", ["get", "isRuin"], false], "#c89060", "#5fd1a0"],
         // MapLibre requires the zoom interpolation to be the outermost
         // expression whenever a paint property mixes zoom and feature data,
         // hence the zoom-outer / case-inner shape. Each stop picks between
         // the alive-city aura and the gently age-fading ruin aura.
         "circle-opacity": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          [
             "case",
             ["boolean", ["get", "isRuin"], false],
-            ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-              0, 0.10, 500, 0.06, 2000, 0.03, 5000, 0.02,
+            [
+              "interpolate",
+              ["linear"],
+              ["coalesce", ["get", "ruinAge"], 0],
+              0,
+              0.1,
+              500,
+              0.06,
+              2000,
+              0.03,
+              5000,
+              0.02,
             ],
             0.14,
           ],
-          3, [
+          3,
+          [
             "case",
             ["boolean", ["get", "isRuin"], false],
-            ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-              0, 0.13, 500, 0.08, 2000, 0.04, 5000, 0.03,
+            [
+              "interpolate",
+              ["linear"],
+              ["coalesce", ["get", "ruinAge"], 0],
+              0,
+              0.13,
+              500,
+              0.08,
+              2000,
+              0.04,
+              5000,
+              0.03,
             ],
-            0.20,
+            0.2,
           ],
-          6, [
+          6,
+          [
             "case",
             ["boolean", ["get", "isRuin"], false],
-            ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-              0, 0.16, 500, 0.10, 2000, 0.05, 5000, 0.04,
+            [
+              "interpolate",
+              ["linear"],
+              ["coalesce", ["get", "ruinAge"], 0],
+              0,
+              0.16,
+              500,
+              0.1,
+              2000,
+              0.05,
+              5000,
+              0.04,
             ],
             0.26,
           ],
-          9, [
+          9,
+          [
             "case",
             ["boolean", ["get", "isRuin"], false],
-            ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-              0, 0.20, 500, 0.12, 2000, 0.06, 5000, 0.05,
+            [
+              "interpolate",
+              ["linear"],
+              ["coalesce", ["get", "ruinAge"], 0],
+              0,
+              0.2,
+              500,
+              0.12,
+              2000,
+              0.06,
+              5000,
+              0.05,
             ],
             0.32,
           ],
@@ -207,39 +294,101 @@ export function useCitiesLayer(map: MaplibreMap | null) {
       ],
       paint: {
         "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 2.6, 50, 3.2, 500, 4.0, 5000, 5.2, 20000, 6.5,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            2.6,
+            50,
+            3.2,
+            500,
+            4.0,
+            5000,
+            5.2,
+            20000,
+            6.5,
           ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 3.4, 50, 4.4, 500, 5.6, 5000, 7.5, 20000, 10.0,
+          3,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            3.4,
+            50,
+            4.4,
+            500,
+            5.6,
+            5000,
+            7.5,
+            20000,
+            10.0,
           ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 4.6, 50, 6.0, 500, 8.0, 5000, 12.0, 20000, 16.0,
+          6,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            4.6,
+            50,
+            6.0,
+            500,
+            8.0,
+            5000,
+            12.0,
+            20000,
+            16.0,
           ],
-          9, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 6.0, 50, 8.0, 500, 11.5, 5000, 18.0, 20000, 25.0,
+          9,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            6.0,
+            50,
+            8.0,
+            500,
+            11.5,
+            5000,
+            18.0,
+            20000,
+            25.0,
           ],
         ],
         "circle-color": "rgba(0,0,0,0)",
         "circle-stroke-color": "#f5b942",
         "circle-stroke-width": [
-          "interpolate", ["linear"], ["zoom"],
-          0, 0.6,
-          3, 1.0,
-          6, 1.4,
-          9, 1.8,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          0.6,
+          3,
+          1.0,
+          6,
+          1.4,
+          9,
+          1.8,
         ],
         "circle-stroke-opacity": [
-          "interpolate", ["linear"], ["zoom"],
-          0, 0.65,
-          3, 0.78,
-          6, 0.85,
-          9, 0.9,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          0.65,
+          3,
+          0.78,
+          6,
+          0.85,
+          9,
+          0.9,
         ],
       },
     });
@@ -255,33 +404,90 @@ export function useCitiesLayer(map: MaplibreMap | null) {
       source: SOURCE_ID,
       paint: {
         "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 1.6, 50, 2.0, 500, 2.6, 5000, 3.4, 20000, 4.2,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            1.6,
+            50,
+            2.0,
+            500,
+            2.6,
+            5000,
+            3.4,
+            20000,
+            4.2,
           ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 2.2, 50, 2.8, 500, 3.6, 5000, 5.0, 20000, 6.5,
+          3,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            2.2,
+            50,
+            2.8,
+            500,
+            3.6,
+            5000,
+            5.0,
+            20000,
+            6.5,
           ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 3.0, 50, 4.0, 500, 5.5, 5000, 8.0, 20000, 11.0,
+          6,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            3.0,
+            50,
+            4.0,
+            500,
+            5.5,
+            5000,
+            8.0,
+            20000,
+            11.0,
           ],
-          9, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 4.0, 50, 5.5, 500, 8.0, 5000, 13.0, 20000, 18.0,
+          9,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            4.0,
+            50,
+            5.5,
+            500,
+            8.0,
+            5000,
+            13.0,
+            20000,
+            18.0,
           ],
         ],
         "circle-color": [
           "case",
           ["boolean", ["get", "isRuin"], false],
           // Ruin: warm amber, drifting toward dusty ochre with age.
-          ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-            0, "#c89060",
-            500, "#a87750",
-            2000, "#8a6240",
-            5000, "#705034",
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "ruinAge"], 0],
+            0,
+            "#c89060",
+            500,
+            "#a87750",
+            2000,
+            "#8a6240",
+            5000,
+            "#705034",
           ],
           "#5fd1a0",
         ],
@@ -294,21 +500,35 @@ export function useCitiesLayer(map: MaplibreMap | null) {
         // Zoom-outer / case-inner: same shape rule as circle-opacity above.
         // Hovered features get +1 px of stroke at every zoom stop.
         "circle-stroke-width": [
-          "interpolate", ["linear"], ["zoom"],
-          0, ["case", ["boolean", ["feature-state", "hover"], false], 1.6, 0.6],
-          3, ["case", ["boolean", ["feature-state", "hover"], false], 2.0, 1.0],
-          6, ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 1.5],
-          9, ["case", ["boolean", ["feature-state", "hover"], false], 3.0, 2.0],
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          ["case", ["boolean", ["feature-state", "hover"], false], 1.6, 0.6],
+          3,
+          ["case", ["boolean", ["feature-state", "hover"], false], 2.0, 1.0],
+          6,
+          ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 1.5],
+          9,
+          ["case", ["boolean", ["feature-state", "hover"], false], 3.0, 2.0],
         ],
         "circle-opacity": [
           "case",
           ["boolean", ["get", "isRuin"], false],
-          ["interpolate", ["linear"], ["coalesce", ["get", "ruinAge"], 0],
-            0, 0.85,
-            200, 0.55,
-            800, 0.35,
-            2000, 0.22,
-            5000, 0.18,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "ruinAge"], 0],
+            0,
+            0.85,
+            200,
+            0.55,
+            800,
+            0.35,
+            2000,
+            0.22,
+            5000,
+            0.18,
           ],
           0.95,
         ],
@@ -334,11 +554,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
           {},
           [
             "case",
-            [
-              "all",
-              ["has", "cc"],
-              ["!=", ["get", "cc"], ""],
-            ],
+            ["all", ["has", "cc"], ["!=", ["get", "cc"], ""]],
             ["concat", "  ", ["get", "cc"]],
             "",
           ],
@@ -347,37 +563,69 @@ export function useCitiesLayer(map: MaplibreMap | null) {
         "text-font": ["literal", ["Noto Sans Medium"]],
         "text-anchor": "left",
         "text-offset": [
-          "interpolate", ["linear"], ["zoom"],
-          0, ["literal", [0.7, 0]],
-          3, ["literal", [0.95, 0]],
-          6, ["literal", [1.3, 0]],
-          9, ["literal", [1.7, 0]],
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          ["literal", [0.7, 0]],
+          3,
+          ["literal", [0.95, 0]],
+          6,
+          ["literal", [1.3, 0]],
+          9,
+          ["literal", [1.7, 0]],
         ],
         "text-size": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 0,
-            500, 0,
-            1500, 10,
-            5000, 12,
-            20000, 13,
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            0,
+            500,
+            0,
+            1500,
+            10,
+            5000,
+            12,
+            20000,
+            13,
           ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 0,
-            50, 9,
-            500, 11,
-            5000, 13,
-            20000, 15,
+          3,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            0,
+            50,
+            9,
+            500,
+            11,
+            5000,
+            13,
+            20000,
+            15,
           ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "pop"], 0],
-            0, 9,
-            50, 11,
-            500, 13,
-            5000, 16,
-            20000, 18,
+          6,
+          [
+            "interpolate",
+            ["linear"],
+            ["coalesce", ["get", "pop"], 0],
+            0,
+            9,
+            50,
+            11,
+            500,
+            13,
+            5000,
+            16,
+            20000,
+            18,
           ],
         ],
         "text-letter-spacing": 0.02,
@@ -405,12 +653,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
         "circle-radius": ["coalesce", ["get", "radius"], 6],
         "circle-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 2,
-        "circle-stroke-color": [
-          "case",
-          ["==", ["get", "kind"], "died"],
-          "#ff7a90",
-          "#ffd86b",
-        ],
+        "circle-stroke-color": ["case", ["==", ["get", "kind"], "died"], "#ff7a90", "#ffd86b"],
         "circle-stroke-opacity": ["coalesce", ["get", "opacity"], 0.0],
       },
     });
@@ -427,16 +670,10 @@ export function useCitiesLayer(map: MaplibreMap | null) {
     const setHoverState = (newId: string | number | null) => {
       if (newId === hoveredId) return;
       if (hoveredId !== null) {
-        map.setFeatureState(
-          { source: SOURCE_ID, id: hoveredId },
-          { hover: false },
-        );
+        map.setFeatureState({ source: SOURCE_ID, id: hoveredId }, { hover: false });
       }
       if (newId !== null) {
-        map.setFeatureState(
-          { source: SOURCE_ID, id: newId },
-          { hover: true },
-        );
+        map.setFeatureState({ source: SOURCE_ID, id: newId }, { hover: true });
       }
       hoveredId = newId;
     };
@@ -565,18 +802,10 @@ export function useCitiesLayer(map: MaplibreMap | null) {
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "light") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(20, 32, 24, 0.92)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(252, 252, 248, 0.95)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(252, 252, 248, 0.95)");
     } else if (theme === "sepia") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(46, 28, 12, 0.92)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(220, 250, 235, 0.95)");
       map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(0, 25, 18, 0.85)");
@@ -633,11 +862,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
         });
         added++;
       }
-      if (
-        c.abandoned !== undefined &&
-        c.abandoned >= lo &&
-        c.abandoned <= hi
-      ) {
+      if (c.abandoned !== undefined && c.abandoned >= lo && c.abandoned <= hi) {
         pulsesRef.current.push({
           startTime: now,
           lng: c.lng,
@@ -656,9 +881,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
 
     const tick = () => {
       const t = performance.now();
-      pulsesRef.current = pulsesRef.current.filter(
-        (p) => t - p.startTime < PULSE_DURATION_MS,
-      );
+      pulsesRef.current = pulsesRef.current.filter((p) => t - p.startTime < PULSE_DURATION_MS);
       const features: GeoJSON.Feature[] = pulsesRef.current.map((p) => {
         const age = (t - p.startTime) / PULSE_DURATION_MS; // 0..1
         const radius = 6 + age * (PULSE_MAX_RADIUS - 6);
@@ -674,9 +897,7 @@ export function useCitiesLayer(map: MaplibreMap | null) {
           },
         };
       });
-      const source = map.getSource(PULSE_SOURCE_ID) as
-        | GeoJSONSource
-        | undefined;
+      const source = map.getSource(PULSE_SOURCE_ID) as GeoJSONSource | undefined;
       if (source) {
         source.setData({ type: "FeatureCollection", features });
       }

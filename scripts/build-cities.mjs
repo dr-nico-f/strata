@@ -155,9 +155,7 @@ function build() {
   console.log(`✓ parsed ${lines.length} GeoNames rows`);
 
   const { ids: curatedIds, names: curatedNames } = readCuratedKeys();
-  console.log(
-    `✓ curated set: ${curatedIds.size} ids, ${curatedNames.size} names`,
-  );
+  console.log(`✓ curated set: ${curatedIds.size} ids, ${curatedNames.size} names`);
 
   const cities = [];
   const seen = new Set(); // dedup by slug
@@ -237,9 +235,7 @@ function build() {
   cities.sort((a, b) => b.pop - a.pop);
   const trimmed = cities.slice(0, TARGET_COUNT);
   console.log(`✓ selected ${trimmed.length} GeoNames cities (top by population)`);
-  console.log(
-    `✓ retained ${allGeoCities.length} GeoNames rows for curated cc lookup`,
-  );
+  console.log(`✓ retained ${allGeoCities.length} GeoNames rows for curated cc lookup`);
 
   // For each curated city, find the closest GeoNames row (by approximate
   // Euclidean degree distance). If the closest row is within 0.5° (~55 km),
@@ -297,9 +293,7 @@ function build() {
   console.log(
     `✓ matched ${curatedMatched}/${curatedEntries.length} curated cities to a country code`,
   );
-  console.log(
-    `✓ flagged ${curatedCapitals.length} curated cities as national capitals`,
-  );
+  console.log(`✓ flagged ${curatedCapitals.length} curated cities as national capitals`);
 
   const lines_out = [];
   lines_out.push(

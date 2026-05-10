@@ -112,7 +112,7 @@ export function climateAt(year: number): { anomaly: number; epoch?: string } {
     if (year >= a.year && year <= b.year) {
       const t = (year - a.year) / (b.year - a.year);
       const anomaly = a.anomaly + (b.anomaly - a.anomaly) * t;
-      const epoch = t < 0.5 ? a.epoch ?? b.epoch : b.epoch ?? a.epoch;
+      const epoch = t < 0.5 ? (a.epoch ?? b.epoch) : (b.epoch ?? a.epoch);
       return { anomaly, epoch };
     }
   }

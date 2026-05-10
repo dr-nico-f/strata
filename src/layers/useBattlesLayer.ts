@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { BATTLES } from "../data/battles";
 import { CURATED_BATTLES } from "../data/battles.curated";
@@ -23,9 +19,7 @@ const SWORDS_ICON_ID = "battles-crossed-swords";
 // Curated battles are the hand-picked, narrative-rich set — i.e., the ones
 // worth labeling. We treat membership in this set as the proxy for "major
 // battle" since the dataset doesn't carry a separate prominence flag.
-const MAJOR_BATTLE_IDS: ReadonlySet<string> = new Set(
-  CURATED_BATTLES.map((b) => b.id),
-);
+const MAJOR_BATTLE_IDS: ReadonlySet<string> = new Set(CURATED_BATTLES.map((b) => b.id));
 
 // Battles within ±WINDOW_YEARS of the current year are visible. Beyond that
 // they're hidden entirely so the map doesn't clutter with every skirmish in
@@ -212,10 +206,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
           if (sparksRef.current.length >= SPARK_MAX) break;
           // Higher proximity = higher chance of spawning; battles fading out
           // taper off naturally.
-          if (
-            Math.random() <
-            SPARK_SPAWN_RATE_PER_FRAME * b.proximity * (dt / 16.6)
-          ) {
+          if (Math.random() < SPARK_SPAWN_RATE_PER_FRAME * b.proximity * (dt / 16.6)) {
             sparksRef.current.push(makeSpark(b.id, b.lng, b.lat, now));
           }
         }
@@ -238,9 +229,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
       );
 
       // Push particle features.
-      const sparkSrc = mapInstance.getSource(SPARK_SOURCE_ID) as
-        | GeoJSONSource
-        | undefined;
+      const sparkSrc = mapInstance.getSource(SPARK_SOURCE_ID) as GeoJSONSource | undefined;
       if (sparkSrc) {
         const features: GeoJSON.Feature[] = [];
         for (const s of sparksRef.current) {
@@ -258,9 +247,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
         sparkSrc.setData({ type: "FeatureCollection", features });
       }
 
-      const waveSrc = mapInstance.getSource(SHOCKWAVE_SOURCE_ID) as
-        | GeoJSONSource
-        | undefined;
+      const waveSrc = mapInstance.getSource(SHOCKWAVE_SOURCE_ID) as GeoJSONSource | undefined;
       if (waveSrc) {
         const features: GeoJSON.Feature[] = [];
         for (const w of shockwavesRef.current) {
@@ -325,30 +312,29 @@ export function useBattlesLayer(map: MaplibreMap | null) {
       source: SOURCE_ID,
       paint: {
         "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 5, 1, 11,
-          ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 9, 1, 18,
-          ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 14, 1, 28,
-          ],
-          9, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 22, 1, 44,
-          ],
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 5, 1, 11],
+          3,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 9, 1, 18],
+          6,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 14, 1, 28],
+          9,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 22, 1, 44],
         ],
         "circle-color": "#ff4d28",
         "circle-opacity": [
-          "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-          0, 0.05,
-          0.5, 0.20,
-          1, 0.45,
+          "interpolate",
+          ["linear"],
+          ["coalesce", ["get", "proximity"], 0],
+          0,
+          0.05,
+          0.5,
+          0.2,
+          1,
+          0.45,
         ],
         "circle-blur": 0.85,
       },
@@ -364,27 +350,11 @@ export function useBattlesLayer(map: MaplibreMap | null) {
       type: "circle",
       source: SOURCE_ID,
       paint: {
-        "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          0, 12,
-          3, 16,
-          6, 22,
-          9, 30,
-        ],
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 12, 3, 16, 6, 22, 9, 30],
         "circle-color": "rgba(0,0,0,0)",
         "circle-stroke-color": "#ffd86b",
-        "circle-stroke-width": [
-          "case",
-          ["boolean", ["feature-state", "hover"], false],
-          2.4,
-          0,
-        ],
-        "circle-stroke-opacity": [
-          "case",
-          ["boolean", ["feature-state", "hover"], false],
-          0.95,
-          0,
-        ],
+        "circle-stroke-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.4, 0],
+        "circle-stroke-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.95, 0],
         "circle-blur": 0.05,
       },
     });
@@ -432,33 +402,29 @@ export function useBattlesLayer(map: MaplibreMap | null) {
         "icon-ignore-placement": true,
         "icon-rotation-alignment": "viewport",
         "icon-size": [
-          "interpolate", ["linear"], ["zoom"],
-          0, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 0.32, 1, 0.46,
-          ],
-          3, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 0.42, 1, 0.62,
-          ],
-          6, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 0.55, 1, 0.82,
-          ],
-          9, [
-            "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-            0, 0.72, 1, 1.05,
-          ],
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 0.32, 1, 0.46],
+          3,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 0.42, 1, 0.62],
+          6,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 0.55, 1, 0.82],
+          9,
+          ["interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0], 0, 0.72, 1, 1.05],
         ],
-        "symbol-sort-key": [
-          "*", -1, ["coalesce", ["get", "proximity"], 0],
-        ],
+        "symbol-sort-key": ["*", -1, ["coalesce", ["get", "proximity"], 0]],
       },
       paint: {
         "icon-opacity": [
-          "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-          0, 0.45,
-          1, 1,
+          "interpolate",
+          ["linear"],
+          ["coalesce", ["get", "proximity"], 0],
+          0,
+          0.45,
+          1,
+          1,
         ],
       },
     });
@@ -475,21 +441,20 @@ export function useBattlesLayer(map: MaplibreMap | null) {
       layout: {
         "text-field": ["coalesce", ["get", "name"], ""],
         "text-font": ["literal", ["Noto Sans Bold"]],
-        "text-size": [
-          "interpolate", ["linear"], ["zoom"],
-          0, 10,
-          3, 11,
-          6, 13,
-          9, 15,
-        ],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 0, 10, 3, 11, 6, 13, 9, 15],
         "text-anchor": "top",
         // Push label below the swords icon. Offset grows with zoom so the
         // label always clears the (zoom-scaling) icon.
         "text-offset": [
-          "interpolate", ["linear"], ["zoom"],
-          0, ["literal", [0, 1.2]],
-          6, ["literal", [0, 1.7]],
-          9, ["literal", [0, 2.1]],
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          0,
+          ["literal", [0, 1.2]],
+          6,
+          ["literal", [0, 1.7]],
+          9,
+          ["literal", [0, 2.1]],
         ],
         "text-letter-spacing": 0.04,
         "text-max-width": 9,
@@ -507,11 +472,17 @@ export function useBattlesLayer(map: MaplibreMap | null) {
         "text-halo-blur": 0.4,
         // Labels fade in only when the battle is near its peak years.
         "text-opacity": [
-          "interpolate", ["linear"], ["coalesce", ["get", "proximity"], 0],
-          0.0, 0.0,
-          0.55, 0.0,
-          0.85, 0.95,
-          1.0, 1.0,
+          "interpolate",
+          ["linear"],
+          ["coalesce", ["get", "proximity"], 0],
+          0.0,
+          0.0,
+          0.55,
+          0.0,
+          0.85,
+          0.95,
+          1.0,
+          1.0,
         ],
       },
     });
@@ -629,10 +600,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
       // resurrect a gold ring on a battle no longer under the cursor.
       if (hoveredIdRef.current !== null) {
         try {
-          map.setFeatureState(
-            { source: SOURCE_ID, id: hoveredIdRef.current },
-            { hover: false },
-          );
+          map.setFeatureState({ source: SOURCE_ID, id: hoveredIdRef.current }, { hover: false });
         } catch {
           /* ignore */
         }
@@ -649,25 +617,13 @@ export function useBattlesLayer(map: MaplibreMap | null) {
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "dark") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "#ffd6c2");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(0, 0, 0, 0.85)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(0, 0, 0, 0.85)");
     } else if (theme === "light") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "#7a1414");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(255, 255, 255, 0.95)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(255, 255, 255, 0.95)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "#5a2410");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     }
   }, [map, theme]);
 
@@ -679,9 +635,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
     const fc = buildFeatures(year);
     (map.getSource(SOURCE_ID) as GeoJSONSource | undefined)?.setData(fc);
 
-    activeBattlesRef.current = fc.features.map(
-      (f) => f.properties as BattleProps,
-    );
+    activeBattlesRef.current = fc.features.map((f) => f.properties as BattleProps);
 
     const prev = prevYearRef.current;
     prevYearRef.current = year;
@@ -737,12 +691,7 @@ export function useBattlesLayer(map: MaplibreMap | null) {
   }, []);
 }
 
-function makeSpark(
-  battleId: string,
-  lng: number,
-  lat: number,
-  now: number,
-): Spark {
+function makeSpark(battleId: string, lng: number, lat: number, now: number): Spark {
   const angle = Math.random() * Math.PI * 2;
   // Geographic speed: ~0.0001–0.0004 deg/ms ≈ 10–45 m/ms at the equator. Looks
   // like 30–120 px/s of motion at zoom 5–6, which is the sweet spot for

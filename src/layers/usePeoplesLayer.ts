@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import type { People } from "../data/peoples";
 import { PEOPLES } from "../data/peoples";
@@ -118,30 +114,42 @@ export function usePeoplesLayer(map: MaplibreMap | null) {
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 0,
-            10, 10,
-            100, 12,
-            1000, 14,
+            0,
+            0,
+            10,
+            10,
+            100,
+            12,
+            1000,
+            14,
           ],
           4,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 11,
-            10, 12,
-            100, 14,
-            1000, 16,
+            0,
+            11,
+            10,
+            12,
+            100,
+            14,
+            1000,
+            16,
           ],
           7,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 13,
-            10, 14,
-            100, 16,
-            1000, 18,
+            0,
+            13,
+            10,
+            14,
+            100,
+            16,
+            1000,
+            18,
           ],
         ],
         "text-letter-spacing": 0.12,
@@ -155,11 +163,7 @@ export function usePeoplesLayer(map: MaplibreMap | null) {
       paint: {
         // Tinted version of the culture's _color, on a dark halo for
         // dark theme; the theme effect below recolours for light/sepia.
-        "text-color": [
-          "coalesce",
-          ["get", "_color"],
-          "rgba(245, 215, 130, 0.95)",
-        ],
+        "text-color": ["coalesce", ["get", "_color"], "rgba(245, 215, 130, 0.95)"],
         "text-opacity": 0.85,
         "text-halo-color": "rgba(15, 12, 8, 0.85)",
         "text-halo-width": 1.4,
@@ -250,29 +254,17 @@ export function usePeoplesLayer(map: MaplibreMap | null) {
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "light") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(40, 30, 18, 0.92)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(252, 250, 240, 0.95)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(252, 250, 240, 0.95)");
     } else if (theme === "sepia") {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(58, 28, 8, 0.92)");
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", [
         "coalesce",
         ["get", "_color"],
         "rgba(245, 215, 130, 0.95)",
       ]);
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(15, 12, 8, 0.85)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(15, 12, 8, 0.85)");
     }
   }, [map, theme]);
 

@@ -12,11 +12,7 @@
 //   Curated entries - hand-authored (see cities.curated.ts)
 
 import { CURATED_CITIES, type City, cityPopulationAt } from "./cities.curated";
-import {
-  CURATED_CAPITAL_IDS,
-  CURATED_CITY_CC,
-  GEONAMES_CITIES,
-} from "./cities.geonames.generated";
+import { CURATED_CAPITAL_IDS, CURATED_CITY_CC, GEONAMES_CITIES } from "./cities.geonames.generated";
 
 function buildMergedCities(): readonly City[] {
   const byId = new Map<string, City>();

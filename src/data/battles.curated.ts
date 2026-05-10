@@ -26,7 +26,8 @@ export const CURATED_BATTLES: readonly Battle[] = [
     year: -1274,
     lat: 34.55,
     lng: 36.52,
-    description: "Egypt under Ramesses II vs the Hittite Empire; one of the earliest battles with detailed records",
+    description:
+      "Egypt under Ramesses II vs the Hittite Empire; one of the earliest battles with detailed records",
   },
   {
     id: "thermopylae",
@@ -290,7 +291,8 @@ export const CURATED_BATTLES: readonly Battle[] = [
     year: 1192,
     lat: 29.97,
     lng: 76.83,
-    description: "Muhammad of Ghor defeats Prithviraj Chauhan, opening northern India to Islamic rule",
+    description:
+      "Muhammad of Ghor defeats Prithviraj Chauhan, opening northern India to Islamic rule",
   },
   {
     id: "crecy",

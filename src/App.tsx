@@ -134,9 +134,10 @@ function Header() {
     const span = MAX_YEAR - MIN_YEAR;
     const denseStart = -3000;
     const denseSpan = MAX_YEAR - denseStart;
-    const y = r < 0.7
-      ? Math.floor(denseStart + Math.random() * denseSpan)
-      : Math.floor(MIN_YEAR + Math.random() * span);
+    const y =
+      r < 0.7
+        ? Math.floor(denseStart + Math.random() * denseSpan)
+        : Math.floor(MIN_YEAR + Math.random() * span);
     setYear(y);
   };
   if (hideUi) return null;
@@ -185,8 +186,7 @@ function Header() {
           Strata — History Simulation
         </button>
         <div style={{ fontSize: 14 }}>
-          Drag the slider, hop eras, toggle layers, press{" "}
-          <kbd style={kbdStyle}>?</kbd> for help
+          Drag the slider, hop eras, toggle layers, press <kbd style={kbdStyle}>?</kbd> for help
           {" · "}
           <button
             onClick={() => setStoryPickerOpen(true)}
@@ -262,9 +262,7 @@ function Header() {
           >
             {climate.label}
           </span>
-          {climate.epoch && (
-            <span style={{ opacity: 0.7 }}>· {climate.epoch}</span>
-          )}
+          {climate.epoch && <span style={{ opacity: 0.7 }}>· {climate.epoch}</span>}
         </div>
       </div>
     </div>

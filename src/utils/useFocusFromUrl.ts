@@ -21,9 +21,7 @@ export function useFocusFromUrl() {
     const t = window.setTimeout(() => {
       const store = useStore.getState();
       const items = getActiveItems(store.year);
-      const hit = items.find(
-        (it) => it.layer === (layer as LayerId) && it.id === id,
-      );
+      const hit = items.find((it) => it.layer === (layer as LayerId) && it.id === id);
       if (!hit) return;
       window.dispatchEvent(
         new CustomEvent("hs:flyto", {

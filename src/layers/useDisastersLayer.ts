@@ -1,8 +1,4 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { DISASTERS, DisasterKind } from "../data/disasters";
 import { useStore } from "../store";
@@ -76,11 +72,7 @@ export function useDisastersLayer(map: MaplibreMap | null) {
       type: "circle",
       source: SOURCE_ID,
       paint: {
-        "circle-radius": [
-          "*",
-          12,
-          ["+", 0.5, ["get", "proximity"]],
-        ],
+        "circle-radius": ["*", 12, ["+", 0.5, ["get", "proximity"]]],
         "circle-color": ["get", "_color"],
         "circle-opacity": ["*", 0.4, ["get", "proximity"]],
         "circle-blur": 0.6,

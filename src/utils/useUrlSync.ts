@@ -45,13 +45,7 @@ export function useUrlSync() {
       // The store fires on every set() — hover/locked/toast/etc. would
       // otherwise repaint the URL on every mouse pixel. Skip when no field we
       // actually persist has changed.
-      const sig = JSON.stringify([
-        s.year,
-        s.layers,
-        s.projection,
-        s.theme,
-        s.tour,
-      ]);
+      const sig = JSON.stringify([s.year, s.layers, s.projection, s.theme, s.tour]);
       if (sig === lastSig) return;
       lastSig = sig;
       if (raf) cancelAnimationFrame(raf);

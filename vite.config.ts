@@ -22,10 +22,7 @@ function forceFullReload(): Plugin {
       const rel = file.replace(server.config.root + "/", "");
       // Visible breadcrumb so it's obvious in the dev terminal that reloads
       // are firing -- and which file caused them.
-      server.config.logger.info(
-        `\x1b[36m[full-reload]\x1b[0m ${rel}`,
-        { timestamp: true },
-      );
+      server.config.logger.info(`\x1b[36m[full-reload]\x1b[0m ${rel}`, { timestamp: true });
       server.ws.send({ type: "full-reload", path: "*" });
       // Returning an empty module list tells Vite "no further HMR work needed"
       // so it doesn't also try to swap individual modules in place.

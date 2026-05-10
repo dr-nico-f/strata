@@ -122,13 +122,8 @@ export function writeUrlState(state: {
 
   const newSearch = params.toString();
   const newUrl =
-    window.location.pathname +
-    (newSearch ? "?" + newSearch : "") +
-    window.location.hash;
-  if (
-    newUrl !==
-    window.location.pathname + window.location.search + window.location.hash
-  ) {
+    window.location.pathname + (newSearch ? "?" + newSearch : "") + window.location.hash;
+  if (newUrl !== window.location.pathname + window.location.search + window.location.hash) {
     window.history.replaceState(null, "", newUrl);
   }
 }

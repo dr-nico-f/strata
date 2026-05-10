@@ -14,13 +14,14 @@ Built with **React 18**, **TypeScript**, **MapLibre GL JS 5**, and **Zustand**. 
 
 History is inherently spatial and layered — empires rise and overlap, trade routes connect distant cultures, migrations reshape demographics, and the physical world itself changes as sea levels shift. But most history resources present this as flat text, isolated maps, or rigid timelines that you can't explore freely.
 
-Strata started as a curiosity: *what would it look like to stack every dimension of history onto a single interactive map and let you scrub through time?* It grew into a full data visualization project that combines hand-curated editorial content with machine-pulled datasets from Wikidata, GeoNames, USGS, and Our World in Data — blending human judgment with scalable data pipelines.
+Strata started as a curiosity: _what would it look like to stack every dimension of history onto a single interactive map and let you scrub through time?_ It grew into a full data visualization project that combines hand-curated editorial content with machine-pulled datasets from Wikidata, GeoNames, USGS, and Our World in Data — blending human judgment with scalable data pipelines.
 
 ---
 
 ## 🚀 Features
 
 ### Map & timeline
+
 - Time slider spanning **10,000 BCE – 2025 CE** with era preset buttons (Last Glacial Max → Modern)
 - Tick marks under the slider for every boundary snapshot
 - **Play / pause** with configurable playback speed (persisted across sessions)
@@ -29,23 +30,25 @@ Strata started as a curiosity: *what would it look like to stack every dimension
 - Starfield background visible through the globe's transparent edges
 
 ### Thirteen toggleable layers
-| Layer | Key | Description |
-|-------|-----|-------------|
-| **Political boundaries** | `B` | 52 GeoJSON snapshots from [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps), snapping to the nearest snapshot ≤ the selected year |
-| **Peoples & cultures** | `P` | 93 hand-authored region polygons (Sumerians, Romans, Mongols, Inca, Polynesians, …) |
-| **Trade & migration routes** | `N` | 14 polylines — Silk Road, Trans-Saharan, Indian Ocean, Bantu expansion, Polynesian voyages, Atlantic triangular trade, Manila galleon, and more |
-| **Cities** | `C` | Hundreds of cities (curated historical cities with accurate founding dates + GeoNames top-by-population merge), filtered by founded/abandoned dates |
-| **Events** | `E` | 75 cultural, political, and scientific milestones, fading in/out around their year |
-| **Battles** | `X` | 920+ decisive battles (curated list + Wikidata SPARQL merge) |
-| **Disasters** | `D` | Earthquakes, eruptions, tsunamis, pandemics, famines (curated + USGS + Wikidata merge) |
-| **Notable people** | `F` | Historical figures positioned at their place of activity |
-| **Religions** | `I` | Spread of major world religions over time |
-| **Language families** | `L` | Geographic extent of language families across eras |
-| **Migrations** | `M` | Major human migration corridors |
-| **Population dots** | `O` | One dot per ~1 M people scattered across 237 countries (OWID data), scaling from prehistory to today |
-| **Sea level** | `Y` | 8 paleo-coastline regions (Doggerland, Sundaland, Beringia, Sahul, …) shown before each region's submergence |
+
+| Layer                        | Key | Description                                                                                                                                                       |
+| ---------------------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Political boundaries**     | `B` | 52 GeoJSON snapshots from [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps), snapping to the nearest snapshot ≤ the selected year |
+| **Peoples & cultures**       | `P` | 93 hand-authored region polygons (Sumerians, Romans, Mongols, Inca, Polynesians, …)                                                                               |
+| **Trade & migration routes** | `N` | 14 polylines — Silk Road, Trans-Saharan, Indian Ocean, Bantu expansion, Polynesian voyages, Atlantic triangular trade, Manila galleon, and more                   |
+| **Cities**                   | `C` | Hundreds of cities (curated historical cities with accurate founding dates + GeoNames top-by-population merge), filtered by founded/abandoned dates               |
+| **Events**                   | `E` | 75 cultural, political, and scientific milestones, fading in/out around their year                                                                                |
+| **Battles**                  | `X` | 920+ decisive battles (curated list + Wikidata SPARQL merge)                                                                                                      |
+| **Disasters**                | `D` | Earthquakes, eruptions, tsunamis, pandemics, famines (curated + USGS + Wikidata merge)                                                                            |
+| **Notable people**           | `F` | Historical figures positioned at their place of activity                                                                                                          |
+| **Religions**                | `I` | Spread of major world religions over time                                                                                                                         |
+| **Language families**        | `L` | Geographic extent of language families across eras                                                                                                                |
+| **Migrations**               | `M` | Major human migration corridors                                                                                                                                   |
+| **Population dots**          | `O` | One dot per ~1 M people scattered across 237 countries (OWID data), scaling from prehistory to today                                                              |
+| **Sea level**                | `Y` | 8 paleo-coastline regions (Doggerland, Sundaland, Beringia, Sahul, …) shown before each region's submergence                                                      |
 
 ### Interactions
+
 - **Tooltip** follows the cursor with edge-aware positioning and a mini-timeline showing the active range of the hovered feature
 - **Click to pin** a feature — shows Wikipedia summary, detail, and a link
 - **Multi-layer chooser** popup when a click hits features in two or more layers
@@ -53,34 +56,37 @@ Strata started as a curiosity: *what would it look like to stack every dimension
 - **Bracket keys** `[` / `]` cycle through active features in the pinned layer
 
 ### Search & discovery
+
 - **Global search** across all layers and eras — open with `/` or `⌘K`
 - **35 curated story tours** with chapter-based narration, camera moves, and layer activation — open with `T`
 - **Climate band** at the top of the slider and a temperature anomaly readout in the header
 - **Continent presets** for quick recentering and region focus
 
 ### Sharing & export
+
 - **URL state sync** — `?y=1492&l=bpcex&p=globe&t=dark&tour=silk-road:2&focus=cities:rome` — views are shareable, the back button works
 - **Share button** copies a deep link (including pinned feature focus)
 - **Save view as PNG** exports the current map canvas
 
 ### ⌨️ Keyboard shortcuts
-| Key | Action |
-|-----|--------|
-| `←` / `→` | Step year ±1 |
-| `Shift` + `←/→` | Step ±100 |
-| `Alt` + `←/→` | Step ±10 |
-| `Cmd/Ctrl` + `←/→` | Step ±500 |
-| `Home` / `End` | Jump to start / end of timeline |
-| `Space` | Play / pause |
-| `G` | Toggle globe / flat |
-| `B P N C E X D F I L M O Y` | Toggle each layer |
-| `S` | Copy share link |
-| `T` | Open/close story tour picker |
-| `H` | Hide all UI (screenshot mode) |
-| `R` | Jump to a random year |
-| `?` | Open help overlay |
-| `[` / `]` | Cycle through active features |
-| `Esc` | Dismiss panels / unlock pinned feature |
+
+| Key                         | Action                                 |
+| --------------------------- | -------------------------------------- |
+| `←` / `→`                   | Step year ±1                           |
+| `Shift` + `←/→`             | Step ±100                              |
+| `Alt` + `←/→`               | Step ±10                               |
+| `Cmd/Ctrl` + `←/→`          | Step ±500                              |
+| `Home` / `End`              | Jump to start / end of timeline        |
+| `Space`                     | Play / pause                           |
+| `G`                         | Toggle globe / flat                    |
+| `B P N C E X D F I L M O Y` | Toggle each layer                      |
+| `S`                         | Copy share link                        |
+| `T`                         | Open/close story tour picker           |
+| `H`                         | Hide all UI (screenshot mode)          |
+| `R`                         | Jump to a random year                  |
+| `?`                         | Open help overlay                      |
+| `[` / `]`                   | Cycle through active features          |
+| `Esc`                       | Dismiss panels / unlock pinned feature |
 
 ---
 
@@ -107,12 +113,12 @@ Outputs a static site to `dist/`.
 
 Some layers merge hand-curated data with live sources pulled by Node scripts:
 
-| Script | Source | Output |
-|--------|--------|--------|
-| `npm run build:cities` | GeoNames cities15000 dump | `src/data/cities.geonames.generated.ts` |
-| `npm run build:battles` | Wikidata SPARQL | `src/data/battles.wikidata.generated.ts` |
-| `npm run build:disasters` | USGS earthquake catalog + Wikidata | `src/data/disasters.live.generated.ts` |
-| `npm run build:population` | Our World in Data + restcountries.com | `src/data/population.owid.generated.ts` |
+| Script                     | Source                                | Output                                   |
+| -------------------------- | ------------------------------------- | ---------------------------------------- |
+| `npm run build:cities`     | GeoNames cities15000 dump             | `src/data/cities.geonames.generated.ts`  |
+| `npm run build:battles`    | Wikidata SPARQL                       | `src/data/battles.wikidata.generated.ts` |
+| `npm run build:disasters`  | USGS earthquake catalog + Wikidata    | `src/data/disasters.live.generated.ts`   |
+| `npm run build:population` | Our World in Data + restcountries.com | `src/data/population.owid.generated.ts`  |
 
 Generated files are committed so the app builds without running these scripts. Re-run them to pull fresh data.
 
@@ -259,15 +265,15 @@ flowchart TB
 
 ## 🛠️ Tech stack
 
-| | |
-|-|-|
-| **UI** | React 18 |
-| **State** | Zustand |
-| **Map** | MapLibre GL JS 5.x (Mercator + globe projection) |
-| **Basemap** | CARTO raster tiles (dark / light / sepia) |
-| **Glyphs** | Protomaps PBF for boundary labels |
-| **Language** | TypeScript (strict) |
-| **Build** | Vite 5 |
+|                  |                                                                    |
+| ---------------- | ------------------------------------------------------------------ |
+| **UI**           | React 18                                                           |
+| **State**        | Zustand                                                            |
+| **Map**          | MapLibre GL JS 5.x (Mercator + globe projection)                   |
+| **Basemap**      | CARTO raster tiles (dark / light / sepia)                          |
+| **Glyphs**       | Protomaps PBF for boundary labels                                  |
+| **Language**     | TypeScript (strict)                                                |
+| **Build**        | Vite 5                                                             |
 | **Data sources** | GeoNames, Wikidata SPARQL, USGS, Our World in Data, Wikipedia REST |
 
 ---

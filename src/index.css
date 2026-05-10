@@ -33,8 +33,14 @@
 }
 
 :root {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   color: var(--text);
   background: var(--bg);
 }
@@ -150,20 +156,36 @@ a {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes hsAuroraShift {
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(-3%, 1%, 0) scale(1.06); }
-  100% { transform: translate3d(2%, -1%, 0) scale(1.03); }
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-3%, 1%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(2%, -1%, 0) scale(1.03);
+  }
 }
 
 @keyframes hsTwinkle {
-  0%   { opacity: 0.18; }
-  60%  { opacity: 0.85; }
-  100% { opacity: 0.32; }
+  0% {
+    opacity: 0.18;
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.32;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -175,18 +197,15 @@ a {
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(245, 185, 66, 0.5) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(245, 185, 66, 0.5) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
 }
 
 @keyframes hsSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Tiny inline spinner used next to the year label while a boundary snapshot

@@ -31,9 +31,7 @@ const WORLD_RING: GeoJSON.Position[] = [
   [W_MIN_LNG, W_MIN_LAT],
 ];
 
-function ringFromBbox(
-  bbox: [number, number, number, number],
-): GeoJSON.Position[] {
+function ringFromBbox(bbox: [number, number, number, number]): GeoJSON.Position[] {
   const [minLng, minLat, maxLng, maxLat] = bbox;
   return [
     [Math.max(W_MIN_LNG, minLng), Math.max(W_MIN_LAT, minLat)],

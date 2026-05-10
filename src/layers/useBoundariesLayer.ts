@@ -1,13 +1,6 @@
-import type {
-  GeoJSONSource,
-  Map as MaplibreMap,
-  MapMouseEvent,
-} from "maplibre-gl";
+import type { GeoJSONSource, Map as MaplibreMap, MapMouseEvent } from "maplibre-gl";
 import { useEffect, useRef } from "react";
-import {
-  BOUNDARY_SNAPSHOT_YEARS,
-  fileForYear,
-} from "../data/boundariesManifest";
+import { BOUNDARY_SNAPSHOT_YEARS, fileForYear } from "../data/boundariesManifest";
 import { useStore } from "../store";
 import { colorFromName } from "../utils/colorHash";
 import { pickSnapshotYear } from "../utils/pickSnapshot";
@@ -50,10 +43,7 @@ const EMPTY_FC: GeoJSON.FeatureCollection = {
   features: [],
 };
 
-function bboxFromSource(
-  map: MaplibreMap,
-  name: string,
-): [number, number, number, number] | null {
+function bboxFromSource(map: MaplibreMap, name: string): [number, number, number, number] | null {
   // querySourceFeatures returns every feature in the loaded boundary source
   // (not just the one under the cursor). Aggregating across all matching
   // features gives a country its full bbox (e.g. all of Russia, not just the
@@ -106,10 +96,7 @@ function fitBoundsBbox(
   return bestBbox ?? fullBbox;
 }
 
-function geometryFromSource(
-  snapshotYear: number,
-  name: string,
-): GeoJSON.Geometry | null {
+function geometryFromSource(snapshotYear: number, name: string): GeoJSON.Geometry | null {
   // Pull the full unclipped MultiPolygon from our cached snapshot so the focus
   // mask traces the real country outline (not the tile-clipped fragment under
   // the cursor).
@@ -129,9 +116,7 @@ function geometryFromSource(
   return { type: "MultiPolygon", coordinates: polys };
 }
 
-function bboxOfGeometry(
-  geom: GeoJSON.Geometry,
-): [number, number, number, number] | null {
+function bboxOfGeometry(geom: GeoJSON.Geometry): [number, number, number, number] | null {
   let minLng = Infinity,
     minLat = Infinity,
     maxLng = -Infinity,
@@ -256,12 +241,9 @@ function decorate(
       const name = props.NAME?.trim() || props.SUBJECTO?.trim() || "Unknown";
       const bbox = bboxOfGeometry(f.geometry as GeoJSON.Geometry);
       const area = bbox ? (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) : 0;
-      const label =
-        area < SMALL_COUNTRY_AREA_THRESHOLD ? shortenLabel(name) : name;
+      const label = area < SMALL_COUNTRY_AREA_THRESHOLD ? shortenLabel(name) : name;
       const isMajor = area >= MAJOR_EMPIRE_AREA_THRESHOLD;
-      const isVassal = !!(
-        props.SUBJECTO && props.SUBJECTO.trim() !== name
-      );
+      const isVassal = !!(props.SUBJECTO && props.SUBJECTO.trim() !== name);
       const fill = colorFromName(props.SUBJECTO?.trim() || name);
       return {
         ...f,
@@ -302,9 +284,7 @@ function touchCache(year: number, fc: GeoJSON.FeatureCollection) {
   }
 }
 
-async function loadSnapshot(
-  snapshotYear: number,
-): Promise<GeoJSON.FeatureCollection> {
+async function loadSnapshot(snapshotYear: number): Promise<GeoJSON.FeatureCollection> {
   const cached = cache.get(snapshotYear);
   if (cached) {
     // Bump LRU position even on cache hits so prefetched-but-unused snapshots
@@ -433,12 +413,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
       source: SOURCE_ID,
       paint: {
         "line-color": "#ffffff",
-        "line-width": [
-          "case",
-          ["boolean", ["feature-state", "hover"], false],
-          2,
-          0,
-        ],
+        "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2, 0],
       },
     });
 
@@ -477,81 +452,73 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 0,        // hide labels for zero-area features
-            2, 9,        // tiny countries: 9px even at world view
-            50, 11,
-            500, 13,
-            5000, 15,
+            0,
+            0, // hide labels for zero-area features
+            2,
+            9, // tiny countries: 9px even at world view
+            50,
+            11,
+            500,
+            13,
+            5000,
+            15,
           ],
           4,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 10,
-            2, 11,
-            50, 13,
-            500, 15,
-            5000, 17,
+            0,
+            10,
+            2,
+            11,
+            50,
+            13,
+            500,
+            15,
+            5000,
+            17,
           ],
           7,
           [
             "interpolate",
             ["linear"],
             ["coalesce", ["get", "_area"], 0],
-            0, 12,
-            2, 13,
-            50, 15,
-            500, 18,
-            5000, 22,
+            0,
+            12,
+            2,
+            13,
+            50,
+            15,
+            500,
+            18,
+            5000,
+            22,
           ],
         ],
         // Major empires get tracking out so the name spreads across the
         // territory like a National Geographic atlas. Smaller countries
         // stay at a normal letter-spacing.
-        "text-letter-spacing": [
-          "case",
-          ["coalesce", ["get", "_isMajor"], false],
-          0.18,
-          0.04,
-        ],
+        "text-letter-spacing": ["case", ["coalesce", ["get", "_isMajor"], false], 0.18, 0.04],
         "text-max-width": 8,
         "text-padding": 4,
         "text-allow-overlap": false,
         "text-ignore-placement": false,
-        "symbol-sort-key": [
-          "*",
-          -1,
-          ["coalesce", ["get", "_area"], 0],
-        ],
+        "symbol-sort-key": ["*", -1, ["coalesce", ["get", "_area"], 0]],
         // ALL CAPS for major empires — visual weight on the great powers.
-        "text-transform": [
-          "case",
-          ["coalesce", ["get", "_isMajor"], false],
-          "uppercase",
-          "none",
-        ],
+        "text-transform": ["case", ["coalesce", ["get", "_isMajor"], false], "uppercase", "none"],
       },
       paint: {
         // Per-feature text color (derived from the country's fill, lifted
         // toward white so it stays legible). The theme effect below
         // overrides this for light/sepia themes which want darker text.
-        "text-color": [
-          "coalesce",
-          ["get", "_textColor"],
-          "rgba(245, 247, 252, 0.95)",
-        ],
+        "text-color": ["coalesce", ["get", "_textColor"], "rgba(245, 247, 252, 0.95)"],
         "text-halo-color": "rgba(8, 10, 14, 0.85)",
         "text-halo-width": 1.4,
         "text-halo-blur": 0.6,
         // Vassals fade to ~60% opacity so the political hierarchy reads
         // at a glance: sovereigns bold, vassals subdued.
-        "text-opacity": [
-          "case",
-          ["coalesce", ["get", "_isVassal"], false],
-          0.6,
-          1.0,
-        ],
+        "text-opacity": ["case", ["coalesce", ["get", "_isVassal"], false], 0.6, 1.0],
         // Smooth fade when boundaries swap on year scrub — labels glide
         // in/out instead of popping.
         "text-opacity-transition": {
@@ -573,10 +540,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
       const key = (top?.properties as BoundaryProps | undefined)?._key ?? null;
 
       if (hoveredKeyRef.current && hoveredKeyRef.current !== key) {
-        map.setFeatureState(
-          { source: SOURCE_ID, id: hoveredKeyRef.current },
-          { hover: false },
-        );
+        map.setFeatureState({ source: SOURCE_ID, id: hoveredKeyRef.current }, { hover: false });
       }
       hoveredKeyRef.current = key;
       if (key) {
@@ -605,10 +569,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
 
     const onLeave = () => {
       if (hoveredKeyRef.current) {
-        map.setFeatureState(
-          { source: SOURCE_ID, id: hoveredKeyRef.current },
-          { hover: false },
-        );
+        map.setFeatureState({ source: SOURCE_ID, id: hoveredKeyRef.current }, { hover: false });
         hoveredKeyRef.current = null;
       }
       setHover(null);
@@ -645,16 +606,10 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
       if (!bbox) {
         // Fallback to a small bbox around the click point.
         const r = 4;
-        bbox = [
-          e.lngLat.lng - r,
-          e.lngLat.lat - r,
-          e.lngLat.lng + r,
-          e.lngLat.lat + r,
-        ];
+        bbox = [e.lngLat.lng - r, e.lngLat.lat - r, e.lngLat.lng + r, e.lngLat.lat + r];
       }
       const snapYear = snapshotYearRef.current;
-      const geometry =
-        snapYear != null ? geometryFromSource(snapYear, name) : null;
+      const geometry = snapYear != null ? geometryFromSource(snapYear, name) : null;
       store.setFocusedCountry({
         name,
         bbox,
@@ -711,38 +666,18 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
     if (!map || setupForMap.current !== map) return;
     if (!map.getLayer(LABEL_LAYER_ID)) return;
     if (theme === "light") {
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-color",
-        "rgba(28, 32, 44, 0.92)",
-      );
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(252, 252, 248, 0.95)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(28, 32, 44, 0.92)");
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(252, 252, 248, 0.95)");
     } else if (theme === "sepia") {
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-color",
-        "rgba(58, 38, 18, 0.92)",
-      );
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(248, 232, 198, 0.92)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-color", "rgba(58, 38, 18, 0.92)");
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(248, 232, 198, 0.92)");
     } else {
       map.setPaintProperty(LABEL_LAYER_ID, "text-color", [
         "coalesce",
         ["get", "_textColor"],
         "rgba(245, 247, 252, 0.95)",
       ]);
-      map.setPaintProperty(
-        LABEL_LAYER_ID,
-        "text-halo-color",
-        "rgba(8, 10, 14, 0.85)",
-      );
+      map.setPaintProperty(LABEL_LAYER_ID, "text-halo-color", "rgba(8, 10, 14, 0.85)");
     }
   }, [map, theme]);
 
@@ -766,11 +701,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
       "fill-opacity",
       Math.min(1, FILL_OPACITY_IDLE * b * ghostW),
     );
-    map.setPaintProperty(
-      GHOST_LINE_LAYER_ID,
-      "line-width",
-      LINE_WIDTH_BASE * b * ghostW,
-    );
+    map.setPaintProperty(GHOST_LINE_LAYER_ID, "line-width", LINE_WIDTH_BASE * b * ghostW);
   }
 
   // Brightness
@@ -802,10 +733,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
         ghostYear = prevYear;
         ghostWeight = Math.min(0.5, (primaryYear - year) / span);
       }
-    } else if (
-      year > primaryYear &&
-      primaryIdx < BOUNDARY_SNAPSHOT_YEARS.length - 1
-    ) {
+    } else if (year > primaryYear && primaryIdx < BOUNDARY_SNAPSHOT_YEARS.length - 1) {
       const nextYear = BOUNDARY_SNAPSHOT_YEARS[primaryIdx + 1];
       const span = nextYear - primaryYear;
       if (span > 0) {
@@ -876,9 +804,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
     // the ghost neighbour actually changed; weight-only updates are paint.
     if (ghostYear !== null) {
       if (loadedGhostRef.current !== ghostYear) {
-        const ghostSrc = map.getSource(GHOST_SOURCE_ID) as
-          | GeoJSONSource
-          | undefined;
+        const ghostSrc = map.getSource(GHOST_SOURCE_ID) as GeoJSONSource | undefined;
         const ghostFc = cache.get(ghostYear);
         if (ghostFc) {
           ghostSrc?.setData(ghostFc);
@@ -902,9 +828,7 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
     } else if (loadedGhostRef.current !== null) {
       // No ghost neighbour (year is past the last snapshot or before the
       // first) — clear once so we don't see stale geometry.
-      const ghostSrc = map.getSource(GHOST_SOURCE_ID) as
-        | GeoJSONSource
-        | undefined;
+      const ghostSrc = map.getSource(GHOST_SOURCE_ID) as GeoJSONSource | undefined;
       ghostSrc?.setData(EMPTY_FC);
       loadedGhostRef.current = null;
     }

@@ -110,9 +110,7 @@ function NowPanelInner() {
   // hasn't moved the slider for ~2.5s. Picks the event closest in time to
   // the current year, breaking ties deterministically by id so the same
   // event always shows for the same year.
-  const [idleEvent, setIdleEvent] = useState<(typeof EVENTS)[number] | null>(
-    null,
-  );
+  const [idleEvent, setIdleEvent] = useState<(typeof EVENTS)[number] | null>(null);
   useEffect(() => {
     setIdleEvent(null);
     const t = setTimeout(() => {
@@ -129,17 +127,11 @@ function NowPanelInner() {
     return () => clearTimeout(t);
   }, [year]);
 
-  const totalCount = Object.values(grouped).reduce(
-    (acc, arr) => acc + arr.length,
-    0,
-  );
+  const totalCount = Object.values(grouped).reduce((acc, arr) => acc + arr.length, 0);
 
   // Mini bar chart of counts per layer; longest bar = the layer with the most
   // active items at the current year.
-  const maxCount = Math.max(
-    1,
-    ...Object.values(grouped).map((arr) => arr.length),
-  );
+  const maxCount = Math.max(1, ...Object.values(grouped).map((arr) => arr.length));
 
   return (
     <div
@@ -356,9 +348,7 @@ function NowPanelInner() {
                     fontVariantNumeric: "tabular-nums",
                   }}
                 >
-                  {c.pop >= 1000
-                    ? `${(c.pop / 1000).toFixed(1)}M`
-                    : `${Math.round(c.pop)}K`}
+                  {c.pop >= 1000 ? `${(c.pop / 1000).toFixed(1)}M` : `${Math.round(c.pop)}K`}
                 </span>
               </li>
             ))}
@@ -372,9 +362,7 @@ function NowPanelInner() {
         return (
           <div key={layer} style={{ marginBottom: 8 }}>
             <button
-              onClick={() =>
-                setCollapsed((c) => ({ ...c, [layer]: !c[layer] }))
-              }
+              onClick={() => setCollapsed((c) => ({ ...c, [layer]: !c[layer] }))}
               style={{
                 width: "100%",
                 display: "flex",
