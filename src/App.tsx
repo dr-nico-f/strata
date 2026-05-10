@@ -68,8 +68,8 @@ function MobileBanner() {
       }}
     >
       <span>
-        <strong style={{ color: "#f5b942" }}>Best viewed on desktop</strong> —
-        Strata uses keyboard shortcuts, hover tooltips, and a wide map canvas.
+        <strong style={{ color: "#f5b942" }}>Best viewed on desktop</strong> — Strata uses keyboard
+        shortcuts, hover tooltips, and a wide map canvas.
       </span>
       <button
         onClick={() => setDismissed(true)}
