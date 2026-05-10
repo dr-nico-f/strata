@@ -155,7 +155,7 @@ function Header() {
             fontWeight: 400,
           }}
         >
-          History Sim
+          Strata — History Simulation
         </button>
         <div style={{ fontSize: 14 }}>
           Drag the slider, hop eras, toggle layers, press{" "}
