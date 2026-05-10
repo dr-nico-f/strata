@@ -238,3 +238,9 @@ a {
 :root[data-hide-ui] body {
   cursor: crosshair;
 }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

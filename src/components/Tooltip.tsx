@@ -74,10 +74,11 @@ export function Tooltip() {
 
   // Only call out to Wikipedia when a tooltip is pinned. Hover tooltips stay
   // synchronous to avoid hammering the API while users sweep over the map.
-  const { summary, loading: wikiLoading } = useWikipediaSummary(
-    isLocked ? active?.wikipedia : undefined,
-    isLocked,
-  );
+  const {
+    summary,
+    loading: wikiLoading,
+    error: wikiError,
+  } = useWikipediaSummary(isLocked ? active?.wikipedia : undefined, isLocked);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -364,6 +365,18 @@ export function Tooltip() {
             }}
           >
             Fetching Wikipedia summary…
+          </div>
+        )}
+        {isLocked && wikiError && !summary && !wikiLoading && (
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 11,
+              color: "var(--text-muted)",
+              fontStyle: "italic",
+            }}
+          >
+            Couldn't load Wikipedia summary
           </div>
         )}
         {isLocked &&

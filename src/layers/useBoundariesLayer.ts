@@ -862,7 +862,10 @@ export function useBoundariesLayer(map: MaplibreMap | null) {
           }
         })
         .catch((err) => {
-          if (!cancelled) setLoadingBoundary(false);
+          if (!cancelled) {
+            setLoadingBoundary(false);
+            useStore.getState().setToast("Failed to load boundary data");
+          }
           console.error("Failed to load boundary snapshot", primaryYear, err);
         });
     }
