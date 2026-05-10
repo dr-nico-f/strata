@@ -215,7 +215,7 @@ export function MapView() {
       container: containerRef.current,
       style: styleFor(useStore.getState().theme),
       center: [20, 30],
-      zoom: 1.6,
+      zoom: 2.2,
       maxZoom: 7,
       minZoom: 0.5,
       attributionControl: { compact: true },
