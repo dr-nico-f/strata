@@ -110,7 +110,8 @@ function buildCountryCityIndex(): Map<string, City[]> {
   return index;
 }
 
-const COUNTRY_CITIES = buildCountryCityIndex();
+let COUNTRY_CITIES = buildCountryCityIndex();
+let lastDataVersion = -1;
 
 /**
  * Pick a jitter radius for a city given how many dots will land on it. We
@@ -362,6 +363,10 @@ export function usePopulationLayer(map: MaplibreMap | null) {
 
   useEffect(() => {
     if (!map || setupForMap.current !== map || !visible) return;
+    if (dataVersion !== lastDataVersion) {
+      COUNTRY_CITIES = buildCountryCityIndex();
+      lastDataVersion = dataVersion;
+    }
     const fc = buildFeatures(year);
     (map.getSource(SOURCE_ID) as GeoJSONSource | undefined)?.setData(fc);
 
