@@ -197,8 +197,8 @@ export function StarField() {
       // Light theme gets a much paler space (so the globe still looks
       // anchored against a bright UI), but keeps the same star scatter.
       if (theme === "light") {
-        bg.addColorStop(0, "#cdd6e4");
-        bg.addColorStop(1, "#aab4c6");
+        bg.addColorStop(0, "#101828");
+        bg.addColorStop(1, "#060a14");
       } else if (theme === "sepia") {
         bg.addColorStop(0, "#1a120a");
         bg.addColorStop(1, "#0c0805");
@@ -209,9 +209,8 @@ export function StarField() {
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, cssW * dpr, cssH * dpr);
 
-      // Nebulae: large soft radial blobs. Skipped on light theme because
-      // they read as smudges on a pale background.
-      if (theme !== "light") {
+      // Nebulae: large soft radial blobs.
+      {
         for (const n of nebulae) {
           const grad = ctx.createRadialGradient(
             n.x * dpr,
@@ -234,11 +233,7 @@ export function StarField() {
         if (s.twinkle && !reduceMotion) {
           alpha *= 0.55 + 0.45 * Math.sin(s.twinklePhase + time * s.twinkleSpeed);
         }
-        // Light theme: invert star colour so they read against the pale sky.
-        const color =
-          theme === "light"
-            ? `rgba(40, 60, 100, ${alpha.toFixed(3)})`
-            : `${s.tint}${alpha.toFixed(3)})`;
+        const color = `${s.tint}${alpha.toFixed(3)})`;
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.arc(s.x * dpr, s.y * dpr, s.r * dpr, 0, Math.PI * 2);

@@ -259,10 +259,10 @@ export const useStore = create<AppState>((set, get) => ({
   locked: null,
   setLocked: (locked) => set({ locked }),
 
-  projection: "flat",
+  projection: "globe",
   setProjection: (projection) => set({ projection }),
 
-  theme: "dark",
+  theme: "sepia",
   setTheme: (theme) => set({ theme }),
 
   boundaryBrightness: 1,
