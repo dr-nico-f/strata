@@ -56,6 +56,7 @@ export function useDisastersLayer(map: MaplibreMap | null) {
   const year = useDeferredYear(80);
   const visible = useStore((s) => s.layers.disasters);
   const setHover = useStore((s) => s.setHover);
+  const dataVersion = useStore((s) => s.dataVersion);
   const setupForMap = useRef<MaplibreMap | null>(null);
 
   useEffect(() => {
@@ -156,7 +157,7 @@ export function useDisastersLayer(map: MaplibreMap | null) {
     if (!map || setupForMap.current !== map || !visible) return;
     const fc = buildFeatures(year);
     (map.getSource(SOURCE_ID) as GeoJSONSource | undefined)?.setData(fc);
-  }, [map, year, visible]);
+  }, [map, year, visible, dataVersion]);
 }
 
 function capitalize(s: string): string {

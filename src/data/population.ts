@@ -1,18 +1,22 @@
 /**
  * Per-country population, sourced live from Our World in Data (HYDE 3.3 +
- * Gapminder + UN WPP). The actual numbers are in `population.owid.generated.ts`
- * and refreshed by `npm run build:population`.
- *
- * This module preserves the older `PopRegion` / `populationAt` surface so the
- * rest of the app does not need to know that we used to ship 17 hand-curated
- * regions instead of ~240 ISO3 countries.
+ * Gapminder + UN WPP). The actual numbers are fetched at runtime from
+ * population-owid.json and refreshed by `npm run build:population`.
  */
-import { OWID_COUNTRIES, OWID_WORLD_CURVE, type OwidCountry } from "./population.owid.generated";
 
-export { OWID_BUILD_DATE, OWID_WORLD_CURVE } from "./population.owid.generated";
+export interface OwidCountry {
+  code: string;
+  cca2: string;
+  region: string;
+  name: string;
+  lat: number;
+  lng: number;
+  radius: number;
+  curve: ReadonlyArray<[number, number]>;
+}
 
 export interface PopRegion {
-  /** ISO3 country code (was a hand-coded slug pre-OWID). */
+  /** ISO3 country code. */
   id: string;
   /** ISO 3166-1 alpha-2 code (matches GeoNames `cc`). */
   cca2: string;
@@ -26,27 +30,39 @@ export interface PopRegion {
   curve: ReadonlyArray<[year: number, popMillions: number]>;
 }
 
-export const POPULATION_REGIONS: readonly PopRegion[] = OWID_COUNTRIES.map(
-  (c: OwidCountry): PopRegion => ({
-    id: c.code,
-    cca2: c.cca2,
-    continent: c.region || "Other",
-    name: c.name,
-    lat: c.lat,
-    lng: c.lng,
-    radius: c.radius,
-    curve: c.curve,
-  }),
-);
+let POPULATION_REGIONS: readonly PopRegion[] = [];
+let OWID_WORLD_CURVE: ReadonlyArray<[number, number]> = [];
+let OWID_BUILD_DATE = "";
+
+export async function loadGenerated(): Promise<void> {
+  const resp = await fetch(`${import.meta.env.BASE_URL}data/population-owid.json`);
+  const data: {
+    countries: OwidCountry[];
+    worldCurve: [number, number][];
+    buildDate: string;
+  } = await resp.json();
+
+  POPULATION_REGIONS = data.countries.map(
+    (c): PopRegion => ({
+      id: c.code,
+      cca2: c.cca2,
+      continent: c.region || "Other",
+      name: c.name,
+      lat: c.lat,
+      lng: c.lng,
+      radius: c.radius,
+      curve: c.curve,
+    }),
+  );
+  OWID_WORLD_CURVE = data.worldCurve;
+  OWID_BUILD_DATE = data.buildDate;
+}
 
 /** Linear interpolation across an anchor curve. Returns population in millions. */
 function interpolate(curve: ReadonlyArray<[number, number]>, year: number): number {
   if (curve.length === 0) return 0;
   if (year <= curve[0][0]) return curve[0][1];
   if (year >= curve[curve.length - 1][0]) return curve[curve.length - 1][1];
-  // OWID curves are dense -- a linear scan is fine in practice but we use
-  // a binary search to keep this O(log n) for the per-frame buildFeatures
-  // call (called every year change with 237 countries).
   let lo = 0;
   let hi = curve.length - 1;
   while (lo + 1 < hi) {
@@ -69,3 +85,5 @@ export function populationAt(region: PopRegion, year: number): number {
 export function worldPopulationAt(year: number): number {
   return interpolate(OWID_WORLD_CURVE, year);
 }
+
+export { POPULATION_REGIONS, OWID_WORLD_CURVE, OWID_BUILD_DATE };

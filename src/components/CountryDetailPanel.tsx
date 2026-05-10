@@ -82,6 +82,7 @@ export function CountryDetailPanel() {
   const setLocked = useStore((s) => s.setLocked);
   const year = useStore((s) => s.year);
   const hideUi = useStore((s) => s.hideUi);
+  const dataVersion = useStore((s) => s.dataVersion);
   const [section, setSection] = useState<Section>("all");
   // Reset filter chip when the user opens a different country -- otherwise
   // a "Battles" filter would persist into the next click and feel sticky.
@@ -179,7 +180,8 @@ export function CountryDetailPanel() {
     const religion =
       deferredYear >= MODERN_RELIGION_MIN_YEAR ? RELIGION_LOOKUP.get(country.name) : undefined;
     return { cities, events, battles, people, disasters, religion };
-  }, [country, deferredYear]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country, deferredYear, dataVersion]);
 
   if (hideUi) return null;
   if (!open || !country || !data) return null;

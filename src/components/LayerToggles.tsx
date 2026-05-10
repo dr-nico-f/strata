@@ -45,6 +45,8 @@ export function LayerToggles() {
   const setSearchOpen = useStore((s) => s.setSearchOpen);
   const setHelpOpen = useStore((s) => s.setHelpOpen);
   const hideUi = useStore((s) => s.hideUi);
+  // Subscribe so this component re-renders when generated data finishes loading.
+  void useStore((s) => s.dataVersion);
 
   // Collapsed by default so the panel stays compact on small screens. The
   // bottom sections (View / Recenter / Theme / Export / footnote) are

@@ -78,6 +78,7 @@ function NowPanelInner() {
   const year = useStore((s) => s.year);
   const layers = useStore((s) => s.layers);
   const setLocked = useStore((s) => s.setLocked);
+  const dataVersion = useStore((s) => s.dataVersion);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   const grouped = useMemo(() => {
@@ -88,7 +89,8 @@ function NowPanelInner() {
       map[it.layer].push(it);
     }
     return map;
-  }, [year, layers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [year, layers, dataVersion]);
 
   // Largest cities at the current year, top 5 by interpolated population.
   // Cities without a populationCurve are excluded (no signal to rank by).
@@ -104,7 +106,8 @@ function NowPanelInner() {
     }
     out.sort((a, b) => b.pop - a.pop);
     return out.slice(0, 5);
-  }, [year]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [year, dataVersion]);
 
   // "On this year" idle chip: surface a single nearby event when the user
   // hasn't moved the slider for ~2.5s. Picks the event closest in time to

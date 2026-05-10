@@ -202,6 +202,14 @@ interface AppState {
     }>;
   } | null;
   setPendingChoice: (c: AppState["pendingChoice"]) => void;
+
+  /**
+   * Bumped after async-loaded generated data (battles, cities, disasters,
+   * population) finishes merging. Subscribing to this forces a re-render
+   * so components pick up the enriched datasets.
+   */
+  dataVersion: number;
+  bumpDataVersion: () => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -348,6 +356,9 @@ export const useStore = create<AppState>((set, get) => ({
 
   pendingChoice: null,
   setPendingChoice: (pendingChoice) => set({ pendingChoice }),
+
+  dataVersion: 0,
+  bumpDataVersion: () => set((s) => ({ dataVersion: s.dataVersion + 1 })),
 }));
 
 export function formatYear(year: number): string {
