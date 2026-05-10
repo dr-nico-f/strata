@@ -1,0 +1,484 @@
+/**
+ * Schematic language family ranges over time. Each family has time-slice
+ * polygons with a start year. Polygons trace the rough region where the
+ * family was historically dominant. Coverage is necessarily simplified -
+ * pidgin/lingua franca / colonial overlays are NOT included for clarity.
+ *
+ * Sources:
+ *   - "Atlas of the World's Languages" (Moseley & Asher)
+ *   - "The Cambridge Encyclopedia of the World's Ancient Languages"
+ *   - Anthony, "The Horse, the Wheel, and Language" (Indo-European steppe origin)
+ *   - Bellwood, "First Migrants" (Austronesian, Bantu)
+ *   - Glottolog 4.x family ranges
+ */
+
+export interface LanguageStage {
+  startYear: number;
+  polygon: Array<[number, number]>;
+}
+
+export interface LanguageFamily {
+  id: string;
+  name: string;
+  color: string;
+  wikipedia?: string;
+  note?: string;
+  stages: LanguageStage[];
+}
+
+export const LANGUAGE_FAMILIES: readonly LanguageFamily[] = [
+  // -------- Indo-European --------
+  {
+    id: "indo-european",
+    name: "Indo-European",
+    color: "#7aa2ff",
+    wikipedia: "Indo-European_languages",
+    note: "Originated on the Pontic-Caspian steppe ~4500 BCE; today spoken by ~3.2 billion people",
+    stages: [
+      // PIE homeland - Pontic-Caspian steppe
+      {
+        startYear: -4500,
+        polygon: [
+          [30, 46], [38, 47], [46, 48], [54, 48], [55, 50], [50, 52],
+          [42, 53], [34, 52], [30, 50], [30, 46],
+        ],
+      },
+      // Yamnaya / early diaspora ~3000 BCE
+      {
+        startYear: -3000,
+        polygon: [
+          [22, 44], [32, 45], [44, 47], [56, 48], [60, 50], [56, 53],
+          [44, 55], [32, 54], [22, 50], [20, 47], [22, 44],
+        ],
+      },
+      // Bronze Age - Anatolia (Hittite), Iran (proto-Indo-Iranian), Greece (Mycenaean)
+      {
+        startYear: -1500,
+        polygon: [
+          [-2, 38], [8, 40], [16, 42], [25, 43], [35, 42], [44, 38],
+          [55, 35], [65, 32], [72, 28], [78, 26], [82, 28], [80, 35],
+          [70, 42], [60, 48], [48, 53], [34, 56], [22, 56], [10, 54],
+          [-2, 50], [-4, 44], [-2, 38],
+        ],
+      },
+      // Iron Age / Classical - Celts to Iberia, Rome, Persians, India (Vedic)
+      {
+        startYear: -500,
+        polygon: [
+          [-9, 36], [-3, 39], [4, 42], [10, 45], [16, 48], [22, 50],
+          [32, 54], [44, 56], [55, 56], [65, 53], [75, 48], [82, 42],
+          [88, 35], [92, 28], [88, 22], [82, 18], [76, 16], [70, 18],
+          [64, 22], [58, 28], [50, 32], [42, 36], [34, 38], [25, 39],
+          [16, 40], [8, 40], [0, 38], [-9, 36],
+        ],
+      },
+      // Roman Imperial era - Latin, Greek, Iranian, Sanskrit
+      {
+        startYear: 0,
+        polygon: [
+          [-10, 36], [-5, 41], [0, 45], [6, 50], [14, 53], [22, 55],
+          [32, 57], [44, 58], [56, 56], [66, 52], [74, 47], [82, 41],
+          [89, 32], [93, 22], [89, 14], [82, 10], [74, 8], [66, 12],
+          [58, 18], [50, 26], [42, 32], [34, 34], [24, 35], [12, 36],
+          [0, 36], [-10, 36],
+        ],
+      },
+      // Early medieval - migration period, Slavic expansion
+      {
+        startYear: 600,
+        polygon: [
+          [-10, 36], [-7, 42], [-2, 47], [4, 52], [12, 56], [22, 60],
+          [34, 62], [48, 62], [58, 60], [68, 56], [76, 50], [82, 44],
+          [88, 35], [93, 26], [88, 16], [80, 10], [72, 8], [64, 12],
+          [56, 18], [48, 26], [40, 32], [32, 34], [22, 35], [12, 36],
+          [0, 36], [-10, 36],
+        ],
+      },
+      // Late medieval - Russian expansion, Ottoman zone shrinks IE in Anatolia
+      {
+        startYear: 1500,
+        polygon: [
+          [-10, 36], [-7, 42], [-2, 48], [4, 52], [12, 58], [22, 62],
+          [40, 65], [60, 65], [80, 62], [100, 60], [120, 60], [140, 62],
+          [160, 62], [175, 60], [165, 56], [140, 54], [120, 50],
+          [100, 48], [82, 44], [88, 36], [93, 26], [88, 16], [80, 10],
+          [72, 8], [64, 12], [56, 18], [48, 26], [40, 30], [30, 32],
+          [16, 34], [4, 36], [-10, 36],
+        ],
+      },
+      // Colonial - English/Spanish/Portuguese/French span the Americas, S. Africa, Australia
+      {
+        startYear: 1700,
+        polygon: [
+          [-170, -55], [-140, -50], [-120, -40], [-95, -35], [-75, -30],
+          [-55, -10], [-40, 5], [-30, 12], [-22, 12], [-12, 8],
+          [-8, 36], [12, 56], [40, 65], [80, 62], [120, 60], [165, 60],
+          [165, 50], [165, 35], [180, -10], [165, -45], [115, -38],
+          [80, -35], [50, -33], [25, -32], [10, -34], [-12, -34],
+          [-30, -32], [-50, -30], [-70, -30], [-90, -50], [-170, -55],
+        ],
+      },
+    ],
+  },
+
+  // -------- Sino-Tibetan --------
+  {
+    id: "sino-tibetan",
+    name: "Sino-Tibetan",
+    color: "#f5b942",
+    wikipedia: "Sino-Tibetan_languages",
+    note: "Chinese, Tibetan, Burmese, and ~400 related languages; ~1.4 billion speakers today",
+    stages: [
+      // Proto-Sino-Tibetan homeland - upper Yangtze / SW China (~6000 BCE)
+      {
+        startYear: -6000,
+        polygon: [
+          [98, 28], [104, 28], [108, 30], [108, 34], [104, 35], [100, 33],
+          [98, 28],
+        ],
+      },
+      // Early Sinitic + Tibeto-Burman split - Yellow River basin & SW
+      {
+        startYear: -2000,
+        polygon: [
+          [92, 24], [102, 24], [110, 26], [116, 30], [118, 36], [114, 40],
+          [106, 40], [98, 36], [92, 30], [92, 24],
+        ],
+      },
+      // Han expansion - whole China proper, Tibetan plateau
+      {
+        startYear: 0,
+        polygon: [
+          [80, 22], [92, 20], [102, 22], [112, 24], [120, 28], [124, 34],
+          [124, 40], [116, 44], [108, 44], [98, 40], [88, 34], [80, 30],
+          [78, 26], [80, 22],
+        ],
+      },
+      // Tang / Burmese kingdoms (~700 CE)
+      {
+        startYear: 700,
+        polygon: [
+          [80, 14], [88, 12], [96, 14], [105, 18], [114, 22], [122, 28],
+          [128, 34], [128, 42], [122, 46], [112, 46], [102, 44], [92, 40],
+          [82, 34], [78, 28], [78, 20], [80, 14],
+        ],
+      },
+      // Song / Pagan / Tangut empires (~1100 CE)
+      {
+        startYear: 1100,
+        polygon: [
+          [80, 12], [88, 10], [96, 12], [105, 16], [114, 20], [122, 26],
+          [130, 32], [134, 38], [132, 44], [126, 48], [116, 48], [106, 46],
+          [96, 42], [86, 36], [80, 30], [78, 22], [80, 12],
+        ],
+      },
+      // Modern - PRC + Burma + Tibet + parts of NE India + Bhutan
+      {
+        startYear: 1950,
+        polygon: [
+          [80, 12], [88, 10], [96, 12], [104, 14], [114, 18], [122, 24],
+          [130, 30], [134, 36], [134, 42], [126, 48], [116, 48], [106, 46],
+          [96, 42], [86, 36], [80, 30], [78, 22], [80, 12],
+        ],
+      },
+    ],
+  },
+
+  // -------- Afroasiatic --------
+  {
+    id: "afroasiatic",
+    name: "Afroasiatic",
+    color: "#ff7a90",
+    wikipedia: "Afroasiatic_languages",
+    note: "Arabic, Berber, Hebrew, Amharic, Hausa, ancient Egyptian; spoken across N. Africa, Horn of Africa, the Levant",
+    stages: [
+      // Proto-Afroasiatic - traditionally placed in NE Africa / Horn (~10000 BCE)
+      {
+        startYear: -10000,
+        polygon: [
+          [25, 8], [40, 6], [48, 10], [50, 18], [44, 22], [34, 22],
+          [26, 18], [22, 12], [25, 8],
+        ],
+      },
+      // Mid-Holocene - spread across the Sahara and Levant
+      {
+        startYear: -4000,
+        polygon: [
+          [-10, 18], [0, 16], [12, 14], [22, 12], [32, 12], [42, 12],
+          [50, 14], [55, 22], [55, 32], [45, 34], [35, 34], [25, 33],
+          [12, 32], [-2, 32], [-12, 28], [-15, 22], [-10, 18],
+        ],
+      },
+      // Bronze Age - Egyptian, Akkadian, Phoenician, Berber, Cushitic
+      {
+        startYear: -1500,
+        polygon: [
+          [-15, 22], [-2, 22], [10, 18], [22, 14], [34, 12], [42, 12],
+          [48, 16], [55, 22], [56, 30], [50, 34], [40, 34], [30, 34],
+          [18, 33], [4, 33], [-10, 32], [-16, 28], [-15, 22],
+        ],
+      },
+      // Late antique - Aramaic / Coptic / Berber / Geez peak
+      {
+        startYear: 0,
+        polygon: [
+          [-16, 22], [-2, 22], [12, 18], [25, 14], [38, 12], [48, 14],
+          [56, 20], [56, 30], [50, 34], [40, 34], [30, 34], [18, 34],
+          [4, 34], [-10, 34], [-17, 28], [-16, 22],
+        ],
+      },
+      // Post-Arab conquest - Arabic dominates N Africa / ME
+      {
+        startYear: 800,
+        polygon: [
+          [-18, 18], [-5, 16], [10, 14], [25, 10], [38, 8], [48, 10],
+          [58, 18], [58, 30], [50, 34], [40, 34], [30, 34], [18, 34],
+          [4, 34], [-10, 34], [-18, 30], [-18, 18],
+        ],
+      },
+      // Modern - Arabic 22 countries + Hausa belt + Amharic + Hebrew
+      {
+        startYear: 1950,
+        polygon: [
+          [-18, 16], [-5, 12], [8, 10], [22, 8], [38, 4], [44, -2],
+          [48, 10], [55, 18], [58, 28], [50, 34], [40, 34], [30, 34],
+          [18, 34], [4, 34], [-10, 34], [-18, 28], [-18, 16],
+        ],
+      },
+    ],
+  },
+
+  // -------- Niger-Congo (incl. Bantu) --------
+  {
+    id: "niger-congo",
+    name: "Niger-Congo",
+    color: "#5fd1a0",
+    wikipedia: "Niger–Congo_languages",
+    note: "Largest family in sub-Saharan Africa; Bantu expansion radiated from W. Africa beginning ~3000 BCE",
+    stages: [
+      // Origin - West African heartland
+      {
+        startYear: -5000,
+        polygon: [
+          [-15, 6], [-5, 6], [4, 8], [12, 10], [12, 14], [4, 14],
+          [-8, 12], [-15, 10], [-15, 6],
+        ],
+      },
+      // Pre-Bantu expansion - West Africa fully covered
+      {
+        startYear: -2500,
+        polygon: [
+          [-17, 4], [-5, 4], [8, 5], [18, 8], [22, 12], [22, 14],
+          [12, 14], [0, 13], [-12, 12], [-17, 8], [-17, 4],
+        ],
+      },
+      // Bantu expansion start ~1000 BCE - reaches central African forest
+      {
+        startYear: -1000,
+        polygon: [
+          [-17, 4], [-2, 4], [12, 4], [25, 4], [30, 0], [30, -8],
+          [22, -8], [10, -4], [-2, 0], [-15, 0], [-17, 4],
+        ],
+      },
+      // Late Iron Age - Bantu reaches East African Rift, Zambezi
+      {
+        startYear: 200,
+        polygon: [
+          [-17, 4], [0, 6], [16, 6], [28, 4], [38, 2], [42, -10],
+          [38, -22], [28, -28], [18, -22], [8, -10], [-4, -2],
+          [-15, 4], [-17, 4],
+        ],
+      },
+      // Bantu full extent - reaches South African Cape
+      {
+        startYear: 1000,
+        polygon: [
+          [-17, 4], [-2, 4], [16, 5], [28, 4], [38, 0], [42, -10],
+          [40, -22], [32, -32], [22, -34], [12, -34], [-2, -28],
+          [-12, -10], [-17, 0], [-17, 4],
+        ],
+      },
+      // Modern - all of sub-Saharan Africa west/south of the Cushitic/Nilo-Saharan zone
+      {
+        startYear: 1950,
+        polygon: [
+          [-17, 4], [-2, 4], [16, 6], [28, 4], [38, 0], [42, -8],
+          [42, -18], [40, -28], [32, -34], [20, -35], [10, -32],
+          [-2, -28], [-14, -10], [-17, 0], [-17, 4],
+        ],
+      },
+    ],
+  },
+
+  // -------- Austronesian --------
+  {
+    id: "austronesian",
+    name: "Austronesian",
+    color: "#c39bff",
+    wikipedia: "Austronesian_languages",
+    note: "From Taiwan ~3000 BCE across the Pacific (incl. Madagascar) by canoe; ~400 million speakers today",
+    stages: [
+      // Origin - Taiwan
+      {
+        startYear: -3500,
+        polygon: [
+          [120, 22], [122, 22], [122, 25], [120, 25], [120, 22],
+        ],
+      },
+      // Out of Taiwan - reach Philippines + Indonesia (~2000 BCE)
+      {
+        startYear: -2000,
+        polygon: [
+          [115, -10], [125, -10], [128, -2], [125, 8], [125, 18],
+          [122, 22], [115, 14], [110, 0], [115, -10],
+        ],
+      },
+      // Lapita expansion - Melanesia + Western Polynesia (~1000 BCE)
+      {
+        startYear: -1000,
+        polygon: [
+          [98, -10], [120, -12], [140, -12], [160, -15], [175, -18],
+          [-178, -20], [-175, -8], [165, 5], [145, 8], [125, 12],
+          [115, 14], [108, 6], [98, -2], [98, -10],
+        ],
+      },
+      // Madagascar + Eastern Polynesia (~500 CE)
+      {
+        startYear: 500,
+        polygon: [
+          [42, -25], [50, -22], [60, -8], [80, -8], [98, -10],
+          [120, -12], [140, -12], [160, -15], [175, -18], [-178, -22],
+          [-148, -22], [-105, -28], [-125, -45], [-160, -45], [180, -45],
+          [145, -50], [120, -42], [98, -25], [70, -28], [50, -28],
+          [42, -25],
+        ],
+      },
+      // Modern - Indonesia, Philippines, Madagascar, Pacific
+      {
+        startYear: 1950,
+        polygon: [
+          [42, -25], [50, -22], [60, -10], [80, -8], [98, -10],
+          [120, -12], [140, -12], [160, -15], [175, -18], [-178, -22],
+          [-148, -22], [-105, -25], [-125, -45], [-160, -45], [180, -42],
+          [145, -48], [120, -38], [98, -22], [70, -25], [50, -28],
+          [42, -25],
+        ],
+      },
+    ],
+  },
+
+  // -------- Uralic --------
+  {
+    id: "uralic",
+    name: "Uralic",
+    color: "#3da9c7",
+    wikipedia: "Uralic_languages",
+    note: "Finnish, Estonian, Hungarian, Sami, and Samoyedic languages of Siberia",
+    stages: [
+      // Proto-Uralic - around the Urals
+      {
+        startYear: -3000,
+        polygon: [
+          [50, 56], [62, 56], [70, 58], [70, 64], [60, 66], [50, 64],
+          [48, 60], [50, 56],
+        ],
+      },
+      // Eastward + westward dispersal - across N. Eurasia
+      {
+        startYear: -1000,
+        polygon: [
+          [22, 56], [38, 56], [56, 56], [78, 58], [100, 60], [115, 64],
+          [120, 70], [100, 72], [70, 70], [40, 68], [22, 64], [20, 60],
+          [22, 56],
+        ],
+      },
+      // Roman / migration era - Baltic Finnic + Hungarian arrival
+      {
+        startYear: 800,
+        polygon: [
+          [16, 58], [25, 58], [35, 56], [45, 50], [52, 48], [56, 50],
+          [54, 56], [60, 58], [80, 60], [110, 64], [125, 70], [105, 72],
+          [78, 70], [50, 68], [30, 66], [18, 62], [16, 58],
+        ],
+      },
+      // Modern - Finno-Ugric core + Samoyed sliver
+      {
+        startYear: 1500,
+        polygon: [
+          [14, 58], [22, 58], [28, 60], [34, 60], [38, 56], [48, 50],
+          [52, 47], [56, 48], [54, 53], [60, 56], [68, 58], [82, 62],
+          [102, 66], [120, 70], [105, 72], [80, 71], [55, 68], [34, 66],
+          [22, 64], [14, 60], [14, 58],
+        ],
+      },
+    ],
+  },
+
+  // -------- Turkic --------
+  {
+    id: "turkic",
+    name: "Turkic",
+    color: "#ffd86b",
+    wikipedia: "Turkic_languages",
+    note: "From Mongolia in the 6th c. via the steppe; today Turkish, Azeri, Kazakh, Uzbek, Kyrgyz, Uyghur, etc.",
+    stages: [
+      // Origin - eastern steppe / Altai (Göktürks ~552 CE)
+      {
+        startYear: 550,
+        polygon: [
+          [85, 42], [95, 42], [105, 44], [110, 48], [108, 52], [98, 52],
+          [88, 50], [82, 46], [85, 42],
+        ],
+      },
+      // Westward expansion - Khazars, Bulgars, Pechenegs (~900 CE)
+      {
+        startYear: 900,
+        polygon: [
+          [25, 42], [40, 44], [55, 46], [70, 46], [85, 46], [100, 48],
+          [110, 50], [108, 52], [98, 52], [80, 52], [60, 52], [42, 50],
+          [28, 48], [22, 44], [25, 42],
+        ],
+      },
+      // Seljuk era - Anatolia + Iran-Turan
+      {
+        startYear: 1100,
+        polygon: [
+          [25, 38], [38, 38], [50, 38], [62, 38], [75, 38], [88, 40],
+          [102, 42], [112, 46], [110, 52], [98, 54], [82, 54], [62, 50],
+          [42, 46], [28, 42], [25, 38],
+        ],
+      },
+      // Ottoman + Timurid + Mughal Turkic core (~1500)
+      {
+        startYear: 1500,
+        polygon: [
+          [22, 38], [32, 36], [42, 36], [54, 36], [65, 36], [76, 38],
+          [88, 40], [102, 42], [112, 46], [114, 52], [102, 54], [86, 54],
+          [66, 50], [46, 46], [28, 42], [22, 38],
+        ],
+      },
+      // Modern - Turkey + Azerbaijan + Central Asia + Xinjiang + Yakutia
+      {
+        startYear: 1900,
+        polygon: [
+          [25, 36], [34, 36], [44, 38], [54, 40], [62, 40], [72, 40],
+          [80, 42], [88, 44], [98, 44], [108, 46], [120, 50], [130, 56],
+          [140, 65], [148, 70], [135, 72], [115, 68], [95, 60], [78, 50],
+          [62, 46], [48, 42], [34, 40], [25, 38], [25, 36],
+        ],
+      },
+    ],
+  },
+];
+
+export function activeLanguageStage(
+  lang: LanguageFamily,
+  year: number,
+): LanguageStage | undefined {
+  let chosen: LanguageStage | undefined;
+  for (const stage of lang.stages) {
+    if (stage.startYear <= year) chosen = stage;
+    else break;
+  }
+  return chosen;
+}

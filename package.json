@@ -1,0 +1,33 @@
+{
+  "name": "strata",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive historical world map — explore 12,000 years of human history through toggleable data layers, from political boundaries to migrations, religions, and climate.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "tsc -b --noEmit",
+    "build:cities": "node scripts/build-cities.mjs",
+    "build:cities:refresh": "node scripts/build-cities.mjs --refresh",
+    "build:religions": "node scripts/build-religions.mjs",
+    "build:battles": "node scripts/build-battles.mjs",
+    "build:disasters": "node scripts/build-disasters.mjs",
+    "build:population": "node scripts/build-population.mjs",
+    "build:population:refresh": "node scripts/build-population.mjs --refresh"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.24.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
