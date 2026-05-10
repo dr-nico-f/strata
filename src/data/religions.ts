@@ -1,0 +1,514 @@
+/**
+ * Schematic religious tradition spread for the pre-modern era (year < 1945).
+ * Each tradition has a list of `{startYear, polygon}` time-slice anchors. The
+ * most recent anchor whose startYear <= current year is rendered. Polygons
+ * trace the rough region where the tradition was historically dominant or
+ * majority - they're intentionally low-resolution and shouldn't be read as
+ * authoritative cartography.
+ *
+ * For year >= 1945, the layer instead renders Pew Research-derived modern
+ * majority religion per country (see religions.modern.ts).
+ *
+ * Sources for the time slices:
+ *   - "Atlas of World Religions" (Hartz / Hutchinson)
+ *   - "The Penguin Atlas of World History" (Kinder & Hilgemann)
+ *   - "Atlas of the Year 1000" (Roberts)
+ *   - Wikipedia: "History of <religion>" articles for major dates
+ *
+ * Each religion is also pinned to a Wikidata Q-id so tooltips can link to a
+ * canonical source. (Wikidata SPARQL: see scripts/build-religions.mjs.)
+ */
+
+export interface ReligionStage {
+  startYear: number;
+  polygon: Array<[number, number]>;
+  /** Optional Wikidata QID for the historical event/edict that triggered this stage. */
+  wikidata?: string;
+  /** Optional one-line caption shown in the tooltip for this stage. */
+  caption?: string;
+}
+
+export interface Religion {
+  id: string;
+  name: string;
+  color: string;
+  /** Wikipedia slug. */
+  wikipedia?: string;
+  /** Wikidata Q-id for the religion itself (e.g. Q5043 = Christianity). */
+  wikidata?: string;
+  note?: string;
+  stages: ReligionStage[];
+}
+
+export const RELIGIONS: readonly Religion[] = [
+  // -------- Christianity --------
+  {
+    id: "christianity",
+    name: "Christianity",
+    color: "#7aa2ff",
+    wikipedia: "Christianity",
+    wikidata: "Q5043",
+    note: "From the Levant ~33 CE through the Roman Empire, Europe, the New World, and beyond",
+    stages: [
+      // Apostolic era - Judaea + Samaria + early communities
+      {
+        startYear: 33,
+        polygon: [
+          [34.5, 31.0], [35.6, 31.4], [36.5, 32.5], [36.4, 33.7],
+          [35.4, 34.0], [34.6, 33.0], [34.5, 31.0],
+        ],
+      },
+      // Pauline / 2nd-century: spread across Asia Minor, Greece, Rome, Egypt
+      {
+        startYear: 100,
+        polygon: [
+          [12, 36], [18, 38], [22, 39], [27, 40], [32, 41], [36, 38],
+          [37, 35], [35, 32], [32, 31], [29, 31], [26, 32], [22, 35],
+          [18, 36], [14, 37], [12, 36],
+        ],
+      },
+      // Constantine onward - whole Roman world Christianised
+      {
+        startYear: 313,
+        polygon: [
+          [-9, 36], [-3, 39], [3, 41], [9, 43], [16, 45], [22, 45],
+          [28, 44], [34, 42], [38, 41], [40, 38], [38, 34], [34, 31],
+          [29, 30], [24, 31], [16, 33], [10, 34], [3, 35], [-4, 35],
+          [-9, 36],
+        ],
+      },
+      // Post-Roman: Latin West + Byzantine East + Coptic Egypt + Aksum + early British
+      {
+        startYear: 500,
+        polygon: [
+          [-10, 36], [-7, 41], [-3, 44], [2, 47], [7, 50], [12, 52],
+          [9, 55], [3, 57], [-4, 56], [-9, 51], [-10, 44], [-9, 36],
+        ],
+      },
+      // Charlemagne / Cyril & Methodius era - Western, Central, and SE Europe Christianised
+      {
+        startYear: 800,
+        polygon: [
+          [-10, 36], [-9, 43], [-5, 47], [0, 50], [4, 53], [10, 55],
+          [16, 56], [22, 56], [27, 54], [30, 49], [32, 44], [33, 40],
+          [35, 37], [38, 35], [37, 33], [32, 31], [25, 31], [18, 33],
+          [10, 35], [2, 37], [-5, 37], [-10, 36],
+        ],
+      },
+      // Post-Schism - Latin Catholic + Greek Orthodox + Russian Christianisation
+      {
+        startYear: 1100,
+        polygon: [
+          [-10, 36], [-9, 43], [-5, 48], [0, 52], [6, 56], [14, 60],
+          [22, 63], [30, 64], [38, 62], [44, 58], [46, 52], [44, 46],
+          [40, 41], [38, 36], [36, 33], [32, 31], [25, 31], [18, 33],
+          [10, 35], [2, 37], [-5, 37], [-10, 36],
+        ],
+      },
+      // Late medieval - Orthodox Russia + Iberian Reconquista + Ethiopian Christianity
+      {
+        startYear: 1400,
+        polygon: [
+          [-10, 36], [-9, 44], [-3, 49], [4, 53], [12, 58], [22, 64],
+          [34, 66], [50, 67], [60, 60], [55, 52], [48, 46], [42, 41],
+          [38, 37], [32, 33], [25, 31], [16, 33], [6, 36], [-5, 37],
+          [-10, 36],
+        ],
+      },
+      // Age of Exploration - Latin America evangelisation
+      {
+        startYear: 1550,
+        polygon: [
+          [-90, -50], [-78, -50], [-60, -38], [-50, -20], [-44, 0],
+          [-58, 12], [-72, 18], [-90, 22], [-105, 28], [-115, 38],
+          [-120, 50], [-110, 60], [-90, 65], [-50, 68], [-10, 65],
+          [10, 62], [30, 60], [55, 52], [48, 46], [42, 41], [38, 37],
+          [32, 33], [25, 31], [16, 33], [6, 36], [-5, 37], [-10, 36],
+          [-30, 26], [-50, 12], [-58, -8], [-70, -28], [-82, -42], [-90, -50],
+        ],
+      },
+      // Industrial / colonial era - Sub-Saharan Africa, parts of Pacific & E. Asia
+      {
+        startYear: 1800,
+        polygon: [
+          [-95, -55], [-78, -50], [-60, -38], [-50, -22], [-40, -8],
+          [-30, 0], [-20, 5], [-12, 6], [-4, 5], [10, -5], [22, -22],
+          [30, -32], [38, -28], [42, -18], [48, -2], [50, 12], [55, 30],
+          [60, 50], [80, 60], [110, 60], [140, 60], [170, 60], [-150, 60],
+          [-130, 55], [-110, 50], [-90, 32], [-105, 28], [-115, 38],
+          [-120, 50], [-110, 60], [-95, -55],
+        ],
+      },
+      // Modern - global, dominant in Americas/Europe/Sub-Saharan Africa/Pacific
+      {
+        startYear: 1950,
+        polygon: [
+          [-160, -55], [-78, -55], [-50, -25], [-40, -10], [-30, -2],
+          [-15, 8], [-5, 12], [12, 8], [25, -10], [32, -34], [42, -36],
+          [48, -10], [55, 18], [62, 38], [78, 55], [110, 55], [148, 55],
+          [180, 55], [-150, 60], [-120, 62], [-90, 65], [-60, 65], [-30, 65],
+          [-160, -55],
+        ],
+      },
+    ],
+  },
+
+  // -------- Islam --------
+  {
+    id: "islam",
+    name: "Islam",
+    color: "#5fd1a0",
+    wikipedia: "Islam",
+    wikidata: "Q432",
+    note: "Founded ~610 in Arabia; spread by the Caliphates across N. Africa, the Middle East, Central, South, and Southeast Asia",
+    stages: [
+      // Hijra / first decade - just western Arabia
+      {
+        startYear: 622,
+        polygon: [
+          [37, 14], [42, 13], [48, 17], [50, 21], [50, 26], [44, 28],
+          [39, 28], [37, 24], [37, 14],
+        ],
+      },
+      // Rashidun caliphate - Arabia + Levant + Egypt + Iran
+      {
+        startYear: 650,
+        polygon: [
+          [25, 12], [40, 12], [50, 14], [60, 22], [62, 32], [56, 38],
+          [48, 38], [42, 35], [37, 32], [33, 31], [27, 31], [22, 28],
+          [25, 12],
+        ],
+      },
+      // Umayyad caliphate peak - Iberia → Indus
+      {
+        startYear: 750,
+        polygon: [
+          [-10, 36], [-7, 30], [-2, 26], [10, 22], [25, 18], [40, 14],
+          [55, 18], [70, 24], [73, 32], [70, 38], [62, 41], [50, 40],
+          [40, 38], [32, 38], [25, 36], [16, 35], [8, 34], [-3, 35],
+          [-10, 36],
+        ],
+      },
+      // Abbasid era + early Islamic India - Indus + spread south to E. Africa coast
+      {
+        startYear: 1000,
+        polygon: [
+          [-10, 36], [-7, 28], [0, 22], [12, 18], [25, 14], [38, 10],
+          [44, 4], [44, -8], [40, -16], [38, -24], [42, -22], [50, 12],
+          [60, 20], [72, 26], [78, 30], [76, 36], [70, 40], [60, 42],
+          [48, 41], [38, 39], [28, 36], [16, 34], [4, 33], [-5, 34],
+          [-10, 36],
+        ],
+      },
+      // Ottoman + Mughal + Sahel - 1500s
+      {
+        startYear: 1500,
+        polygon: [
+          [-15, 32], [-7, 28], [0, 22], [10, 18], [22, 14], [32, 10],
+          [40, 4], [42, -10], [40, -22], [42, -22], [50, 0], [60, 14],
+          [72, 22], [82, 26], [90, 28], [95, 22], [100, 12], [108, 4],
+          [115, -2], [120, -8], [115, -10], [108, -8], [98, 4], [88, 18],
+          [78, 30], [70, 38], [60, 42], [48, 42], [38, 40], [28, 38],
+          [22, 41], [28, 45], [22, 47], [12, 45], [2, 42], [-8, 38],
+          [-15, 32],
+        ],
+      },
+      // Early modern global - including Indonesian archipelago + parts of West Africa
+      {
+        startYear: 1700,
+        polygon: [
+          [-18, 32], [-12, 22], [-2, 16], [8, 12], [20, 8], [32, 4],
+          [42, 0], [44, -10], [42, -22], [50, -12], [56, 0], [62, 12],
+          [72, 22], [82, 26], [92, 24], [102, 16], [110, 6], [120, 0],
+          [128, -4], [135, -8], [140, -2], [132, 6], [120, 12], [108, 18],
+          [95, 28], [85, 32], [78, 36], [70, 40], [62, 42], [50, 42],
+          [40, 40], [30, 40], [22, 42], [28, 46], [22, 47], [12, 45],
+          [2, 42], [-10, 38], [-18, 32],
+        ],
+      },
+      // Modern era - majority Muslim countries today
+      {
+        startYear: 1950,
+        polygon: [
+          [-18, 36], [-14, 24], [-6, 16], [4, 12], [16, 8], [28, 4],
+          [40, 0], [44, -8], [42, -22], [50, -12], [55, -2], [62, 8],
+          [70, 18], [76, 26], [80, 30], [76, 35], [86, 36], [96, 28],
+          [108, 14], [120, 4], [128, -4], [136, -10], [140, -3],
+          [128, 8], [115, 14], [102, 22], [88, 32], [78, 38], [68, 42],
+          [55, 44], [44, 42], [35, 41], [28, 42], [22, 42], [16, 41],
+          [8, 38], [-2, 38], [-12, 38], [-18, 36],
+        ],
+      },
+    ],
+  },
+
+  // -------- Buddhism --------
+  {
+    id: "buddhism",
+    name: "Buddhism",
+    color: "#ffae42",
+    wikipedia: "Buddhism",
+    wikidata: "Q748",
+    note: "Founded ~5th-c. BCE NE India; spread along Silk Road and into Sri Lanka, SE Asia, China, Tibet, Korea, Japan",
+    stages: [
+      // Lifetime of the Buddha - Magadha
+      {
+        startYear: -528,
+        polygon: [
+          [82, 24], [86, 24], [88, 26], [88, 28], [85, 29], [82, 28],
+          [80, 26], [82, 24],
+        ],
+      },
+      // Ashoka's missionary spread (~250 BCE)
+      {
+        startYear: -250,
+        polygon: [
+          [68, 8], [76, 6], [82, 8], [88, 10], [92, 18], [94, 24],
+          [90, 30], [82, 32], [73, 32], [68, 28], [66, 22], [68, 8],
+        ],
+      },
+      // Han-era contact + Theravada Lanka + early Mahayana
+      {
+        startYear: 100,
+        polygon: [
+          [68, 6], [76, 4], [82, 6], [90, 12], [98, 22], [105, 30],
+          [112, 36], [115, 40], [110, 42], [100, 40], [90, 36], [82, 32],
+          [73, 32], [68, 28], [66, 22], [68, 6],
+        ],
+      },
+      // Tang dynasty + Silk Road peak (~600 CE)
+      {
+        startYear: 600,
+        polygon: [
+          [68, 4], [78, 2], [88, 4], [98, 10], [108, 18], [115, 26],
+          [120, 32], [125, 38], [128, 42], [130, 48], [125, 50],
+          [115, 50], [102, 46], [92, 40], [82, 34], [73, 32], [68, 28],
+          [66, 22], [68, 4],
+        ],
+      },
+      // Chola / Pala / Heian - SE Asia + Tibet + Japan firmly Buddhist
+      {
+        startYear: 900,
+        polygon: [
+          [70, 4], [80, 0], [92, -4], [102, -2], [108, 2], [115, 10],
+          [122, 18], [128, 26], [132, 32], [138, 38], [142, 44],
+          [138, 48], [128, 50], [115, 48], [100, 44], [88, 38],
+          [80, 34], [73, 32], [68, 26], [70, 4],
+        ],
+      },
+      // Post-Islamic withdrawal from India + consolidation in E + SE Asia
+      {
+        startYear: 1300,
+        polygon: [
+          [78, 20], [82, 14], [92, 8], [100, 4], [108, 0], [115, -8],
+          [118, 0], [122, 12], [128, 22], [132, 30], [138, 38],
+          [142, 44], [138, 48], [128, 50], [118, 48], [108, 42],
+          [100, 36], [88, 30], [80, 24], [78, 20],
+        ],
+      },
+      // Modern - majority/historical Buddhist countries (Japan, Mongolia, SE Asia, Tibet/Bhutan)
+      {
+        startYear: 1900,
+        polygon: [
+          [76, 26], [82, 20], [90, 12], [97, 4], [104, -2], [110, -8],
+          [120, -10], [120, 4], [125, 14], [132, 24], [138, 32],
+          [142, 40], [144, 46], [142, 50], [134, 52], [122, 50],
+          [110, 46], [98, 40], [88, 32], [80, 30], [76, 26],
+        ],
+      },
+    ],
+  },
+
+  // -------- Hinduism --------
+  {
+    id: "hinduism",
+    name: "Hinduism",
+    color: "#ff7a90",
+    wikipedia: "Hinduism",
+    wikidata: "Q9089",
+    note: "Vedic tradition of the Indian subcontinent and the Indianised polities of SE Asia (Champa, Khmer, Majapahit)",
+    stages: [
+      // Vedic period - upper Indus & Ganges
+      {
+        startYear: -1500,
+        polygon: [
+          [70, 26], [76, 26], [82, 28], [85, 30], [82, 33], [76, 32],
+          [72, 30], [70, 26],
+        ],
+      },
+      // Late Vedic / Mahajanapadas - whole northern India
+      {
+        startYear: -800,
+        polygon: [
+          [68, 18], [76, 16], [84, 18], [90, 22], [92, 28], [88, 32],
+          [80, 33], [73, 32], [68, 28], [66, 22], [68, 18],
+        ],
+      },
+      // Maurya / Gupta - whole subcontinent + emerging Indianised SE Asia
+      {
+        startYear: 200,
+        polygon: [
+          [68, 6], [76, 4], [82, 6], [90, 12], [95, 22], [92, 30],
+          [86, 33], [76, 32], [70, 28], [66, 22], [68, 6],
+        ],
+      },
+      // Champa / Khmer / Srivijaya peak
+      {
+        startYear: 800,
+        polygon: [
+          [68, 6], [78, 4], [88, 6], [95, 10], [102, 12], [108, 12],
+          [110, 4], [108, -4], [102, -8], [95, -8], [90, -2], [85, 8],
+          [82, 18], [78, 28], [73, 32], [68, 28], [66, 22], [68, 6],
+        ],
+      },
+      // After Islamic conquests - retreat from western Indus, continued in SE Asia
+      {
+        startYear: 1300,
+        polygon: [
+          [70, 8], [78, 4], [86, 6], [92, 8], [97, 12], [98, 22],
+          [94, 30], [86, 33], [76, 32], [70, 28], [68, 22], [70, 8],
+        ],
+      },
+      // Modern - Indian subcontinent (excluding Pakistan/Bangladesh) + Bali
+      {
+        startYear: 1947,
+        polygon: [
+          [68, 8], [73, 6], [78, 7], [80, 12], [80, 20], [85, 22],
+          [89, 22], [93, 22], [96, 25], [92, 30], [86, 32], [78, 30],
+          [73, 28], [70, 24], [68, 16], [68, 8],
+        ],
+      },
+    ],
+  },
+
+  // -------- Chinese folk / Confucian / Taoist sphere --------
+  {
+    id: "confucianism",
+    name: "Chinese traditions",
+    wikidata: "Q12819564",
+    color: "#c39bff",
+    wikipedia: "Chinese_folk_religion",
+    note: "Confucian, Taoist, ancestral, and (later) Mahayana Buddhist traditions of the Sinosphere",
+    stages: [
+      // Late Zhou - core Yellow River basin
+      {
+        startYear: -700,
+        polygon: [
+          [108, 30], [114, 30], [118, 32], [120, 36], [118, 40],
+          [112, 40], [106, 38], [104, 33], [108, 30],
+        ],
+      },
+      // Han unification - core China proper
+      {
+        startYear: -200,
+        polygon: [
+          [102, 22], [110, 20], [118, 22], [122, 28], [124, 36],
+          [122, 42], [116, 44], [108, 42], [102, 38], [100, 32],
+          [100, 26], [102, 22],
+        ],
+      },
+      // Tang - includes Korea, parts of Vietnam, the Tarim, full Mahayana Buddhist overlay
+      {
+        startYear: 700,
+        polygon: [
+          [85, 26], [95, 22], [102, 18], [108, 16], [115, 20], [122, 26],
+          [128, 32], [132, 38], [130, 44], [124, 48], [115, 50],
+          [105, 48], [95, 44], [88, 38], [85, 32], [85, 26],
+        ],
+      },
+      // Song / early Yuan - Vietnam culturally Confucian, Korea & Japan well-integrated
+      {
+        startYear: 1000,
+        polygon: [
+          [85, 22], [95, 18], [104, 14], [110, 12], [116, 16], [122, 22],
+          [128, 30], [132, 36], [136, 40], [136, 44], [130, 48],
+          [120, 50], [110, 48], [100, 44], [92, 38], [85, 32], [85, 22],
+        ],
+      },
+      // Ming / Qing - cultural Sinosphere including overseas Chinese diaspora corridors
+      {
+        startYear: 1500,
+        polygon: [
+          [85, 22], [95, 18], [104, 12], [112, 8], [118, 12], [124, 22],
+          [130, 30], [136, 38], [140, 42], [142, 46], [136, 50],
+          [126, 52], [114, 50], [102, 46], [92, 40], [85, 32], [85, 22],
+        ],
+      },
+      // Modern Sinosphere
+      {
+        startYear: 1950,
+        polygon: [
+          [86, 22], [96, 18], [104, 12], [112, 8], [118, 12], [124, 22],
+          [130, 28], [134, 34], [138, 38], [142, 42], [144, 46],
+          [136, 48], [124, 50], [112, 48], [102, 44], [92, 38], [86, 32],
+          [86, 22],
+        ],
+      },
+    ],
+  },
+
+  // -------- Judaism (small but historically continuous) --------
+  {
+    id: "judaism",
+    name: "Judaism",
+    color: "#3da9c7",
+    wikipedia: "Judaism",
+    wikidata: "Q9268",
+    note: "From the United Kingdom of Israel through the Diaspora and modern Israel",
+    stages: [
+      // Iron Age Israel/Judah
+      {
+        startYear: -1000,
+        polygon: [
+          [34.4, 31.0], [35.8, 31.2], [36.0, 32.5], [35.6, 33.4],
+          [35.0, 33.5], [34.4, 32.3], [34.4, 31.0],
+        ],
+      },
+      // Post-exile + early diaspora (Babylonia, Egypt)
+      {
+        startYear: -500,
+        polygon: [
+          [29, 30], [35, 30], [40, 32], [44, 33], [45, 35], [42, 36],
+          [37, 35], [34, 33], [30, 32], [29, 30],
+        ],
+      },
+      // Roman-era diaspora - Mediterranean spread
+      {
+        startYear: 100,
+        polygon: [
+          [-2, 36], [10, 38], [22, 40], [30, 41], [38, 39], [42, 36],
+          [40, 32], [35, 30], [28, 30], [18, 32], [8, 34], [-2, 36],
+        ],
+      },
+      // Medieval Sephardi + Ashkenazi spread
+      {
+        startYear: 1000,
+        polygon: [
+          [-7, 38], [2, 42], [10, 47], [18, 50], [26, 52], [34, 50],
+          [40, 46], [42, 40], [38, 36], [30, 33], [20, 33], [10, 35],
+          [0, 36], [-7, 38],
+        ],
+      },
+      // Post-1948 - Israel + diaspora corridors (Americas, Europe)
+      {
+        startYear: 1948,
+        polygon: [
+          [34.3, 29.5], [35.7, 29.5], [35.9, 31.3], [35.8, 33.3],
+          [35.0, 33.3], [34.3, 31.3], [34.3, 29.5],
+        ],
+      },
+    ],
+  },
+];
+
+export function activeReligionStage(
+  rel: Religion,
+  year: number,
+): ReligionStage | undefined {
+  let chosen: ReligionStage | undefined;
+  for (const stage of rel.stages) {
+    if (stage.startYear <= year) chosen = stage;
+    else break;
+  }
+  return chosen;
+}

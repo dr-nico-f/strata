@@ -1,0 +1,240 @@
+:root,
+:root[data-theme="dark"] {
+  --bg: #0e1116;
+  --panel: rgba(20, 25, 35, 0.92);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: #e6e8ec;
+  --text-muted: #9aa3b2;
+  --accent: #f5b942;
+  --accent-strong: #ffce65;
+  --leader: rgba(255, 220, 140, 0.7);
+}
+
+:root[data-theme="light"] {
+  --bg: #f4f4f0;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-border: rgba(0, 0, 0, 0.08);
+  --text: #232634;
+  --text-muted: #5a6378;
+  --accent: #c47600;
+  --accent-strong: #a65a00;
+  --leader: rgba(196, 118, 0, 0.7);
+}
+
+:root[data-theme="sepia"] {
+  --bg: #2a2018;
+  --panel: rgba(45, 33, 22, 0.93);
+  --panel-border: rgba(255, 220, 170, 0.16);
+  --text: #f3e6cc;
+  --text-muted: #c4a880;
+  --accent: #d99a3a;
+  --accent-strong: #f0bc66;
+  --leader: rgba(240, 188, 102, 0.75);
+}
+
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+:root[data-theme="light"] button {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="light"] button:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+/* TimeSlider gets a bigger, more grippable thumb so accurate scrubbing on
+   small screens / touch is realistic. The thumb is intentionally cool blue
+   so it pops against the warm amber accent track / era bands. The track
+   stays slim so the era bands and density sparkline read as the dominant
+   visual. */
+input[type="range"].time-slider {
+  height: 22px;
+  cursor: pointer;
+  /* `accent-color` paints the filled portion of the track. Override the
+     default amber so the thumb's blue isn't fighting an amber bar. */
+  accent-color: #2b86d4;
+}
+input[type="range"].time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2b86d4;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+}
+input[type="range"].time-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  background: #1f6db5;
+}
+input[type="range"].time-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2b86d4;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+}
+input[type="range"].time-slider::-moz-range-thumb:active {
+  cursor: grabbing;
+  background: #1f6db5;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+input[type="number"],
+input[type="text"] {
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+:root[data-theme="light"] input[type="number"],
+:root[data-theme="light"] input[type="text"] {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes hsAuroraShift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-3%, 1%, 0) scale(1.06); }
+  100% { transform: translate3d(2%, -1%, 0) scale(1.03); }
+}
+
+@keyframes hsTwinkle {
+  0%   { opacity: 0.18; }
+  60%  { opacity: 0.85; }
+  100% { opacity: 0.32; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Honor reduced-motion for the cosmetic aurora + twinkles. */
+  [aria-hidden="true"] [style*="hsAuroraShift"],
+  [aria-hidden="true"] circle[style*="hsTwinkle"] {
+    animation: none !important;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(245, 185, 66, 0.5) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes hsSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Tiny inline spinner used next to the year label while a boundary snapshot
+   is loading. Honors prefers-reduced-motion via the rule below. */
+.hs-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(245, 185, 66, 0.25);
+  border-top-color: var(--accent, #f5b942);
+  animation: hsSpin 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hs-spinner {
+    animation: none;
+    border-top-color: rgba(245, 185, 66, 0.6);
+  }
+}
+
+/* Lift MapLibre's nav + attribution above the bottom time slider */
+.maplibregl-ctrl-bottom-left {
+  bottom: 130px !important;
+  left: 12px !important;
+}
+
+.maplibregl-ctrl-bottom-left .maplibregl-ctrl {
+  margin: 0 0 8px 0 !important;
+}
+
+.maplibregl-ctrl-bottom-right {
+  bottom: 4px !important;
+  right: 12px !important;
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  margin: 0 12px 12px 0 !important;
+}
+
+/* Print / clean mode (H key) hides every overlay so only the map remains. */
+:root[data-hide-ui] .maplibregl-ctrl-bottom-left,
+:root[data-hide-ui] .maplibregl-ctrl-bottom-right,
+:root[data-hide-ui] .maplibregl-ctrl-attrib {
+  display: none !important;
+}
+
+/* When print mode is on the map controls also retreat for screenshot purity. */
+:root[data-hide-ui] body {
+  cursor: crosshair;
+}

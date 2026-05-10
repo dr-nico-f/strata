@@ -1,0 +1,1125 @@
+/**
+ * Curated list of cultures/peoples with approximate active date ranges and
+ * hand-authored region polygons. Polygons are intentionally schematic - they
+ * mark the rough cultural sphere of influence at peak extent, not precise
+ * historical borders.
+ */
+export interface People {
+  id: string;
+  name: string;
+  start: number;
+  end: number;
+  /** Hand-authored polygon as [lng, lat] vertices (no need to close - we close it). */
+  polygon: Array<[number, number]>;
+  note?: string;
+}
+
+function close(p: Array<[number, number]>): Array<[number, number]> {
+  if (p.length === 0) return p;
+  const [a, b] = p[0];
+  const [c, d] = p[p.length - 1];
+  return a === c && b === d ? p : [...p, p[0]];
+}
+
+export const PEOPLES: readonly People[] = (
+  [
+    {
+      id: "sumerians",
+      name: "Sumerians",
+      start: -3500,
+      end: -1900,
+      polygon: [
+        [44.5, 32.8],
+        [47.5, 32.0],
+        [48.6, 30.2],
+        [47.8, 29.3],
+        [44.2, 30.6],
+        [43.6, 31.8],
+      ],
+      note: "Earliest civilization of southern Mesopotamia",
+    },
+    {
+      id: "egyptians-ancient",
+      name: "Ancient Egyptians",
+      start: -3100,
+      end: -30,
+      polygon: [
+        [29.8, 31.4],
+        [33.2, 31.1],
+        [33.0, 28.5],
+        [33.0, 24.0],
+        [31.5, 22.0],
+        [29.8, 22.0],
+        [30.0, 26.5],
+        [29.6, 30.0],
+      ],
+      note: "Nile Valley civilization through the Ptolemaic period",
+    },
+    {
+      id: "indus",
+      name: "Indus Valley Civilization",
+      start: -2600,
+      end: -1900,
+      polygon: [
+        [66.5, 27.0],
+        [73.5, 30.5],
+        [76.0, 28.5],
+        [73.0, 23.0],
+        [69.0, 22.5],
+        [66.5, 24.0],
+      ],
+      note: "Harappan culture in the Indus river basin",
+    },
+    {
+      id: "minoans",
+      name: "Minoans",
+      start: -2700,
+      end: -1100,
+      polygon: [
+        [23.5, 35.6],
+        [26.4, 35.7],
+        [26.4, 34.8],
+        [23.5, 34.7],
+      ],
+      note: "Bronze Age culture centered on Crete",
+    },
+    {
+      id: "shang-zhou",
+      name: "Shang & Zhou Chinese",
+      start: -1600,
+      end: -256,
+      polygon: [
+        [108, 38.5],
+        [118, 39.5],
+        [120, 36],
+        [119, 32],
+        [114, 30.5],
+        [109, 31.5],
+        [107, 35],
+      ],
+      note: "Bronze Age dynasties of the North China plain",
+    },
+    {
+      id: "olmec",
+      name: "Olmec",
+      start: -1500,
+      end: -400,
+      polygon: [
+        [-96.8, 19.0],
+        [-93.5, 19.0],
+        [-92.0, 17.5],
+        [-94.0, 16.5],
+        [-97.0, 17.5],
+      ],
+      note: "Earliest major Mesoamerican culture",
+    },
+    {
+      id: "phoenicians",
+      name: "Phoenicians",
+      start: -1500,
+      end: -300,
+      polygon: [
+        [34.5, 35.8],
+        [36.5, 35.5],
+        [36.6, 33.4],
+        [34.6, 33.0],
+      ],
+      note: "Seafaring traders of the eastern Mediterranean",
+    },
+    {
+      id: "ancient-greeks",
+      name: "Ancient Greeks",
+      start: -800,
+      end: -146,
+      polygon: [
+        [19.5, 41.0],
+        [24.0, 41.0],
+        [27.5, 39.0],
+        [27.5, 36.5],
+        [22.0, 35.5],
+        [19.0, 38.5],
+      ],
+      note: "City-states across the Aegean and Mediterranean",
+    },
+    {
+      id: "achaemenid-persians",
+      name: "Achaemenid Persians",
+      start: -550,
+      end: -330,
+      polygon: [
+        [26, 41],
+        [40, 42],
+        [55, 43],
+        [69, 38],
+        [73, 32],
+        [62, 24],
+        [50, 24],
+        [44, 30],
+        [35, 32],
+        [27, 36],
+      ],
+      note: "First Persian Empire, Cyrus to Darius III",
+    },
+    {
+      id: "romans",
+      name: "Romans",
+      start: -509,
+      end: 476,
+      polygon: [
+        [-9, 38],
+        [-1, 43.5],
+        [8, 49],
+        [16, 49],
+        [22, 47],
+        [29, 44],
+        [37, 42],
+        [40, 36],
+        [36, 31],
+        [25, 31],
+        [10, 33],
+        [-1, 35],
+        [-7, 35.5],
+      ],
+      note: "Republic and Western Empire at peak extent",
+    },
+    {
+      id: "han-chinese",
+      name: "Han Chinese",
+      start: -206,
+      end: 220,
+      polygon: [
+        [99, 41],
+        [108, 42],
+        [120, 41],
+        [123, 36],
+        [122, 31],
+        [113, 22],
+        [104, 23],
+        [98, 26],
+        [99, 35],
+      ],
+      note: "Han dynasty",
+    },
+    {
+      id: "maya-classic",
+      name: "Classic Maya",
+      start: -250,
+      end: 900,
+      polygon: [
+        [-94, 20.5],
+        [-87.5, 21.5],
+        [-87, 18],
+        [-88.5, 14.5],
+        [-91.5, 14],
+        [-93, 17],
+      ],
+      note: "Lowland city-states of southern Mexico and Guatemala",
+    },
+    {
+      id: "aksumites",
+      name: "Aksumites",
+      start: -100,
+      end: 940,
+      polygon: [
+        [37, 17],
+        [42, 16],
+        [43, 12],
+        [40, 9],
+        [36, 11],
+        [35, 14],
+      ],
+      note: "Trading kingdom of the Horn of Africa",
+    },
+    {
+      id: "byzantines",
+      name: "Byzantines",
+      start: 330,
+      end: 1453,
+      polygon: [
+        [13, 46],
+        [22, 46],
+        [33, 44],
+        [40, 38],
+        [40, 32],
+        [32, 30],
+        [21, 32],
+        [14, 38],
+      ],
+      note: "Eastern Roman Empire centered on Constantinople",
+    },
+    {
+      id: "tang-chinese",
+      name: "Tang Chinese",
+      start: 618,
+      end: 907,
+      polygon: [
+        [78, 43],
+        [95, 45],
+        [110, 45],
+        [124, 42],
+        [122, 32],
+        [110, 22],
+        [101, 22],
+        [90, 30],
+        [80, 36],
+      ],
+      note: "Tang dynasty",
+    },
+    {
+      id: "abbasid-caliphate",
+      name: "Abbasid Caliphate",
+      start: 750,
+      end: 1258,
+      polygon: [
+        [-10, 35],
+        [10, 36],
+        [20, 32],
+        [37, 28],
+        [55, 30],
+        [70, 36],
+        [73, 30],
+        [60, 22],
+        [45, 14],
+        [32, 14],
+        [22, 22],
+        [-2, 28],
+        [-10, 30],
+      ],
+      note: "Islamic golden-age caliphate from Baghdad",
+    },
+    {
+      id: "vikings",
+      name: "Vikings",
+      start: 793,
+      end: 1066,
+      polygon: [
+        [4, 71],
+        [25, 71],
+        [30, 60],
+        [22, 55],
+        [10, 55],
+        [4, 58],
+      ],
+      note: "Norse seafarers and raiders",
+    },
+    {
+      id: "mongols",
+      name: "Mongol Empire",
+      start: 1206,
+      end: 1368,
+      polygon: [
+        [40, 55],
+        [80, 60],
+        [120, 55],
+        [135, 48],
+        [125, 40],
+        [105, 35],
+        [85, 32],
+        [60, 35],
+        [45, 38],
+        [40, 45],
+      ],
+      note: "Largest contiguous land empire in history",
+    },
+    {
+      id: "aztecs",
+      name: "Aztecs",
+      start: 1325,
+      end: 1521,
+      polygon: [
+        [-101, 21],
+        [-95, 21],
+        [-93, 17.5],
+        [-99, 16],
+        [-103, 18],
+      ],
+      note: "Mexica triple alliance",
+    },
+    {
+      id: "inca",
+      name: "Inca",
+      start: 1438,
+      end: 1533,
+      polygon: [
+        [-78, 1],
+        [-72, -2],
+        [-68, -10],
+        [-66, -22],
+        [-69, -32],
+        [-75, -30],
+        [-78, -16],
+        [-80, -5],
+      ],
+      note: "Tawantinsuyu, Andean empire",
+    },
+    {
+      id: "polynesians",
+      name: "Polynesians",
+      start: -1000,
+      end: 1500,
+      polygon: [
+        [175, 20],
+        [-150, 25],
+        [-105, -27],
+        [180, -50],
+        [165, -45],
+        [170, -10],
+      ],
+      note: "Pacific seafarers reaching Hawaii, Aotearoa, and Rapa Nui",
+    },
+
+    // ── Mesopotamia & Levant successors ─────────────────────────────────
+    {
+      id: "akkadians",
+      name: "Akkadians",
+      start: -2334,
+      end: -2154,
+      polygon: [
+        [40, 37], [47, 37], [48, 30], [44, 29], [40, 32],
+      ],
+      note: "First multi-city Mesopotamian empire under Sargon",
+    },
+    {
+      id: "babylonians-old",
+      name: "Old Babylonians",
+      start: -1894,
+      end: -1595,
+      polygon: [
+        [42, 35], [47, 35], [48, 30], [44, 29], [42, 32],
+      ],
+      note: "Hammurabi-era central Mesopotamia",
+    },
+    {
+      id: "babylonians-neo",
+      name: "Neo-Babylonians",
+      start: -626,
+      end: -539,
+      polygon: [
+        [33, 37], [47, 38], [48, 30], [42, 28], [34, 31],
+      ],
+      note: "Chaldean dynasty of Nebuchadnezzar II",
+    },
+    {
+      id: "assyrians",
+      name: "Neo-Assyrians",
+      start: -911,
+      end: -609,
+      polygon: [
+        [27, 38], [44, 39], [54, 32], [50, 26], [40, 24], [30, 30],
+      ],
+      note: "Iron Age empire from Egypt to the Persian Gulf",
+    },
+    {
+      id: "hittites",
+      name: "Hittites",
+      start: -1600,
+      end: -1178,
+      polygon: [
+        [27, 41], [40, 41], [40, 36], [33, 35], [27, 36],
+      ],
+      note: "Bronze Age Anatolian empire centered on Hattusa",
+    },
+    {
+      id: "kushites",
+      name: "Kushites / Nubians",
+      start: -2000,
+      end: 350,
+      polygon: [
+        [30, 22], [37, 22], [38, 12], [33, 13], [30, 18],
+      ],
+      note: "Nubian kingdoms of Kerma, Napata, and Meroë",
+    },
+
+    // ── Iranian successors ──────────────────────────────────────────────
+    {
+      id: "parthians",
+      name: "Parthians",
+      start: -247,
+      end: 224,
+      polygon: [
+        [40, 40], [55, 42], [65, 38], [70, 30], [55, 25], [45, 28], [40, 33],
+      ],
+      note: "Arsacid empire rivalling Rome in the East",
+    },
+    {
+      id: "sassanids",
+      name: "Sassanids",
+      start: 224,
+      end: 651,
+      polygon: [
+        [37, 41], [56, 43], [69, 36], [73, 30], [60, 24], [44, 26], [37, 32],
+      ],
+      note: "Last pre-Islamic Persian empire",
+    },
+    {
+      id: "seljuks",
+      name: "Seljuks",
+      start: 1037,
+      end: 1194,
+      polygon: [
+        [27, 42], [60, 42], [70, 36], [62, 30], [50, 28], [38, 32], [27, 38],
+      ],
+      note: "Turkic empire stretching from Anatolia to the Hindu Kush",
+    },
+    {
+      id: "ottomans",
+      name: "Ottomans",
+      start: 1299,
+      end: 1922,
+      polygon: [
+        [15, 47], [40, 48], [50, 32], [45, 25], [37, 14], [30, 22],
+        [12, 32], [-2, 36], [12, 45],
+      ],
+      note: "Ottoman Empire from the Balkans to Arabia",
+    },
+    {
+      id: "safavids",
+      name: "Safavids",
+      start: 1501,
+      end: 1736,
+      polygon: [
+        [42, 40], [60, 40], [65, 30], [55, 25], [45, 26], [42, 32],
+      ],
+      note: "Twelver-Shia Persian empire",
+    },
+
+    // ── Mediterranean ───────────────────────────────────────────────────
+    {
+      id: "etruscans",
+      name: "Etruscans",
+      start: -900,
+      end: -100,
+      polygon: [
+        [9, 44], [13, 44], [13, 41], [11, 41], [9, 42],
+      ],
+      note: "Pre-Roman culture of central Italy",
+    },
+    {
+      id: "carthaginians",
+      name: "Carthaginians",
+      start: -814,
+      end: -146,
+      polygon: [
+        [1, 35], [12, 38], [12, 30], [4, 30], [-2, 32],
+      ],
+      note: "Phoenician colony turned Western Mediterranean power",
+    },
+    {
+      id: "celts",
+      name: "Celts (La Tène)",
+      start: -450,
+      end: 50,
+      polygon: [
+        [-10, 58], [3, 59], [16, 51], [22, 48], [22, 44],
+        [10, 42], [-5, 43], [-11, 50],
+      ],
+      note: "Iron Age cultures from Iberia to Galatia",
+    },
+
+    // ── Steppe peoples ──────────────────────────────────────────────────
+    {
+      id: "scythians",
+      name: "Scythians",
+      start: -700,
+      end: -300,
+      polygon: [
+        [28, 50], [50, 50], [55, 45], [40, 42], [28, 45],
+      ],
+      note: "Iranian-speaking nomads of the Pontic-Caspian steppe",
+    },
+    {
+      id: "xiongnu",
+      name: "Xiongnu",
+      start: -209,
+      end: 89,
+      polygon: [
+        [90, 53], [120, 53], [125, 45], [110, 40], [90, 42],
+      ],
+      note: "Confederacy of the Mongolian steppe; rivals of Han China",
+    },
+    {
+      id: "huns",
+      name: "Huns",
+      start: 370,
+      end: 469,
+      polygon: [
+        [10, 52], [30, 52], [40, 48], [30, 44], [10, 46],
+      ],
+      note: "Migration-era empire under Attila",
+    },
+    {
+      id: "gokturks",
+      name: "Göktürks",
+      start: 552,
+      end: 744,
+      polygon: [
+        [55, 50], [115, 53], [120, 45], [70, 38], [55, 42],
+      ],
+      note: "First Turkic Khaganate spanning Central Asia",
+    },
+    {
+      id: "avars",
+      name: "Avars",
+      start: 567,
+      end: 822,
+      polygon: [
+        [14, 48], [22, 48], [23, 44], [15, 44],
+      ],
+      note: "Steppe confederation centered on the Pannonian Basin",
+    },
+    {
+      id: "magyars",
+      name: "Magyars",
+      start: 895,
+      end: 1526,
+      polygon: [
+        [16, 49], [22, 49], [23, 45], [16, 45],
+      ],
+      note: "Hungarians in the Carpathian Basin",
+    },
+
+    // ── European successors ─────────────────────────────────────────────
+    {
+      id: "anglo-saxons",
+      name: "Anglo-Saxons",
+      start: 450,
+      end: 1066,
+      polygon: [
+        [-5, 55], [2, 55], [2, 50], [-5, 50],
+      ],
+      note: "Germanic peoples of post-Roman Britain",
+    },
+    {
+      id: "carolingians",
+      name: "Carolingian Franks",
+      start: 481,
+      end: 887,
+      polygon: [
+        [-2, 51], [9, 54], [16, 49], [16, 44], [12, 41], [3, 42], [-2, 44],
+      ],
+      note: "Frankish kingdom and empire of Charlemagne",
+    },
+    {
+      id: "holy-roman-empire",
+      name: "Holy Roman Empire",
+      start: 962,
+      end: 1806,
+      polygon: [
+        [3, 55], [16, 55], [22, 50], [16, 45], [10, 43], [6, 47], [3, 50],
+      ],
+      note: "Loose confederation of Central European states",
+    },
+    {
+      id: "kievan-rus",
+      name: "Kievan Rus'",
+      start: 882,
+      end: 1240,
+      polygon: [
+        [22, 60], [42, 60], [42, 48], [30, 46], [22, 50],
+      ],
+      note: "Eastern Slavic federation of principalities",
+    },
+
+    // ── Sub-Saharan Africa ──────────────────────────────────────────────
+    {
+      id: "ghana-empire",
+      name: "Ghana Empire",
+      start: 300,
+      end: 1235,
+      polygon: [
+        [-13, 18], [-3, 18], [-3, 13], [-13, 13],
+      ],
+      note: "Soninke trading empire of the western Sahel",
+    },
+    {
+      id: "mali-empire",
+      name: "Mali Empire",
+      start: 1235,
+      end: 1670,
+      polygon: [
+        [-13, 18], [5, 18], [5, 11], [-13, 11],
+      ],
+      note: "Mansa Musa's gold-rich West African empire",
+    },
+    {
+      id: "songhai",
+      name: "Songhai Empire",
+      start: 1340,
+      end: 1591,
+      polygon: [
+        [-10, 18], [10, 18], [10, 11], [-10, 11],
+      ],
+      note: "Successor to Mali along the Niger Bend",
+    },
+    {
+      id: "kanem-bornu",
+      name: "Kanem-Bornu",
+      start: 700,
+      end: 1900,
+      polygon: [
+        [10, 17], [20, 17], [20, 10], [10, 10],
+      ],
+      note: "Kanuri empire centered on Lake Chad",
+    },
+    {
+      id: "great-zimbabwe",
+      name: "Great Zimbabwe",
+      start: 1100,
+      end: 1450,
+      polygon: [
+        [27, -16], [33, -16], [33, -22], [27, -22],
+      ],
+      note: "Shona stone-city civilization of southern Africa",
+    },
+    {
+      id: "kongo",
+      name: "Kingdom of Kongo",
+      start: 1390,
+      end: 1914,
+      polygon: [
+        [12, -4], [17, -4], [17, -10], [12, -10],
+      ],
+      note: "Bantu kingdom of west-central Africa",
+    },
+    {
+      id: "ethiopia-solomonic",
+      name: "Ethiopian Empire",
+      start: 1270,
+      end: 1974,
+      polygon: [
+        [34, 15], [42, 15], [43, 8], [37, 5], [33, 10],
+      ],
+      note: "Solomonic dynasty of the Ethiopian highlands",
+    },
+
+    // ── South Asia ──────────────────────────────────────────────────────
+    {
+      id: "mauryans",
+      name: "Mauryans",
+      start: -322,
+      end: -185,
+      polygon: [
+        [62, 36], [76, 36], [88, 28], [96, 23], [85, 13],
+        [78, 11], [73, 18], [69, 22], [62, 28],
+      ],
+      note: "Ashoka's pan-Indian empire",
+    },
+    {
+      id: "guptas",
+      name: "Guptas",
+      start: 320,
+      end: 550,
+      polygon: [
+        [70, 33], [88, 33], [91, 26], [85, 22], [76, 22], [70, 26],
+      ],
+      note: "Classical 'golden age' of northern India",
+    },
+    {
+      id: "cholas",
+      name: "Cholas",
+      start: -300,
+      end: 1279,
+      polygon: [
+        [75, 16], [82, 17], [82, 8], [80, 5], [78, 6], [76, 9],
+      ],
+      note: "Tamil dynasty with maritime reach to SE Asia",
+    },
+    {
+      id: "delhi-sultanate",
+      name: "Delhi Sultanate",
+      start: 1206,
+      end: 1526,
+      polygon: [
+        [68, 33], [88, 33], [90, 24], [80, 18], [73, 20], [68, 26],
+      ],
+      note: "Turko-Persian sultanates of northern India",
+    },
+    {
+      id: "vijayanagara",
+      name: "Vijayanagara",
+      start: 1336,
+      end: 1646,
+      polygon: [
+        [73, 17], [82, 17], [82, 8], [76, 8], [73, 13],
+      ],
+      note: "Hindu empire of South India",
+    },
+    {
+      id: "mughals",
+      name: "Mughals",
+      start: 1526,
+      end: 1857,
+      polygon: [
+        [63, 35], [76, 35], [92, 28], [95, 24], [85, 13],
+        [78, 9], [73, 14], [68, 22], [63, 28],
+      ],
+      note: "Indo-Persian empire from Babur to Aurangzeb",
+    },
+
+    // ── Southeast Asia ──────────────────────────────────────────────────
+    {
+      id: "funan",
+      name: "Funan",
+      start: 50,
+      end: 627,
+      polygon: [
+        [103, 12], [108, 12], [108, 8], [103, 8],
+      ],
+      note: "Mekong Delta kingdom and trade hub",
+    },
+    {
+      id: "champa",
+      name: "Champa",
+      start: 192,
+      end: 1832,
+      polygon: [
+        [107, 17], [110, 16], [110, 11], [107, 11],
+      ],
+      note: "Austronesian kingdoms of central Vietnam",
+    },
+    {
+      id: "srivijaya",
+      name: "Srivijaya",
+      start: 650,
+      end: 1377,
+      polygon: [
+        [95, 5], [105, 5], [113, -2], [105, -8], [98, -5], [95, -1],
+      ],
+      note: "Maritime empire of Sumatra and the Malay Peninsula",
+    },
+    {
+      id: "khmer",
+      name: "Khmer Empire (Angkor)",
+      start: 802,
+      end: 1431,
+      polygon: [
+        [97, 16], [105, 19], [109, 13], [105, 9], [99, 7], [97, 12],
+      ],
+      note: "Khmer empire of Angkor Wat",
+    },
+    {
+      id: "pagan",
+      name: "Pagan / Bagan",
+      start: 849,
+      end: 1297,
+      polygon: [
+        [93, 25], [101, 25], [101, 13], [97, 11], [93, 16],
+      ],
+      note: "First unified Burmese kingdom",
+    },
+    {
+      id: "dai-viet",
+      name: "Đại Việt",
+      start: 939,
+      end: 1804,
+      polygon: [
+        [102, 23], [108, 23], [108, 17], [102, 17],
+      ],
+      note: "Vietnamese kingdoms of the Red River basin",
+    },
+    {
+      id: "majapahit",
+      name: "Majapahit",
+      start: 1293,
+      end: 1527,
+      polygon: [
+        [105, 4], [125, 4], [135, -1], [134, -9], [115, -10], [108, -8],
+      ],
+      note: "Java-based maritime empire of insular SE Asia",
+    },
+
+    // ── East Asia ───────────────────────────────────────────────────────
+    {
+      id: "goguryeo",
+      name: "Goguryeo",
+      start: -37,
+      end: 668,
+      polygon: [
+        [122, 44], [132, 45], [133, 39], [128, 36], [125, 38], [123, 40],
+      ],
+      note: "Korean-Manchurian kingdom of the Three Kingdoms era",
+    },
+    {
+      id: "silla",
+      name: "Silla",
+      start: -57,
+      end: 935,
+      polygon: [
+        [126, 38], [130, 39], [130, 35], [126, 34],
+      ],
+      note: "Korean kingdom that unified the peninsula in 668",
+    },
+    {
+      id: "goryeo",
+      name: "Goryeo",
+      start: 918,
+      end: 1392,
+      polygon: [
+        [124, 43], [131, 43], [130, 34], [126, 34], [124, 38],
+      ],
+      note: "Korean dynasty that gave the country its English name",
+    },
+    {
+      id: "joseon",
+      name: "Joseon",
+      start: 1392,
+      end: 1910,
+      polygon: [
+        [124, 43], [131, 43], [130, 34], [126, 34], [124, 38],
+      ],
+      note: "Confucian dynasty of late-imperial Korea",
+    },
+    {
+      id: "yamato-japan",
+      name: "Yamato Japan",
+      start: 300,
+      end: 794,
+      polygon: [
+        [129, 31], [142, 38], [142, 41], [136, 37], [131, 33],
+      ],
+      note: "Proto-historic and Asuka-Nara Japanese state",
+    },
+    {
+      id: "heian-japan",
+      name: "Heian Japan",
+      start: 794,
+      end: 1185,
+      polygon: [
+        [129, 31], [142, 38], [142, 41], [136, 37], [131, 33],
+      ],
+      note: "Aristocratic Japan of Kyoto and The Tale of Genji",
+    },
+    {
+      id: "tokugawa-japan",
+      name: "Tokugawa Japan",
+      start: 1603,
+      end: 1868,
+      polygon: [
+        [128, 31], [142, 38], [145, 45], [140, 44], [136, 37], [131, 33],
+      ],
+      note: "Edo-period shogunate before the Meiji Restoration",
+    },
+    {
+      id: "khitan-liao",
+      name: "Khitan / Liao",
+      start: 916,
+      end: 1125,
+      polygon: [
+        [105, 50], [125, 53], [128, 45], [124, 40], [115, 38], [108, 40], [105, 44],
+      ],
+      note: "Para-Mongolic dynasty of NE China",
+    },
+    {
+      id: "jurchen-jin",
+      name: "Jurchen / Jin",
+      start: 1115,
+      end: 1234,
+      polygon: [
+        [110, 50], [135, 50], [132, 42], [122, 35], [110, 33], [108, 38],
+      ],
+      note: "Tungusic dynasty that overthrew Liao and pushed Song south",
+    },
+    {
+      id: "song-china",
+      name: "Song Chinese",
+      start: 960,
+      end: 1279,
+      polygon: [
+        [99, 35], [120, 35], [122, 30], [115, 22], [105, 22], [99, 25],
+      ],
+      note: "Commercial revolution and printing-era China",
+    },
+    {
+      id: "ming-china",
+      name: "Ming Chinese",
+      start: 1368,
+      end: 1644,
+      polygon: [
+        [100, 41], [120, 41], [124, 38], [122, 30], [115, 22],
+        [104, 22], [100, 24], [99, 30], [98, 36],
+      ],
+      note: "Han-Chinese dynasty of the Forbidden City",
+    },
+    {
+      id: "qing-china",
+      name: "Manchu / Qing",
+      start: 1644,
+      end: 1912,
+      polygon: [
+        [73, 36], [85, 47], [120, 53], [135, 48], [135, 42],
+        [122, 30], [110, 22], [100, 23], [85, 27], [78, 33],
+      ],
+      note: "Last Chinese imperial dynasty at near-PRC extent",
+    },
+
+    // ── Mesoamerica ─────────────────────────────────────────────────────
+    {
+      id: "zapotec",
+      name: "Zapotec",
+      start: -500,
+      end: 700,
+      polygon: [
+        [-99, 18], [-95, 18], [-95, 16], [-99, 16],
+      ],
+      note: "Monte Albán culture of Oaxaca",
+    },
+    {
+      id: "teotihuacan",
+      name: "Teotihuacan",
+      start: -100,
+      end: 750,
+      polygon: [
+        [-101, 21], [-97, 21], [-95, 18], [-100, 17], [-101, 19],
+      ],
+      note: "First great Mesoamerican city-state",
+    },
+    {
+      id: "toltec",
+      name: "Toltec",
+      start: 900,
+      end: 1168,
+      polygon: [
+        [-102, 22], [-97, 22], [-95, 18], [-101, 18],
+      ],
+      note: "Post-Teotihuacan central Mexican culture",
+    },
+    {
+      id: "maya-postclassic",
+      name: "Postclassic Maya",
+      start: 900,
+      end: 1697,
+      polygon: [
+        [-92, 22], [-86, 22], [-86, 17], [-92, 17],
+      ],
+      note: "Yucatec city-leagues like Mayapán and Itzá",
+    },
+
+    // ── Andes & western South America ───────────────────────────────────
+    {
+      id: "chavin",
+      name: "Chavín",
+      start: -900,
+      end: -200,
+      polygon: [
+        [-79, -8], [-76, -8], [-76, -12], [-79, -12],
+      ],
+      note: "Foundational Andean cult-center culture",
+    },
+    {
+      id: "moche",
+      name: "Moche",
+      start: 100,
+      end: 700,
+      polygon: [
+        [-81, -5], [-78, -5], [-78, -10], [-81, -10],
+      ],
+      note: "North-coast Peruvian culture of the Sun and Moon huacas",
+    },
+    {
+      id: "nazca",
+      name: "Nazca",
+      start: -100,
+      end: 800,
+      polygon: [
+        [-76, -13], [-74, -13], [-74, -16], [-76, -16],
+      ],
+      note: "South-coast Peru culture famed for the Nazca Lines",
+    },
+    {
+      id: "tiwanaku",
+      name: "Tiwanaku",
+      start: 110,
+      end: 1000,
+      polygon: [
+        [-71, -15], [-67, -15], [-67, -19], [-71, -19],
+      ],
+      note: "Lake Titicaca highland civilization",
+    },
+    {
+      id: "wari",
+      name: "Wari",
+      start: 500,
+      end: 1000,
+      polygon: [
+        [-77, -10], [-73, -10], [-73, -16], [-77, -16],
+      ],
+      note: "Central Andean highland empire predating the Inca",
+    },
+    {
+      id: "chimu",
+      name: "Chimú",
+      start: 900,
+      end: 1470,
+      polygon: [
+        [-81, -5], [-78, -5], [-78, -10], [-81, -10],
+      ],
+      note: "Chan Chan-based culture conquered by the Inca",
+    },
+
+    // ── North America ───────────────────────────────────────────────────
+    {
+      id: "hopewell",
+      name: "Hopewell",
+      start: -200,
+      end: 500,
+      polygon: [
+        [-90, 42], [-80, 42], [-80, 36], [-90, 36],
+      ],
+      note: "Eastern Woodlands mound-builder tradition",
+    },
+    {
+      id: "mississippian",
+      name: "Mississippian (Cahokia)",
+      start: 800,
+      end: 1600,
+      polygon: [
+        [-98, 42], [-82, 42], [-82, 32], [-92, 30], [-98, 35],
+      ],
+      note: "Mound-building chiefdoms centered on Cahokia",
+    },
+    {
+      id: "ancestral-puebloans",
+      name: "Ancestral Puebloans",
+      start: -100,
+      end: 1300,
+      polygon: [
+        [-112, 39], [-106, 39], [-106, 33], [-112, 33],
+      ],
+      note: "Anasazi cliff-dwellers of the Four Corners",
+    },
+    {
+      id: "iroquois",
+      name: "Haudenosaunee (Iroquois)",
+      start: 1142,
+      end: 1779,
+      polygon: [
+        [-83, 46], [-73, 46], [-73, 41], [-82, 41],
+      ],
+      note: "Six Nations confederacy of the eastern Great Lakes",
+    },
+    {
+      id: "thule-inuit",
+      name: "Thule / Inuit",
+      start: 1000,
+      end: 2025,
+      polygon: [
+        [-170, 80], [-50, 80], [-50, 60], [-95, 56],
+        [-130, 60], [-160, 65], [-170, 70],
+      ],
+      note: "Arctic seafarers ancestral to today's Inuit",
+    },
+
+    // ── Oceania ─────────────────────────────────────────────────────────
+    {
+      id: "aboriginal-australians",
+      name: "Aboriginal Australians",
+      start: -10000,
+      end: 2025,
+      polygon: [
+        [113, -10], [142, -10], [154, -16], [154, -29],
+        [148, -39], [115, -36], [113, -22],
+      ],
+      note: "World's oldest continuous cultures, ~50,000+ years on the continent",
+    },
+  ] satisfies People[]
+).map((p) => ({ ...p, polygon: close(p.polygon) }));
