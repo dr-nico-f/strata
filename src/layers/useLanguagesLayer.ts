@@ -6,6 +6,7 @@ import type {
 import { useEffect, useRef } from "react";
 import { LANGUAGE_FAMILIES, activeLanguageStage } from "../data/languages";
 import { useStore } from "../store";
+import { useDeferredYear } from "../utils/useDeferredYear";
 
 const SOURCE_ID = "languages-src";
 const FILL_LAYER_ID = "languages-fill";
@@ -58,7 +59,7 @@ function buildFeatures(year: number): GeoJSON.FeatureCollection {
 }
 
 export function useLanguagesLayer(map: MaplibreMap | null) {
-  const year = useStore((s) => s.year);
+  const year = useDeferredYear(80);
   const visible = useStore((s) => s.layers.languages);
   const theme = useStore((s) => s.theme);
   const setHover = useStore((s) => s.setHover);

@@ -11,6 +11,7 @@ import {
   type MigrationKind,
 } from "../data/migrations";
 import { useStore } from "../store";
+import { useDeferredYear } from "../utils/useDeferredYear";
 import { startAntLineAnimation } from "../utils/antLine";
 
 const SOURCE_ID = "migrations-src";
@@ -61,7 +62,7 @@ function buildFeatures(year: number): GeoJSON.FeatureCollection {
 }
 
 export function useMigrationsLayer(map: MaplibreMap | null) {
-  const year = useStore((s) => s.year);
+  const year = useDeferredYear(80);
   const visible = useStore((s) => s.layers.migrations);
   const setHover = useStore((s) => s.setHover);
   const setupForMap = useRef<MaplibreMap | null>(null);

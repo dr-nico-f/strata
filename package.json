@@ -22,7 +22,7 @@
     "build:population:refresh": "node scripts/build-population.mjs --refresh"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "maplibre-gl": "^5.24.0",

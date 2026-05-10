@@ -203,8 +203,8 @@ function styleFor(theme: ThemeId): StyleSpecification {
   };
 }
 
-const IDLE_BEFORE_SPIN_MS = 18_000;
-const SPIN_DEG_PER_SEC = 6;
+const IDLE_BEFORE_SPIN_MS = 120_000; // 2 minutes of inactivity before resuming
+const SPIN_DEG_PER_SEC = 3;
 
 export function MapView() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -341,28 +341,33 @@ export function MapView() {
     });
   }, [map, projection]);
 
-  // Auto-spin when in globe mode, idle, and enabled
+  // Auto-spin: starts immediately on load, stops on any interaction,
+  // resumes after IDLE_BEFORE_SPIN_MS of inactivity.
   useEffect(() => {
     if (!map) return;
     if (projection !== "globe" || !autoSpin) return;
 
-    let lastInteract = performance.now();
+    let interacted = false;
+    let lastInteract = 0;
     let raf = 0;
     let lastFrame = performance.now();
 
     const onInteract = () => {
+      interacted = true;
       lastInteract = performance.now();
     };
 
-    map.on("mousedown", onInteract);
-    map.on("touchstart", onInteract);
-    map.on("wheel", onInteract);
-    map.on("dragstart", onInteract);
+    const mapEvents = ["mousedown", "touchstart", "wheel", "dragstart", "click"] as const;
+    for (const ev of mapEvents) map.on(ev, onInteract);
+
+    const onWindowInteract = () => onInteract();
+    window.addEventListener("keydown", onWindowInteract);
 
     const loop = (t: number) => {
       const dt = (t - lastFrame) / 1000;
       lastFrame = t;
-      if (t - lastInteract > IDLE_BEFORE_SPIN_MS) {
+      const idle = !interacted || t - lastInteract > IDLE_BEFORE_SPIN_MS;
+      if (idle) {
         const c = map.getCenter();
         map.jumpTo({ center: [c.lng + SPIN_DEG_PER_SEC * dt, c.lat] });
       }
@@ -372,10 +377,8 @@ export function MapView() {
 
     return () => {
       cancelAnimationFrame(raf);
-      map.off("mousedown", onInteract);
-      map.off("touchstart", onInteract);
-      map.off("wheel", onInteract);
-      map.off("dragstart", onInteract);
+      for (const ev of mapEvents) map.off(ev, onInteract);
+      window.removeEventListener("keydown", onWindowInteract);
     };
   }, [map, projection, autoSpin]);
 
