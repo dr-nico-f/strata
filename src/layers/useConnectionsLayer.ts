@@ -6,6 +6,7 @@ import type {
 import { useEffect, useRef } from "react";
 import { CONNECTIONS } from "../data/connections";
 import { useStore } from "../store";
+import { useDeferredYear } from "../utils/useDeferredYear";
 import { startAntLineAnimation } from "../utils/antLine";
 
 const SOURCE_ID = "connections-src";
@@ -48,7 +49,7 @@ function buildFeatures(year: number): GeoJSON.FeatureCollection {
 }
 
 export function useConnectionsLayer(map: MaplibreMap | null) {
-  const year = useStore((s) => s.year);
+  const year = useDeferredYear(80);
   const visible = useStore((s) => s.layers.connections);
   const setHover = useStore((s) => s.setHover);
   const setupForMap = useRef<MaplibreMap | null>(null);

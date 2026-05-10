@@ -12,6 +12,7 @@ import {
   MODERN_RELIGION_MIN_YEAR,
 } from "../data/religions.modern";
 import { useStore } from "../store";
+import { useDeferredYear } from "../utils/useDeferredYear";
 
 const SOURCE_ID = "religions-src";
 const FILL_LAYER_ID = "religions-fill";
@@ -158,7 +159,7 @@ async function buildModernFeatures(
 }
 
 export function useReligionsLayer(map: MaplibreMap | null) {
-  const year = useStore((s) => s.year);
+  const year = useDeferredYear(80);
   const visible = useStore((s) => s.layers.religions);
   const theme = useStore((s) => s.theme);
   const setHover = useStore((s) => s.setHover);
