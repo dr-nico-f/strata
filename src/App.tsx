@@ -33,6 +33,33 @@ const SearchBarLazy = lazy(() =>
   import("./components/SearchBar").then((m) => ({ default: m.SearchBar })),
 );
 
+function LoadingSpinner() {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: "none",
+        zIndex: 100,
+      }}
+    >
+      <div
+        style={{
+          width: 28,
+          height: 28,
+          border: "3px solid rgba(255,255,255,0.15)",
+          borderTopColor: "var(--accent-strong, #f5b942)",
+          borderRadius: "50%",
+          animation: "spin 0.8s linear infinite",
+        }}
+      />
+    </div>
+  );
+}
+
 export default function App() {
   useKeyboard();
   useUrlSync();
@@ -68,7 +95,7 @@ export default function App() {
       <LayerToggles />
       <Header />
       <TimeSlider />
-      <Suspense fallback={null}>
+      <Suspense fallback={<LoadingSpinner />}>
         {searchOpen && <SearchBarLazy />}
         {tour !== null && <StoryPlayerLazy />}
         {storyPickerOpen && <StoryPickerLazy />}

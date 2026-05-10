@@ -708,10 +708,13 @@ function YearDisplay({
         defaultValue={year}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={() => {
-          const v = Number(draft);
-          if (!Number.isNaN(v) && Number.isFinite(v)) {
-            setPlaying(false);
-            setYear(v);
+          const trimmed = draft.trim();
+          if (trimmed !== "") {
+            const v = Number(trimmed);
+            if (Number.isFinite(v)) {
+              setPlaying(false);
+              setYear(v);
+            }
           }
           setEditing(false);
         }}
