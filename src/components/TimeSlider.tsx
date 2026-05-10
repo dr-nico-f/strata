@@ -818,7 +818,7 @@ function SliderHoverChip({
       style={{
         position: "fixed",
         left: preview.x,
-        bottom: 90,
+        bottom: 120,
         transform: "translateX(-50%)",
         background: "rgba(20, 22, 30, 0.96)",
         color: "var(--text)",

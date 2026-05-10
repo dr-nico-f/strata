@@ -38,7 +38,7 @@ export const THEMES: readonly ThemeId[] = ["dark", "light", "sepia"] as const;
 
 export const MIN_YEAR = -10000;
 export const MAX_YEAR = 2025;
-export const DEFAULT_YEAR = 1;
+export const DEFAULT_YEAR = 1492;
 
 export type FeatureRef = {
   layer: LayerId;
