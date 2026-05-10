@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { ClimateBand } from "./components/ClimateBand";
 import { climateAt, climateColor } from "./data/climate";
 import { CountryDetailPanel } from "./components/CountryDetailPanel";
@@ -32,6 +32,63 @@ const StoryPlayerLazy = lazy(() =>
 const SearchBarLazy = lazy(() =>
   import("./components/SearchBar").then((m) => ({ default: m.SearchBar })),
 );
+
+function MobileBanner() {
+  const [dismissed, setDismissed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  if (!isMobile || dismissed) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 500,
+        background: "rgba(14, 17, 22, 0.95)",
+        backdropFilter: "blur(8px)",
+        borderTop: "1px solid rgba(245, 185, 66, 0.3)",
+        padding: "14px 18px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+        fontSize: 13,
+        color: "#e6e8ec",
+      }}
+    >
+      <span>
+        <strong style={{ color: "#f5b942" }}>Best viewed on desktop</strong> —
+        Strata uses keyboard shortcuts, hover tooltips, and a wide map canvas.
+      </span>
+      <button
+        onClick={() => setDismissed(true)}
+        style={{
+          flexShrink: 0,
+          padding: "4px 12px",
+          fontSize: 12,
+          background: "rgba(255,255,255,0.1)",
+          border: "1px solid rgba(255,255,255,0.2)",
+          borderRadius: 6,
+          color: "#e6e8ec",
+          cursor: "pointer",
+        }}
+      >
+        Got it
+      </button>
+    </div>
+  );
+}
 
 function LoadingSpinner() {
   return (
@@ -102,6 +159,7 @@ export default function App() {
         {helpOpen && <HelpOverlayLazy />}
       </Suspense>
       <Toast />
+      <MobileBanner />
     </div>
   );
 }
