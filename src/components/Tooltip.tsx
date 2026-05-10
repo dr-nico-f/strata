@@ -114,9 +114,8 @@ export function Tooltip() {
   const panelCenterY = top + size.h / 2;
   const dx = anchorX - panelCenterX;
   const dy = anchorY - panelCenterY;
-  // Pick nearest edge
-  let edgeX = panelCenterX;
-  let edgeY = panelCenterY;
+  let edgeX: number;
+  let edgeY: number;
   if (Math.abs(dx) / (size.w / 2 || 1) > Math.abs(dy) / (size.h / 2 || 1)) {
     edgeX = dx > 0 ? left + size.w : left;
     edgeY = panelCenterY + (dy * (size.w / 2)) / (Math.abs(dx) || 1);
