@@ -229,7 +229,7 @@ a {
 
 /* Lift MapLibre's nav + attribution above the bottom time slider */
 .maplibregl-ctrl-bottom-left {
-  bottom: 170px !important;
+  bottom: 200px !important;
   left: 12px !important;
 }
 
