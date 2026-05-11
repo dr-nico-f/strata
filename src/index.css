@@ -227,9 +227,10 @@ a {
   }
 }
 
-/* Lift MapLibre's nav + attribution above the bottom time slider */
+/* Lift MapLibre's nav + attribution above the bottom time slider.
+   --slider-h is set dynamically by a ResizeObserver in TimeSlider. */
 .maplibregl-ctrl-bottom-left {
-  bottom: 200px !important;
+  bottom: calc(var(--slider-h, 200px) + 16px) !important;
   left: 12px !important;
 }
 

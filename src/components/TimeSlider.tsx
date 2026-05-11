@@ -265,10 +265,22 @@ export function TimeSlider() {
     setYear(s);
   };
 
+  const sliderRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      document.documentElement.style.setProperty("--slider-h", `${entry.contentRect.height}px`);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   if (hideUi) return null;
 
   return (
     <div
+      ref={sliderRef}
       style={{
         position: "absolute",
         bottom: 0,
