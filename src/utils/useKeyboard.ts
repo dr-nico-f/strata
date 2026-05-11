@@ -52,10 +52,6 @@ export function useKeyboard() {
           store.setStoryPickerOpen(false);
           return;
         }
-        if (store.detailPanelOpen) {
-          store.setDetailPanelOpen(false);
-          return;
-        }
         if (store.tour) {
           store.exitTour();
           return;
@@ -64,17 +60,8 @@ export function useKeyboard() {
           store.setPendingChoice(null);
           return;
         }
-        if (store.focusedCountry) {
-          store.setFocusedCountry(null);
-          store.setFocusBbox(null);
-          return;
-        }
         if (store.locked) {
           store.setLocked(null);
-          return;
-        }
-        if (store.focusBbox) {
-          store.setFocusBbox(null);
           return;
         }
       }

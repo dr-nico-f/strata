@@ -265,7 +265,15 @@ export const useStore = create<AppState>((set, get) => ({
   setHover: (hover) => set({ hover }),
 
   locked: null,
-  setLocked: (locked) => set({ locked }),
+  setLocked: (locked) =>
+    locked === null
+      ? set({
+          locked: null,
+          focusedCountry: null,
+          focusBbox: null,
+          detailPanelOpen: false,
+        })
+      : set({ locked }),
 
   projection: "globe",
   setProjection: (projection) => set({ projection }),
